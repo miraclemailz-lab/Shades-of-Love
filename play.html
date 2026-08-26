@@ -721,16 +721,16 @@
             document.body.style.background = theme.bgGradient;
           }, [currentTheme]);
 
-          // Load book.pdf via PDF.js on mount
+          // Load kbook.pdf via PDF.js on mount
           useEffect(() => {
             const loadPdfDoc = async () => {
               if (!window.pdfjsLib) return;
               try {
-                const loadingTask = pdfjsLib.getDocument('book.pdf');
+                const loadingTask = pdfjsLib.getDocument('kbook.pdf');
                 const doc = await loadingTask.promise;
                 setPdfDoc(doc);
               } catch (e) {
-                console.warn('book.pdf not found or failed to load:', e);
+                console.warn('kbook.pdf not found or failed to load:', e);
               }
             };
             loadPdfDoc();
@@ -811,7 +811,7 @@
             loadCards();
           }, []);
 
-          // Parse PDF Index: Resolved page with normalized text fallback matching
+          // Plain text search PDF page resolution with explicit overrides & quote normalization
           useEffect(() => {
             let isMounted = true;
             const resolvePage = async () => {
@@ -822,56 +822,59 @@
 
               setIsPdfLoading(true);
               try {
-                const clean = (str) => (str || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-                const cleanTitle = clean(currentCard.title);
-                const origNum = currentCard.original_number ? String(currentCard.original_number) : '';
-                let pageFound = null;
+                const rawTitle = (currentCard.title || '').trim();
 
-                // Phase 1: Try Table of Contents annotation links (Pages 1 to 15)
-                const tocStart = 1;
-                const tocEnd = Math.min(15, pdfDoc.numPages);
+                // 1. Explicit hardcoded overrides for specific substring names
+                const OVERRIDES = {
+                  'MISSIONARY': 596,
+                  'WHEELBARROW': 383,
+                  '69': 544,
+                  'THE EDGE': 7,
+                  'HEAD RUSH': 253,
+                  'CAT': 151,
+                  'SCREW': 474,
+                  'SCISSORS': 548,
+                  'HOT SPOT': 315
+                };
 
-                for (let pageNum = tocStart; pageNum <= tocEnd; pageNum++) {
-                  const page = await pdfDoc.getPage(pageNum);
-                  const textContent = await page.getTextContent();
-                  const pageText = clean(textContent.items.map(item => item.str).join(' '));
-
-                  if (cleanTitle && pageText.includes(cleanTitle)) {
-                    const annotations = await page.getAnnotations();
-                    for (const anno of annotations) {
-                      if (anno.subtype === 'Link' && anno.dest) {
-                        let dest = anno.dest;
-                        if (typeof dest === 'string') {
-                          dest = await pdfDoc.getDestination(dest);
-                        }
-                        if (Array.isArray(dest) && dest.length > 0) {
-                          const destPageIndex = await pdfDoc.getPageIndex(dest[0]);
-                          const targetPage = destPageIndex + 1;
-                          if (targetPage > tocEnd) {
-                            pageFound = targetPage;
-                            break;
-                          }
-                        }
-                      }
-                    }
+                const upperTitle = rawTitle.toUpperCase();
+                if (Object.prototype.hasOwnProperty.call(OVERRIDES, upperTitle)) {
+                  if (isMounted) {
+                    setResolvedPdfPage(OVERRIDES[upperTitle]);
                   }
-                  if (pageFound) break;
+                  return;
                 }
 
-                // Phase 2: Direct full-document content search if TOC links fail
-                if (!pageFound && cleanTitle) {
-                  const bodyStart = Math.min(14, pdfDoc.numPages);
-                  for (let pageNum = bodyStart; pageNum <= pdfDoc.numPages; pageNum++) {
-                    const page = await pdfDoc.getPage(pageNum);
-                    const textContent = await page.getTextContent();
-                    const pageText = clean(textContent.items.map(item => item.str).join(' '));
+                // 2. Normalization helper: strips quotes (", ”, ’, ', etc.) and normalizes whitespace/punctuation
+                const normalizeForSearch = (str) => {
+                  if (!str) return '';
+                  return str
+                    .toLowerCase()
+                    .replace(/[“”"’'‘`]/g, '')   // Remove all single/double quote variants
+                    .replace(/[\-\–\—]/g, ' ')    // Convert dashes to spaces
+                    .replace(/[^a-z0-9\s]/g, '')   // Keep standard alphanumeric and spaces
+                    .replace(/\s+/g, ' ')         // Collapse multiple spaces
+                    .trim();
+                };
 
-                    if (pageText.includes(cleanTitle)) {
-                      if (!origNum || pageText.includes(origNum) || pageText.includes(cleanTitle)) {
-                        pageFound = pageNum;
-                        break;
-                      }
-                    }
+                const targetTitle = normalizeForSearch(rawTitle);
+                if (!targetTitle) {
+                  if (isMounted) setResolvedPdfPage(null);
+                  return;
+                }
+
+                let pageFound = null;
+
+                // 3. Plain text search page by page through the PDF document
+                for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
+                  const page = await pdfDoc.getPage(pageNum);
+                  const textContent = await page.getTextContent();
+                  const rawPageText = textContent.items.map(item => item.str).join(' ');
+                  const pageText = normalizeForSearch(rawPageText);
+
+                  if (pageText.includes(targetTitle)) {
+                    pageFound = pageNum;
+                    break;
                   }
                 }
 
@@ -1587,8 +1590,6 @@
             setShowPdfView(false);
           }, [currentCard?.id]);
 
-          const circumference = 2 * Math.PI * 40;
-          
           const heatLevels = {
             1: { label: 'Mild & Sweet', emoji: '🌸' },
             2: { label: 'Sensual & Teasing', emoji: '💋' },
@@ -1755,7 +1756,7 @@
                         <div className="my-2 border-t border-b border-white/10 py-2">
                           <div className="flex items-center justify-between">
                             <span className="text-[11px] text-amber-300 font-medium flex items-center gap-1">
-                              📖 {isPdfLoading ? 'Resolving PDF Chapter...' : `Matched Book Page: #${resolvedPdfPage}`}
+                              📖 {isPdfLoading ? 'Searching PDF Page...' : `Matched Book Page: #${resolvedPdfPage}`}
                             </span>
                             {resolvedPdfPage && (
                               <button
@@ -1771,7 +1772,7 @@
                             <div className="mt-2 rounded-xl overflow-hidden border border-white/15 bg-black/60 slide-up">
                               <iframe
                                 key={`${currentCard?.id}-${resolvedPdfPage}`}
-                                src={`book.pdf#page=${resolvedPdfPage}`}
+                                src={`kbook.pdf#page=${resolvedPdfPage}`}
                                 className="w-full h-48 border-0"
                                 title="Book PDF Viewer"
                               ></iframe>

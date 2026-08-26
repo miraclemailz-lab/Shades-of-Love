@@ -8,6 +8,7 @@
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -146,7 +147,7 @@
         .card-flip-inner {
             position: relative;
             width: 100%;
-            height: 520px;
+            height: 560px;
             transform-style: preserve-3d;
             transition: transform 0.7s cubic-bezier(0.34, 1.35, 0.64, 1);
         }
@@ -167,7 +168,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 2rem 1.75rem;
+            padding: 1.75rem 1.5rem;
             backdrop-filter: blur(20px);
             transition: border-color 0.4s ease, box-shadow 0.4s ease;
         }
@@ -524,11 +525,11 @@
             }
 
             .card-flip-inner {
-                height: 490px;
+                height: 530px;
             }
 
             .card-face {
-                padding: 1.5rem 1.25rem;
+                padding: 1.25rem 1rem;
             }
         }
     </style>
@@ -537,6 +538,11 @@
     <div id="root"></div>
 
     <script type="text/babel">
+        // Configure PDF.js worker
+        if (window.pdfjsLib) {
+          pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        }
+
         const { useState, useEffect, useRef } = React;
 
         // Sensual Mood Themes
@@ -697,6 +703,9 @@
           const [showJourneyModal, setShowJourneyModal] = useState(false);
           const [showThemeDropdown, setShowThemeDropdown] = useState(false);
           const [savedGameData, setSavedGameData] = useState(null);
+          const [pdfDoc, setPdfDoc] = useState(null);
+          const [resolvedPdfPage, setResolvedPdfPage] = useState(null);
+          const [isPdfLoading, setIsPdfLoading] = useState(false);
           const timerRef = useRef(null);
 
           // Apply dynamic CSS variables on theme change
@@ -712,34 +721,76 @@
             document.body.style.background = theme.bgGradient;
           }, [currentTheme]);
 
-          // Load cards + identify.json and check for saved game on mount
+          // Load book.pdf via PDF.js on mount
+          useEffect(() => {
+            const loadPdfDoc = async () => {
+              if (!window.pdfjsLib) return;
+              try {
+                const loadingTask = pdfjsLib.getDocument('book.pdf');
+                const doc = await loadingTask.promise;
+                setPdfDoc(doc);
+              } catch (e) {
+                console.warn('book.pdf not found or failed to load:', e);
+              }
+            };
+            loadPdfDoc();
+          }, []);
+
+          // Load cards, identify.json, and connect.json
           useEffect(() => {
             const loadCards = async () => {
               try {
-                const [cardsRes, identifyRes] = await Promise.all([
+                const [cardsRes, identifyRes, connectRes] = await Promise.all([
                   fetch('cards.json'),
-                  fetch('identify.json')
+                  fetch('identify.json'),
+                  fetch('connect.json').catch(() => null)
                 ]);
                 const cardsData = await cardsRes.json();
                 const identifyData = await identifyRes.json();
 
-                // Build a lookup map: id -> identify ('male' | 'female' | 'both')
+                let connectData = [];
+                if (connectRes && connectRes.ok) {
+                  connectData = await connectRes.json();
+                }
+
+                // Build lookup map for identify ('male' | 'female' | 'both')
                 const identifyMap = new Map();
                 Object.values(identifyData).flat().forEach(item => {
                   identifyMap.set(item.id, item.identify || 'both');
                 });
 
-                // Merge identify field into every card
+                // Match Titles: Compare cards.json title with connect.json name (case-insensitive) to retrieve original_number
+                const connectMap = new Map();
+                const connectItems = Array.isArray(connectData)
+                  ? connectData
+                  : (connectData && typeof connectData === 'object' ? Object.values(connectData).flat() : []);
+
+                connectItems.forEach(item => {
+                  if (item && item.name) {
+                    connectMap.set(item.name.toLowerCase().trim(), item.original_number);
+                  }
+                });
+
+                // Merge identify field & searchString into cards
                 const allCardsArray = [
                   ...cardsData.section_1_love_romantic,
                   ...cardsData.section_2_hug_kisses,
                   ...cardsData.section_3_strip_playful,
                   ...cardsData.section_4_fantasy_extended_play,
                   ...cardsData.section_5_intense_aftercare
-                ].map(card => ({
-                  ...card,
-                  identify: identifyMap.get(card.id) || 'both'
-                }));
+                ].map(card => {
+                  const cardTitleNorm = (card.title || '').toLowerCase().trim();
+                  const origNum = connectMap.get(cardTitleNorm);
+                  // Construct Search String: "Chapter " + original_number + " - " + name
+                  const searchStr = origNum != null ? `Chapter ${origNum} - ${card.title}` : null;
+
+                  return {
+                    ...card,
+                    identify: identifyMap.get(card.id) || 'both',
+                    original_number: origNum,
+                    searchString: searchStr
+                  };
+                });
 
                 setAllCards(allCardsArray);
 
@@ -761,6 +812,69 @@
             loadCards();
           }, []);
 
+          // Parse PDF Index: Scan pages 3–13 using PDF.js, find matching text/annotation link dest, resolve destination page index
+          useEffect(() => {
+            let isMounted = true;
+            const resolvePage = async () => {
+              if (!pdfDoc || !currentCard || !currentCard.searchString) {
+                setResolvedPdfPage(null);
+                return;
+              }
+
+              setIsPdfLoading(true);
+              try {
+                const targetStr = currentCard.searchString.toLowerCase().trim();
+                let pageFound = null;
+
+                // Scan pages 3 to 13
+                const startPage = 3;
+                const endPage = Math.min(13, pdfDoc.numPages);
+
+                for (let pageNum = startPage; pageNum <= endPage; pageNum++) {
+                  const page = await pdfDoc.getPage(pageNum);
+                  
+                  // Check link annotations on page
+                  const annotations = await page.getAnnotations();
+                  const textContent = await page.getTextContent();
+                  const pageText = textContent.items.map(item => item.str).join(' ').toLowerCase();
+
+                  if (pageText.includes(targetStr)) {
+                    // Search annotations for link destinations
+                    for (const anno of annotations) {
+                      if (anno.subtype === 'Link' && anno.dest) {
+                        let dest = anno.dest;
+                        if (typeof dest === 'string') {
+                          dest = await pdfDoc.getDestination(dest);
+                        }
+                        if (Array.isArray(dest) && dest.length > 0) {
+                          const destPageIndex = await pdfDoc.getPageIndex(dest[0]);
+                          pageFound = destPageIndex + 1; // Convert 0-indexed page to 1-indexed PDF page
+                          break;
+                        }
+                      }
+                    }
+
+                    // Fallback to the index page if no annotation dest resolved
+                    if (!pageFound) {
+                      pageFound = pageNum;
+                    }
+                    break;
+                  }
+                }
+
+                if (isMounted) {
+                  setResolvedPdfPage(pageFound);
+                }
+              } catch (e) {
+                console.error('Error resolving PDF page destination:', e);
+              } finally {
+                if (isMounted) setIsPdfLoading(false);
+              }
+            };
+
+            resolvePage();
+            return () => { isMounted = false; };
+          }, [currentCard, pdfDoc]);
 
           // Auto-save game state on progress updates
           useEffect(() => {
@@ -794,9 +908,7 @@
             return () => clearTimeout(timerRef.current);
           }, [timerActive, timeRemaining]);
 
-
           // Returns cards compatible with a given turn ('male' | 'female')
-          // 'both' cards are always compatible
           const getCardsForTurn = (cards, turn) => {
             return cards.filter(card => {
               const id = card.identify || 'both';
@@ -807,7 +919,6 @@
           const initializeSection = (sectionNum, startingTurn) => {
             const turn = startingTurn || currentTurn;
             const sectionCards = allCards.filter(c => c.section === sectionNum);
-            // Shuffle all section cards, then pick a compatible first card
             const shuffled = [...sectionCards].sort(() => Math.random() - 0.5);
             const compatibleFirst = getCardsForTurn(shuffled, turn);
             const firstCard = compatibleFirst[0] || shuffled[0] || null;
@@ -875,13 +986,10 @@
             setCurrentTurn(newTurn);
             playSensualSound('flip', soundEnabled);
 
-            // If the current card is not compatible with the new turn, swap it
             if (currentCard && currentCard.identify !== 'both' && currentCard.identify !== newTurn) {
-              // Find the next compatible card from the pool (excluding current)
               const rest = availableCards.filter(c => c.id !== currentCard.id);
               const compatible = getCardsForTurn(rest, newTurn);
               if (compatible.length > 0) {
-                // Swap current with a compatible card, put old card back
                 const newCard = compatible[0];
                 const newPool = [currentCard, ...rest.filter(c => c.id !== newCard.id)];
                 setCurrentCard(newCard);
@@ -896,9 +1004,7 @@
             const newTurn = currentTurn === 'male' ? 'female' : 'male';
             setTimeout(() => {
               const rest = availableCards.slice(1);
-              // Put skipped card back, reshuffle pool
               const reshuffled = [...rest, currentCard].sort(() => Math.random() - 0.5);
-              // Pick next card compatible with the NEXT turn
               const compatible = getCardsForTurn(reshuffled, newTurn);
               const nextCard = compatible[0] || reshuffled[0] || null;
               setAvailableCards(reshuffled);
@@ -914,7 +1020,6 @@
             playSensualSound('complete', soundEnabled);
             setCardAnimation('complete');
 
-            // Record to Love Journey history
             if (currentCard) {
               const historyEntry = {
                 id: currentCard.id,
@@ -948,10 +1053,8 @@
               if (remaining.length === 0 || newCompletedInSection >= tasksPerSection) {
                 setGameState('sectionComplete');
               } else {
-                // Pick next card compatible with the NEW turn
                 const compatible = getCardsForTurn(remaining, newTurn);
                 const nextCard = compatible[0] || remaining[0] || null;
-                // If we had to pick a non-compatible card, move compatible ones to front
                 if (nextCard && compatible.length > 0 && remaining[0]?.id !== nextCard.id) {
                   const reordered = [nextCard, ...remaining.filter(c => c.id !== nextCard.id)];
                   setCurrentCard(nextCard);
@@ -987,7 +1090,6 @@
             setSavedGameData(null);
           };
 
-
           const formatTime = (seconds) => {
             const mins = Math.floor(seconds / 60);
             const secs = seconds % 60;
@@ -1000,16 +1102,15 @@
             <div className="min-h-screen w-full flex flex-col items-center justify-between p-3.5 relative overflow-hidden"
               onClick={() => { if (showThemeDropdown) setShowThemeDropdown(false); }}
             >
-              {/* Floating Ambient Particles */}
+              {/* Ambient Particles */}
               <div className="ambient-particle text-xl" style={{ left: '8%', animationDuration: '14s', animationDelay: '0s' }}>❤️</div>
               <div className="ambient-particle text-lg" style={{ left: '88%', animationDuration: '18s', animationDelay: '3s' }}>🔥</div>
               <div className="ambient-particle text-2xl" style={{ left: '22%', animationDuration: '16s', animationDelay: '6s' }}>💋</div>
               <div className="ambient-particle text-sm" style={{ left: '78%', animationDuration: '20s', animationDelay: '9s' }}>✨</div>
               <div className="ambient-particle text-xl" style={{ left: '52%', animationDuration: '22s', animationDelay: '4s' }}>🌹</div>
 
-              {/* Top Controls Bar: Love Journey & Compact Theme Dropdown */}
+              {/* Top Controls Bar */}
               <div className="top-controls-bar" onClick={(e) => e.stopPropagation()}>
-                {/* Love Journey Button */}
                 <button
                   onClick={() => setShowJourneyModal(true)}
                   title="View Our Love Journey Timeline"
@@ -1022,7 +1123,6 @@
                   )}
                 </button>
 
-                {/* Compact Theme Dropdown Toggle */}
                 <div className="relative">
                   <button
                     onClick={() => setShowThemeDropdown(!showThemeDropdown)}
@@ -1034,7 +1134,6 @@
                     <span className="text-[10px] text-gray-400">▼</span>
                   </button>
 
-                  {/* Dropdown Menu */}
                   {showThemeDropdown && (
                     <div className="theme-dropdown-menu">
                       <div className="text-[10px] uppercase font-bold tracking-wider text-gray-400 px-3 py-1 mb-1 border-b border-white/10">
@@ -1058,7 +1157,6 @@
                         </div>
                       ))}
 
-                      {/* Sound Toggle Item */}
                       <div className="mt-2 pt-2 border-t border-white/10 flex items-center justify-between px-3 py-1.5 text-xs text-gray-300">
                         <span className="font-semibold">Audio Effects</span>
                         <button
@@ -1076,7 +1174,7 @@
                 </div>
               </div>
 
-              {/* Main Content View */}
+              {/* Main Content */}
               <div className="w-full max-w-md my-auto z-10">
                 {gameState === 'onboarding' && (
                   <OnboardingScreen onNext={goToSetup} theme={theme} />
@@ -1104,12 +1202,14 @@
                     timeRemaining={timeRemaining}
                     currentTurn={currentTurn}
                     isCardFlipped={isCardFlipped}
+                    resolvedPdfPage={resolvedPdfPage}
+                    isPdfLoading={isPdfLoading}
                     onFlipCard={handleCardFlip}
                     onSwitchTurn={handleSwitchTurn}
                     onSkip={handleSkip}
                     onComplete={handleComplete}
                     onStartTimer={() => {
-                      setTimeRemaining(currentCard.timer);
+                      setTimeRemaining(currentCard.timer || 180);
                       setTimerActive(true);
                     }}
                     formatTime={formatTime}
@@ -1148,7 +1248,7 @@
                 />
               )}
 
-              {/* Footer text */}
+              {/* Footer */}
               <div className="w-full text-center py-1 text-[11px] text-gray-500 z-10">
                 69 Shades of Play • Sensual Couple's Intimacy Game
               </div>
@@ -1227,9 +1327,9 @@
           );
         }
 
-        // Comprehensive Game Setup Screen (Starter, Session Pace & Take Control)
+        // Game Setup Screen
         function GameSetupScreen({ onStartGame, onResumeSaved, savedGameData, theme, soundEnabled }) {
-          const [selectedPartner, setSelectedPartner] = useState(null); // 'male' | 'female'
+          const [selectedPartner, setSelectedPartner] = useState(null);
           const [isSpinning, setIsSpinning] = useState(false);
           const [spinHighlight, setSpinHighlight] = useState(null);
           const [selectedPace, setSelectedPace] = useState(10);
@@ -1281,7 +1381,6 @@
                   borderColor: theme.border
                 }}
               >
-                {/* Resume Saved Game Banner if Available */}
                 {savedGameData && (
                   <div className="mb-4 p-3 rounded-2xl bg-amber-950/40 border border-amber-500/40 flex items-center justify-between text-left">
                     <div>
@@ -1301,7 +1400,6 @@
                   </div>
                 )}
 
-                {/* Section Header */}
                 <div className="mb-4">
                   <span
                     className="text-xs uppercase tracking-widest font-bold px-3 py-0.5 rounded-full border mb-2 inline-block"
@@ -1314,7 +1412,6 @@
                   </h2>
                 </div>
 
-                {/* Step 1: Who Starts First */}
                 <div className="mb-5 text-left">
                   <p className="text-xs font-bold uppercase tracking-wider text-gray-300 mb-2.5 flex items-center justify-between">
                     <span>1. Who Starts First?</span>
@@ -1326,7 +1423,6 @@
                   </p>
 
                   <div className="grid grid-cols-2 gap-3 mb-2.5">
-                    {/* He / Him */}
                     <div
                       onClick={() => handleDirectSelect('male')}
                       className={`partner-card cursor-pointer p-3.5 rounded-2xl border text-center transition-all ${
@@ -1340,7 +1436,6 @@
                       <p className="text-[11px] text-indigo-300">King's Lead ♂️</p>
                     </div>
 
-                    {/* She / Her */}
                     <div
                       onClick={() => handleDirectSelect('female')}
                       className={`partner-card cursor-pointer p-3.5 rounded-2xl border text-center transition-all ${
@@ -1355,7 +1450,6 @@
                     </div>
                   </div>
 
-                  {/* Fate Spin Button */}
                   <button
                     onClick={handleSpinFate}
                     disabled={isSpinning}
@@ -1367,7 +1461,6 @@
                   </button>
                 </div>
 
-                {/* Step 2: How Much Time Do You Have for Each Other? */}
                 <div className="mb-5 text-left">
                   <p className="text-xs font-bold uppercase tracking-wider text-gray-300 mb-2">
                     2. Time for Each Other (Pace)
@@ -1390,7 +1483,6 @@
                   </div>
                 </div>
 
-                {/* Step 3: Take Control (Choose Starting Section) */}
                 <div className="mb-5 text-left border-t border-white/10 pt-3.5">
                   <div className="flex items-center justify-between mb-2">
                     <button
@@ -1431,7 +1523,6 @@
                   )}
                 </div>
 
-                {/* Start Game Action */}
                 <button
                   onClick={handleBegin}
                   disabled={!selectedPartner || isSpinning}
@@ -1454,7 +1545,7 @@
           );
         }
 
-        // Active Playing Screen
+        // Active Playing Screen with Embedded PDF Viewer
         function PlayingScreen({
           currentCard,
           currentSection,
@@ -1466,6 +1557,8 @@
           timeRemaining,
           currentTurn,
           isCardFlipped,
+          resolvedPdfPage,
+          isPdfLoading,
           onFlipCard,
           onSwitchTurn,
           onSkip,
@@ -1474,8 +1567,8 @@
           formatTime,
           theme
         }) {
-          const circumference = 2 * Math.PI * 45;
-          const strokeDashoffset = circumference - (timeRemaining / (currentCard.timer || 180)) * circumference;
+          const [showPdfView, setShowPdfView] = useState(false);
+          const circumference = 2 * Math.PI * 40;
           
           const heatLevels = {
             1: { label: 'Mild & Sweet', emoji: '🌸' },
@@ -1493,8 +1586,8 @@
           const progressPercent = Math.min(100, Math.round((completedInSection / tasksPerSection) * 100));
 
           return (
-            <div className="w-full max-w-md mx-auto flex flex-col items-center gap-4">
-              {/* Header Bar: Escalation Section + Interactive Turn Switch + Task Progress */}
+            <div className="w-full max-w-md mx-auto flex flex-col items-center gap-3.5">
+              {/* Header Bar */}
               <div className="w-full">
                 <div className="flex justify-between items-center mb-2">
                   <span
@@ -1504,7 +1597,6 @@
                     Level {currentSection}: {SECTION_META[currentSection]?.name}
                   </span>
 
-                  {/* Switch Turn Button */}
                   <button
                     onClick={onSwitchTurn}
                     title="Click to toggle active partner turn"
@@ -1519,7 +1611,6 @@
                   </span>
                 </div>
 
-                {/* Progress Bar */}
                 <div className="w-full h-1.5 bg-black/50 rounded-full overflow-hidden border border-white/10">
                   <div
                     className="h-full transition-all duration-300 rounded-full"
@@ -1531,11 +1622,11 @@
                 </div>
               </div>
 
-              {/* 3D Flip Card Container - Locked Absolute Inset */}
+              {/* 3D Flip Card Container */}
               <div className={`card-flip-container ${cardAnimation ? (cardAnimation === 'skip' ? 'swipe-left' : 'swipe-right') : ''}`}>
                 <div className={`card-flip-inner ${isCardFlipped ? 'is-flipped' : ''}`}>
                   
-                  {/* CARD BACK (Facedown - Tap to Reveal) */}
+                  {/* CARD BACK */}
                   <div
                     onClick={onFlipCard}
                     className="card-face card-face-back border"
@@ -1544,7 +1635,6 @@
                       borderColor: theme.border
                     }}
                   >
-                    {/* Card Back Top Badge */}
                     <div className="flex items-center justify-between z-10">
                       <span className="text-xs tracking-wider uppercase font-bold text-gray-300">
                         {SECTION_META[currentSection]?.emoji}
@@ -1554,7 +1644,6 @@
                       </span>
                     </div>
 
-                    {/* Card Back Center Emblem */}
                     <div className="my-auto text-center z-10 flex flex-col items-center">
                       <div
                         className="w-24 h-24 rounded-full border flex items-center justify-center mb-3.5 pulse-hint shadow-xl"
@@ -1589,22 +1678,20 @@
                       </div>
                     </div>
 
-                    {/* Card Back Bottom Info */}
                     <div className="text-center text-xs text-gray-400 z-10">
                       <p>Turn: <strong style={{ color: theme.badgeText }}>{partnerBadge.action}</strong></p>
                       <p className="text-[11px] text-gray-500 mt-0.5">Click anywhere to flip</p>
                     </div>
                   </div>
 
-                  {/* CARD FRONT (Revealed Task Details) */}
+                  {/* CARD FRONT */}
                   <div
-                    className="card-face card-face-front border"
+                    className="card-face card-face-front border overflow-y-auto"
                     style={{
                       background: theme.cardFrontBg,
                       borderColor: theme.border
                     }}
                   >
-                    {/* Top Row: Category + Spicy Heat Meter */}
                     <div>
                       <div className="flex items-center justify-between mb-2">
                         <span
@@ -1620,13 +1707,11 @@
                         </div>
                       </div>
 
-                      {/* Gender Identify + Partner Action Tag Row */}
                       <div className="flex items-center justify-between mb-2">
                         <span className={`text-[11px] px-2.5 py-0.5 rounded-full font-bold border ${partnerBadge.bg} ${partnerBadge.border} ${partnerBadge.text}`}>
                           {partnerBadge.action}
                         </span>
 
-                        {/* Identify badge – show only for male/female specific cards */}
                         {currentCard.identify && currentCard.identify !== 'both' && (
                           <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold border ${
                             currentCard.identify === 'male'
@@ -1638,28 +1723,55 @@
                         )}
                       </div>
 
-                      {/* Card Title */}
-                      <h2 className="serif-font text-2xl font-bold text-white mb-2.5 leading-snug">
+                      <h2 className="serif-font text-2xl font-bold text-white mb-2 leading-snug">
                         {currentCard.title}
                       </h2>
 
-                      {/* Card Description */}
-                      <p className="text-gray-300 text-xs sm:text-sm leading-relaxed max-h-36 overflow-y-auto pr-1">
+                      <p className="text-gray-300 text-xs sm:text-sm leading-relaxed max-h-28 overflow-y-auto pr-1 mb-2">
                         {currentCard.description}
                       </p>
+
+                      {/* PDF Book Resolution Badge / Inline PDF Reader */}
+                      {(resolvedPdfPage || isPdfLoading) && (
+                        <div className="my-2 border-t border-b border-white/10 py-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[11px] text-amber-300 font-medium flex items-center gap-1">
+                              📖 {isPdfLoading ? 'Resolving PDF Chapter...' : `Matched Book Page: #${resolvedPdfPage}`}
+                            </span>
+                            {resolvedPdfPage && (
+                              <button
+                                onClick={() => setShowPdfView(!showPdfView)}
+                                className="px-2.5 py-0.5 rounded-full bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-[10px] font-bold transition-all"
+                              >
+                                {showPdfView ? 'Hide Book PDF' : 'Read PDF Chapter 📄'}
+                              </button>
+                            )}
+                          </div>
+
+                          {showPdfView && resolvedPdfPage && (
+                            <div className="mt-2 rounded-xl overflow-hidden border border-white/15 bg-black/60 slide-up">
+                              <iframe
+                                src={`book.pdf#page=${resolvedPdfPage}`}
+                                className="w-full h-48 border-0"
+                                title="Book PDF Viewer"
+                              ></iframe>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
 
                     {/* Timer Section */}
-                    <div className="mt-2 flex flex-col items-center justify-center">
+                    <div className="mt-1 flex flex-col items-center justify-center">
                       {!timerActive ? (
                         <div className="text-center">
-                          <p className="text-gray-400 text-[11px] uppercase tracking-wider mb-1">Recommended Duration</p>
-                          <p className="text-3xl font-bold mb-2 tracking-tight" style={{ color: theme.primary }}>
-                            {formatTime(currentCard.timer)}
+                          <p className="text-gray-400 text-[10px] uppercase tracking-wider mb-0.5">Recommended Duration</p>
+                          <p className="text-2xl font-bold mb-1.5 tracking-tight" style={{ color: theme.primary }}>
+                            {formatTime(currentCard.timer || 180)}
                           </p>
                           <button
                             onClick={onStartTimer}
-                            className="text-white px-6 py-2 rounded-full font-bold text-xs uppercase tracking-wider hover:scale-105 transition-all cursor-pointer shadow-md"
+                            className="text-white px-5 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider hover:scale-105 transition-all cursor-pointer shadow-md"
                             style={{
                               background: `linear-gradient(135deg, ${theme.primary} 0%, ${theme.primaryDark} 100%)`,
                               boxShadow: `0 6px 20px ${theme.glow}`
@@ -1670,21 +1782,21 @@
                         </div>
                       ) : (
                         <div className="text-center">
-                          <svg className="progress-ring w-24 h-24 mx-auto" width="100" height="100">
+                          <svg className="progress-ring w-20 h-20 mx-auto" width="80" height="80">
                             <circle
                               className="progress-ring-circle"
                               strokeWidth="4"
-                              r="40"
-                              cx="50"
-                              cy="50"
-                              style={{ strokeDasharray: 2 * Math.PI * 40, strokeDashoffset: (2 * Math.PI * 40) - (timeRemaining / (currentCard.timer || 180)) * (2 * Math.PI * 40) }}
+                              r="35"
+                              cx="40"
+                              cy="40"
+                              style={{ strokeDasharray: 2 * Math.PI * 35, strokeDashoffset: (2 * Math.PI * 35) - (timeRemaining / (currentCard.timer || 180)) * (2 * Math.PI * 35) }}
                             />
                             <text
-                              x="50"
-                              y="50"
+                              x="40"
+                              y="40"
                               textAnchor="middle"
                               dy="0.3em"
-                              className="text-lg font-bold"
+                              className="text-base font-bold"
                               fill={theme.primary}
                             >
                               {formatTime(timeRemaining)}
@@ -1698,37 +1810,25 @@
                 </div>
               </div>
 
-              {/* Action Buttons with Explicit Text Labels */}
+              {/* Action Buttons */}
               <div className="flex flex-col items-center gap-2">
                 <div className="flex gap-8 justify-center items-end">
-                  {/* Skip / Reroll Button */}
                   <div className="action-btn-item" onClick={isCardFlipped ? onSkip : onFlipCard}>
-                    <button
-                      className="neon-ring-btn"
-                      title={isCardFlipped ? "Skip / Reroll Task" : "Reveal Card First"}
-                    >
+                    <button className="neon-ring-btn" title={isCardFlipped ? "Skip / Reroll Task" : "Reveal Card First"}>
                       🎲
                     </button>
                     <span className="action-btn-label">Reroll</span>
                   </div>
 
-                  {/* Complete Button (Primary) */}
                   <div className="action-btn-item" onClick={isCardFlipped ? onComplete : onFlipCard}>
-                    <button
-                      className="neon-ring-btn primary"
-                      title={isCardFlipped ? "Task Complete! (Switch Turns)" : "Reveal Card First"}
-                    >
+                    <button className="neon-ring-btn primary" title={isCardFlipped ? "Task Complete! (Switch Turns)" : "Reveal Card First"}>
                       🔥
                     </button>
                     <span className="action-btn-label font-bold" style={{ color: theme.badgeText }}>Complete</span>
                   </div>
 
-                  {/* Switch Turn Button */}
                   <div className="action-btn-item" onClick={onSwitchTurn}>
-                    <button
-                      className="neon-ring-btn"
-                      title="Switch active partner turn"
-                    >
+                    <button className="neon-ring-btn" title="Switch active partner turn">
                       ⇄
                     </button>
                     <span className="action-btn-label">Swap Turn</span>
@@ -1742,7 +1842,6 @@
                 </p>
               </div>
 
-              {/* Total Completed Stats */}
               <div className="text-center text-gray-400 text-xs font-semibold">
                 <span>🏆 Total Journey: </span>
                 <strong style={{ color: theme.badgeText }}>{totalCompleted} tasks completed</strong>
@@ -1854,7 +1953,6 @@
 
         // Love Journey Timeline Modal
         function LoveJourneyModal({ journeyHistory, totalCompleted, onClose, theme }) {
-          // Group completed tasks by section
           const grouped = journeyHistory.reduce((acc, item) => {
             const sec = item.section || 1;
             if (!acc[sec]) acc[sec] = [];
@@ -1865,7 +1963,6 @@
           return (
             <div className="modal-overlay" onClick={onClose}>
               <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-                {/* Modal Header */}
                 <div className="p-4 border-b border-white/10 flex items-center justify-between bg-black/40">
                   <div>
                     <h3 className="serif-font text-lg font-bold text-white flex items-center gap-2">
@@ -1883,7 +1980,6 @@
                   </button>
                 </div>
 
-                {/* Timeline Scrollable Content */}
                 <div className="p-5 timeline-scroll flex-1">
                   {journeyHistory.length === 0 ? (
                     <div className="text-center py-10">
@@ -1900,7 +1996,6 @@
                         const secItems = grouped[secKey];
                         return (
                           <div key={secNum} className="mb-6">
-                            {/* Section Milestone Header */}
                             <div
                               className="px-3 py-1.5 rounded-xl border mb-3 flex items-center justify-between"
                               style={{ background: theme.badgeBg, borderColor: theme.border }}
@@ -1913,7 +2008,6 @@
                               </span>
                             </div>
 
-                            {/* Timeline Items */}
                             <div className="ml-1">
                               {secItems.map((item, idx) => (
                                 <div key={idx} className="timeline-item">
@@ -1950,7 +2044,6 @@
                   )}
                 </div>
 
-                {/* Modal Footer */}
                 <div className="p-3 border-t border-white/10 bg-black/40 text-center">
                   <button
                     onClick={onClose}

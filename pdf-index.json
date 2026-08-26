@@ -1,0 +1,2564 @@
+{
+  "source": "book.pdf",
+  "index_pages": [
+    3,
+    13
+  ],
+  "chapters": [
+    {
+      "chapter": 1,
+      "name": "TRIBAL RHYTHM",
+      "label": "Chapter 1 - TRIBAL RHYTHM",
+      "page": 16,
+      "index_page": 3
+    },
+    {
+      "chapter": 2,
+      "name": "THE CHARIOT",
+      "label": "Chapter 2 - THE CHARIOT",
+      "page": 18,
+      "index_page": 3
+    },
+    {
+      "chapter": 3,
+      "name": "CLIMB THE HILL",
+      "label": "Chapter 3 - CLIMB THE HILL",
+      "page": 20,
+      "index_page": 3
+    },
+    {
+      "chapter": 4,
+      "name": "THE EDGE",
+      "label": "Chapter 4 - THE EDGE",
+      "page": 22,
+      "index_page": 3
+    },
+    {
+      "chapter": 5,
+      "name": "PEEK-A-BOO",
+      "label": "Chapter 5 - PEEK-A-BOO",
+      "page": 24,
+      "index_page": 3
+    },
+    {
+      "chapter": 6,
+      "name": "HAPPY TRAILS",
+      "label": "Chapter 6 - HAPPY TRAILS",
+      "page": 26,
+      "index_page": 3
+    },
+    {
+      "chapter": 7,
+      "name": "SPREAD EAGLE",
+      "label": "Chapter 7 - SPREAD EAGLE",
+      "page": 28,
+      "index_page": 3
+    },
+    {
+      "chapter": 8,
+      "name": "THE CIRCUS",
+      "label": "Chapter 8 - THE CIRCUS",
+      "page": 30,
+      "index_page": 3
+    },
+    {
+      "chapter": 9,
+      "name": "RAPUNZEL",
+      "label": "Chapter 9 - RAPUNZEL",
+      "page": 32,
+      "index_page": 3
+    },
+    {
+      "chapter": 10,
+      "name": "CAT’S CRADLE",
+      "label": "Chapter 10 - CAT’S CRADLE",
+      "page": 33,
+      "index_page": 3
+    },
+    {
+      "chapter": 11,
+      "name": "THE HANDSTAND",
+      "label": "Chapter 11 - THE HANDSTAND",
+      "page": 35,
+      "index_page": 3
+    },
+    {
+      "chapter": 12,
+      "name": "THE WATCHER",
+      "label": "Chapter 12 - THE WATCHER",
+      "page": 37,
+      "index_page": 3
+    },
+    {
+      "chapter": 13,
+      "name": "BACK SHOW",
+      "label": "Chapter 13 - BACK SHOW",
+      "page": 39,
+      "index_page": 3
+    },
+    {
+      "chapter": 14,
+      "name": "LANGUID LEGS",
+      "label": "Chapter 14 - LANGUID LEGS",
+      "page": 41,
+      "index_page": 3
+    },
+    {
+      "chapter": 15,
+      "name": "CROUCHING TIGER",
+      "label": "Chapter 15 - CROUCHING TIGER",
+      "page": 43,
+      "index_page": 3
+    },
+    {
+      "chapter": 16,
+      "name": "ELECTRIC SLIDE",
+      "label": "Chapter 16 - ELECTRIC SLIDE",
+      "page": 45,
+      "index_page": 3
+    },
+    {
+      "chapter": 17,
+      "name": "TWIST AND SHOUT",
+      "label": "Chapter 17 - TWIST AND SHOUT",
+      "page": 46,
+      "index_page": 3
+    },
+    {
+      "chapter": 18,
+      "name": "SEESAW",
+      "label": "Chapter 18 - SEESAW",
+      "page": 48,
+      "index_page": 3
+    },
+    {
+      "chapter": 19,
+      "name": "FREESTYLE",
+      "label": "Chapter 19 - FREESTYLE",
+      "page": 50,
+      "index_page": 3
+    },
+    {
+      "chapter": 20,
+      "name": "LADIES FIRST",
+      "label": "Chapter 20 - LADIES FIRST",
+      "page": 52,
+      "index_page": 3
+    },
+    {
+      "chapter": 21,
+      "name": "ROLLOVER",
+      "label": "Chapter 21 - ROLLOVER",
+      "page": 54,
+      "index_page": 3
+    },
+    {
+      "chapter": 22,
+      "name": "THE DIRTY TURTLE",
+      "label": "Chapter 22 - THE DIRTY TURTLE",
+      "page": 56,
+      "index_page": 3
+    },
+    {
+      "chapter": 23,
+      "name": "THE CATAPULT",
+      "label": "Chapter 23 - THE CATAPULT",
+      "page": 58,
+      "index_page": 3
+    },
+    {
+      "chapter": 24,
+      "name": "LAP DANCE",
+      "label": "Chapter 24 - LAP DANCE",
+      "page": 60,
+      "index_page": 3
+    },
+    {
+      "chapter": 25,
+      "name": "THE CLASSIC",
+      "label": "Chapter 25 - THE CLASSIC",
+      "page": 62,
+      "index_page": 3
+    },
+    {
+      "chapter": 26,
+      "name": "THE BIG DIP",
+      "label": "Chapter 26 - THE BIG DIP",
+      "page": 64,
+      "index_page": 3
+    },
+    {
+      "chapter": 27,
+      "name": "POWER PUMPER",
+      "label": "Chapter 27 - POWER PUMPER",
+      "page": 66,
+      "index_page": 3
+    },
+    {
+      "chapter": 28,
+      "name": "GET A LEG OVER",
+      "label": "Chapter 28 - GET A LEG OVER",
+      "page": 68,
+      "index_page": 3
+    },
+    {
+      "chapter": 29,
+      "name": "THE LOVE SEAT",
+      "label": "Chapter 29 - THE LOVE SEAT",
+      "page": 70,
+      "index_page": 4
+    },
+    {
+      "chapter": 30,
+      "name": "SHOULDER HOLSTER",
+      "label": "Chapter 30 - SHOULDER HOLSTER",
+      "page": 72,
+      "index_page": 4
+    },
+    {
+      "chapter": 31,
+      "name": "BALL GAME",
+      "label": "Chapter 31 - BALL GAME",
+      "page": 74,
+      "index_page": 4
+    },
+    {
+      "chapter": 32,
+      "name": "CLOSE ENCOUNTERS",
+      "label": "Chapter 32 - CLOSE ENCOUNTERS",
+      "page": 76,
+      "index_page": 4
+    },
+    {
+      "chapter": 33,
+      "name": "THE LOTUS",
+      "label": "Chapter 33 - THE LOTUS",
+      "page": 78,
+      "index_page": 4
+    },
+    {
+      "chapter": 34,
+      "name": "CUP",
+      "label": "Chapter 34 - CUP",
+      "page": 80,
+      "index_page": 4
+    },
+    {
+      "chapter": 35,
+      "name": "THE DEEP",
+      "label": "Chapter 35 - THE DEEP",
+      "page": 82,
+      "index_page": 4
+    },
+    {
+      "chapter": 36,
+      "name": "SWAN DIVE",
+      "label": "Chapter 36 - SWAN DIVE",
+      "page": 84,
+      "index_page": 4
+    },
+    {
+      "chapter": 37,
+      "name": "THE CRAZY CAT",
+      "label": "Chapter 37 - THE CRAZY CAT",
+      "page": 86,
+      "index_page": 4
+    },
+    {
+      "chapter": 38,
+      "name": "QUEEN FOR THE DAY",
+      "label": "Chapter 38 - QUEEN FOR THE DAY",
+      "page": 88,
+      "index_page": 4
+    },
+    {
+      "chapter": 39,
+      "name": "DAISY CHAIN",
+      "label": "Chapter 39 - DAISY CHAIN",
+      "page": 90,
+      "index_page": 4
+    },
+    {
+      "chapter": 40,
+      "name": "THE WAVE",
+      "label": "Chapter 40 - THE WAVE",
+      "page": 92,
+      "index_page": 4
+    },
+    {
+      "chapter": 41,
+      "name": "SURPRISE PARTY",
+      "label": "Chapter 41 - SURPRISE PARTY",
+      "page": 94,
+      "index_page": 4
+    },
+    {
+      "chapter": 42,
+      "name": "THE HAMMOCK",
+      "label": "Chapter 42 - THE HAMMOCK",
+      "page": 96,
+      "index_page": 4
+    },
+    {
+      "chapter": 43,
+      "name": "BLASTOFF",
+      "label": "Chapter 43 - BLASTOFF",
+      "page": 98,
+      "index_page": 4
+    },
+    {
+      "chapter": 44,
+      "name": "SEXY SAMBA",
+      "label": "Chapter 44 - SEXY SAMBA",
+      "page": 100,
+      "index_page": 4
+    },
+    {
+      "chapter": 45,
+      "name": "JUNGLE FEVER",
+      "label": "Chapter 45 - JUNGLE FEVER",
+      "page": 102,
+      "index_page": 4
+    },
+    {
+      "chapter": 46,
+      "name": "WILD CHERRY",
+      "label": "Chapter 46 - WILD CHERRY",
+      "page": 104,
+      "index_page": 4
+    },
+    {
+      "chapter": 47,
+      "name": "THE CARNAL CHAISE",
+      "label": "Chapter 47 - THE CARNAL CHAISE",
+      "page": 106,
+      "index_page": 4
+    },
+    {
+      "chapter": 48,
+      "name": "SITTING BULL",
+      "label": "Chapter 48 - SITTING BULL",
+      "page": 108,
+      "index_page": 4
+    },
+    {
+      "chapter": 49,
+      "name": "THE COW",
+      "label": "Chapter 49 - THE COW",
+      "page": 110,
+      "index_page": 4
+    },
+    {
+      "chapter": 50,
+      "name": "THE CROUCH SLOUCH",
+      "label": "Chapter 50 - THE CROUCH SLOUCH",
+      "page": 112,
+      "index_page": 4
+    },
+    {
+      "chapter": 51,
+      "name": "THE FLAT BACK",
+      "label": "Chapter 51 - THE FLAT BACK",
+      "page": 114,
+      "index_page": 4
+    },
+    {
+      "chapter": 52,
+      "name": "INSIDE OUT",
+      "label": "Chapter 52 - INSIDE OUT",
+      "page": 116,
+      "index_page": 4
+    },
+    {
+      "chapter": 53,
+      "name": "TWO-TIMING",
+      "label": "Chapter 53 - TWO-TIMING",
+      "page": 118,
+      "index_page": 4
+    },
+    {
+      "chapter": 54,
+      "name": "AMAZING ARC",
+      "label": "Chapter 54 - AMAZING ARC",
+      "page": 120,
+      "index_page": 4
+    },
+    {
+      "chapter": 55,
+      "name": "THE EMBRACE",
+      "label": "Chapter 55 - THE EMBRACE",
+      "page": 122,
+      "index_page": 4
+    },
+    {
+      "chapter": 56,
+      "name": "TEASPOONS",
+      "label": "Chapter 56 - TEASPOONS",
+      "page": 124,
+      "index_page": 4
+    },
+    {
+      "chapter": 57,
+      "name": "TAKEOUT",
+      "label": "Chapter 57 - TAKEOUT",
+      "page": 126,
+      "index_page": 4
+    },
+    {
+      "chapter": 58,
+      "name": "BODY BOOSTER",
+      "label": "Chapter 58 - BODY BOOSTER",
+      "page": 128,
+      "index_page": 4
+    },
+    {
+      "chapter": 59,
+      "name": "SLEEPING BEAUTY",
+      "label": "Chapter 59 - SLEEPING BEAUTY",
+      "page": 130,
+      "index_page": 4
+    },
+    {
+      "chapter": 60,
+      "name": "WINDMILL",
+      "label": "Chapter 60 - WINDMILL",
+      "page": 132,
+      "index_page": 4
+    },
+    {
+      "chapter": 61,
+      "name": "TETHERBALL",
+      "label": "Chapter 61 - TETHERBALL",
+      "page": 134,
+      "index_page": 4
+    },
+    {
+      "chapter": 62,
+      "name": "THE BUMP-AND-GRIND",
+      "label": "Chapter 62 - THE BUMP-AND-GRIND",
+      "page": 136,
+      "index_page": 4
+    },
+    {
+      "chapter": 63,
+      "name": "BOOTY-GRAB",
+      "label": "Chapter 63 - BOOTY-GRAB",
+      "page": 138,
+      "index_page": 4
+    },
+    {
+      "chapter": 64,
+      "name": "DOUBLE HEAD RUSH",
+      "label": "Chapter 64 - DOUBLE HEAD RUSH",
+      "page": 140,
+      "index_page": 4
+    },
+    {
+      "chapter": 65,
+      "name": "OTTOMAN EMPEROR",
+      "label": "Chapter 65 - OTTOMAN EMPEROR",
+      "page": 142,
+      "index_page": 5
+    },
+    {
+      "chapter": 66,
+      "name": "SITTING PRETTY",
+      "label": "Chapter 66 - SITTING PRETTY",
+      "page": 144,
+      "index_page": 5
+    },
+    {
+      "chapter": 67,
+      "name": "GIRL ON TOP",
+      "label": "Chapter 67 - GIRL ON TOP",
+      "page": 146,
+      "index_page": 5
+    },
+    {
+      "chapter": 68,
+      "name": "GOOD VIBRATIONS",
+      "label": "Chapter 68 - GOOD VIBRATIONS",
+      "page": 148,
+      "index_page": 5
+    },
+    {
+      "chapter": 69,
+      "name": "CIRCLE OF LOVE",
+      "label": "Chapter 69 - CIRCLE OF LOVE",
+      "page": 150,
+      "index_page": 5
+    },
+    {
+      "chapter": 70,
+      "name": "FILL HER UP",
+      "label": "Chapter 70 - FILL HER UP",
+      "page": 152,
+      "index_page": 5
+    },
+    {
+      "chapter": 71,
+      "name": "THE RIG",
+      "label": "Chapter 71 - THE RIG",
+      "page": 154,
+      "index_page": 5
+    },
+    {
+      "chapter": 72,
+      "name": "OVERTIME",
+      "label": "Chapter 72 - OVERTIME",
+      "page": 156,
+      "index_page": 5
+    },
+    {
+      "chapter": 73,
+      "name": "SNEAKY GIRL",
+      "label": "Chapter 73 - SNEAKY GIRL",
+      "page": 158,
+      "index_page": 5
+    },
+    {
+      "chapter": 74,
+      "name": "HEELS OVER HEAD",
+      "label": "Chapter 74 - HEELS OVER HEAD",
+      "page": 160,
+      "index_page": 5
+    },
+    {
+      "chapter": 75,
+      "name": "THE FIRM",
+      "label": "Chapter 75 - THE FIRM",
+      "page": 162,
+      "index_page": 5
+    },
+    {
+      "chapter": 76,
+      "name": "WRESTLING MANIA",
+      "label": "Chapter 76 - WRESTLING MANIA",
+      "page": 164,
+      "index_page": 5
+    },
+    {
+      "chapter": 77,
+      "name": "CAT",
+      "label": "Chapter 77 - CAT",
+      "page": 166,
+      "index_page": 5
+    },
+    {
+      "chapter": 78,
+      "name": "CURLS",
+      "label": "Chapter 78 - CURLS",
+      "page": 168,
+      "index_page": 5
+    },
+    {
+      "chapter": 79,
+      "name": "THREE LEGGED RACE",
+      "label": "Chapter 79 - THREE LEGGED RACE",
+      "page": 170,
+      "index_page": 5
+    },
+    {
+      "chapter": 80,
+      "name": "SLIP-SLIDING AWAY",
+      "label": "Chapter 80 - SLIP-SLIDING AWAY",
+      "page": 172,
+      "index_page": 5
+    },
+    {
+      "chapter": 81,
+      "name": "FIT TO BE TIED",
+      "label": "Chapter 81 - FIT TO BE TIED",
+      "page": 174,
+      "index_page": 5
+    },
+    {
+      "chapter": 82,
+      "name": "THE ANGLER",
+      "label": "Chapter 82 - THE ANGLER",
+      "page": 176,
+      "index_page": 5
+    },
+    {
+      "chapter": 83,
+      "name": "ARC DE TRIOMPHE",
+      "label": "Chapter 83 - ARC DE TRIOMPHE",
+      "page": 178,
+      "index_page": 5
+    },
+    {
+      "chapter": 84,
+      "name": "JELLYFISH",
+      "label": "Chapter 84 - JELLYFISH",
+      "page": 180,
+      "index_page": 5
+    },
+    {
+      "chapter": 85,
+      "name": "CROSSED SPOONS",
+      "label": "Chapter 85 - CROSSED SPOONS",
+      "page": 182,
+      "index_page": 5
+    },
+    {
+      "chapter": 86,
+      "name": "REVERSE SPOON",
+      "label": "Chapter 86 - REVERSE SPOON",
+      "page": 184,
+      "index_page": 5
+    },
+    {
+      "chapter": 87,
+      "name": "LIFT AND SERVE",
+      "label": "Chapter 87 - LIFT AND SERVE",
+      "page": 186,
+      "index_page": 5
+    },
+    {
+      "chapter": 88,
+      "name": "HOLDOVER",
+      "label": "Chapter 88 - HOLDOVER",
+      "page": 188,
+      "index_page": 5
+    },
+    {
+      "chapter": 89,
+      "name": "LEG LIFT",
+      "label": "Chapter 89 - LEG LIFT",
+      "page": 190,
+      "index_page": 5
+    },
+    {
+      "chapter": 90,
+      "name": "BACK UP",
+      "label": "Chapter 90 - BACK UP",
+      "page": 192,
+      "index_page": 5
+    },
+    {
+      "chapter": 91,
+      "name": "MARATHON",
+      "label": "Chapter 91 - MARATHON",
+      "page": 194,
+      "index_page": 5
+    },
+    {
+      "chapter": 92,
+      "name": "FLYING X",
+      "label": "Chapter 92 - FLYING X",
+      "page": 196,
+      "index_page": 5
+    },
+    {
+      "chapter": 93,
+      "name": "POGO",
+      "label": "Chapter 93 - POGO",
+      "page": 198,
+      "index_page": 5
+    },
+    {
+      "chapter": 94,
+      "name": "BUCKIN’ BRONCO",
+      "label": "Chapter 94 - BUCKIN’ BRONCO",
+      "page": 200,
+      "index_page": 5
+    },
+    {
+      "chapter": 95,
+      "name": "GOLD STANDARD",
+      "label": "Chapter 95 - GOLD STANDARD",
+      "page": 202,
+      "index_page": 5
+    },
+    {
+      "chapter": 96,
+      "name": "TWIN PEAKS",
+      "label": "Chapter 96 - TWIN PEAKS",
+      "page": 204,
+      "index_page": 5
+    },
+    {
+      "chapter": 97,
+      "name": "FULL THROTTLE",
+      "label": "Chapter 97 - FULL THROTTLE",
+      "page": 206,
+      "index_page": 5
+    },
+    {
+      "chapter": 98,
+      "name": "PIRATE’S BOOTY",
+      "label": "Chapter 98 - PIRATE’S BOOTY",
+      "page": 208,
+      "index_page": 5
+    },
+    {
+      "chapter": 99,
+      "name": "VICE GRIPS",
+      "label": "Chapter 99 - VICE GRIPS",
+      "page": 210,
+      "index_page": 5
+    },
+    {
+      "chapter": 100,
+      "name": "TWISTED EIGHTS",
+      "label": "Chapter 100 - TWISTED EIGHTS",
+      "page": 212,
+      "index_page": 5
+    },
+    {
+      "chapter": 101,
+      "name": "FETCH",
+      "label": "Chapter 101 - FETCH",
+      "page": 214,
+      "index_page": 6
+    },
+    {
+      "chapter": 102,
+      "name": "THE TEASE",
+      "label": "Chapter 102 - THE TEASE",
+      "page": 216,
+      "index_page": 6
+    },
+    {
+      "chapter": 103,
+      "name": "TRAMPOLINE",
+      "label": "Chapter 103 - TRAMPOLINE",
+      "page": 218,
+      "index_page": 6
+    },
+    {
+      "chapter": 104,
+      "name": "CROSS OVER",
+      "label": "Chapter 104 - CROSS OVER",
+      "page": 220,
+      "index_page": 6
+    },
+    {
+      "chapter": 105,
+      "name": "NAUGHTY RUMP",
+      "label": "Chapter 105 - NAUGHTY RUMP",
+      "page": 222,
+      "index_page": 6
+    },
+    {
+      "chapter": 106,
+      "name": "BOYS ON THE SIDE",
+      "label": "Chapter 106 - BOYS ON THE SIDE",
+      "page": 224,
+      "index_page": 6
+    },
+    {
+      "chapter": 107,
+      "name": "OUT OF SIGHT",
+      "label": "Chapter 107 - OUT OF SIGHT",
+      "page": 226,
+      "index_page": 6
+    },
+    {
+      "chapter": 108,
+      "name": "STRETCH IT OUT",
+      "label": "Chapter 108 - STRETCH IT OUT",
+      "page": 228,
+      "index_page": 6
+    },
+    {
+      "chapter": 109,
+      "name": "SUN SALUTATION",
+      "label": "Chapter 109 - SUN SALUTATION",
+      "page": 230,
+      "index_page": 6
+    },
+    {
+      "chapter": 110,
+      "name": "ON THE EDGE",
+      "label": "Chapter 110 - ON THE EDGE",
+      "page": 232,
+      "index_page": 6
+    },
+    {
+      "chapter": 111,
+      "name": "THE ANCHOR",
+      "label": "Chapter 111 - THE ANCHOR",
+      "page": 234,
+      "index_page": 6
+    },
+    {
+      "chapter": 112,
+      "name": "THE VIRGIN",
+      "label": "Chapter 112 - THE VIRGIN",
+      "page": 236,
+      "index_page": 6
+    },
+    {
+      "chapter": 113,
+      "name": "TOUCH AND GO",
+      "label": "Chapter 113 - TOUCH AND GO",
+      "page": 238,
+      "index_page": 6
+    },
+    {
+      "chapter": 114,
+      "name": "SLIPPERY SLOPE",
+      "label": "Chapter 114 - SLIPPERY SLOPE",
+      "page": 240,
+      "index_page": 6
+    },
+    {
+      "chapter": 115,
+      "name": "WHO’S YOUR DADDY?",
+      "label": "Chapter 115 - WHO’S YOUR DADDY?",
+      "page": 242,
+      "index_page": 6
+    },
+    {
+      "chapter": 116,
+      "name": "THE RAMP",
+      "label": "Chapter 116 - THE RAMP",
+      "page": 244,
+      "index_page": 6
+    },
+    {
+      "chapter": 117,
+      "name": "THE SLIDE",
+      "label": "Chapter 117 - THE SLIDE",
+      "page": 246,
+      "index_page": 6
+    },
+    {
+      "chapter": 118,
+      "name": "THE STARFISH",
+      "label": "Chapter 118 - THE STARFISH",
+      "page": 248,
+      "index_page": 6
+    },
+    {
+      "chapter": 119,
+      "name": "TAKEOFF",
+      "label": "Chapter 119 - TAKEOFF",
+      "page": 250,
+      "index_page": 6
+    },
+    {
+      "chapter": 120,
+      "name": "THE PLIÉ",
+      "label": "Chapter 120 - THE PLIÉ",
+      "page": 252,
+      "index_page": 6
+    },
+    {
+      "chapter": 121,
+      "name": "DOGGY REDUX",
+      "label": "Chapter 121 - DOGGY REDUX",
+      "page": 254,
+      "index_page": 6
+    },
+    {
+      "chapter": 122,
+      "name": "ON A DEADLINE",
+      "label": "Chapter 122 - ON A DEADLINE",
+      "page": 256,
+      "index_page": 6
+    },
+    {
+      "chapter": 123,
+      "name": "HIGHWAY TO HEAVEN",
+      "label": "Chapter 123 - HIGHWAY TO HEAVEN",
+      "page": 258,
+      "index_page": 6
+    },
+    {
+      "chapter": 124,
+      "name": "HOLD THE PICKLE",
+      "label": "Chapter 124 - HOLD THE PICKLE",
+      "page": 260,
+      "index_page": 6
+    },
+    {
+      "chapter": 125,
+      "name": "STARTING BLOCKS",
+      "label": "Chapter 125 - STARTING BLOCKS",
+      "page": 262,
+      "index_page": 6
+    },
+    {
+      "chapter": 126,
+      "name": "DESK SET",
+      "label": "Chapter 126 - DESK SET",
+      "page": 264,
+      "index_page": 6
+    },
+    {
+      "chapter": 127,
+      "name": "THE “Z”",
+      "label": "Chapter 127 - THE “Z”",
+      "page": 266,
+      "index_page": 6
+    },
+    {
+      "chapter": 128,
+      "name": "HEAD RUSH",
+      "label": "Chapter 128 - HEAD RUSH",
+      "page": 268,
+      "index_page": 6
+    },
+    {
+      "chapter": 129,
+      "name": "TIGHTEN THE SCREWS.",
+      "label": "Chapter 129 - TIGHTEN THE SCREWS.",
+      "page": 270,
+      "index_page": 6
+    },
+    {
+      "chapter": 130,
+      "name": "DOUBLE DARE",
+      "label": "Chapter 130 - DOUBLE DARE",
+      "page": 272,
+      "index_page": 6
+    },
+    {
+      "chapter": 131,
+      "name": "REAR END",
+      "label": "Chapter 131 - REAR END",
+      "page": 274,
+      "index_page": 6
+    },
+    {
+      "chapter": 132,
+      "name": "SPORTS FAN",
+      "label": "Chapter 132 - SPORTS FAN",
+      "page": 276,
+      "index_page": 6
+    },
+    {
+      "chapter": 133,
+      "name": "BELLY FLOP",
+      "label": "Chapter 133 - BELLY FLOP",
+      "page": 278,
+      "index_page": 6
+    },
+    {
+      "chapter": 134,
+      "name": "SKIN FLICK",
+      "label": "Chapter 134 - SKIN FLICK",
+      "page": 280,
+      "index_page": 6
+    },
+    {
+      "chapter": 135,
+      "name": "THE CHIN REST",
+      "label": "Chapter 135 - THE CHIN REST",
+      "page": 282,
+      "index_page": 6
+    },
+    {
+      "chapter": 136,
+      "name": "TANTRIC CUDDLE",
+      "label": "Chapter 136 - TANTRIC CUDDLE",
+      "page": 284,
+      "index_page": 6
+    },
+    {
+      "chapter": 137,
+      "name": "ON A TILT",
+      "label": "Chapter 137 - ON A TILT",
+      "page": 286,
+      "index_page": 7
+    },
+    {
+      "chapter": 138,
+      "name": "TWO-4-ONE",
+      "label": "Chapter 138 - TWO-4-ONE",
+      "page": 288,
+      "index_page": 7
+    },
+    {
+      "chapter": 139,
+      "name": "PRIME TIME",
+      "label": "Chapter 139 - PRIME TIME",
+      "page": 290,
+      "index_page": 7
+    },
+    {
+      "chapter": 140,
+      "name": "THE REV-IT-UP RUB",
+      "label": "Chapter 140 - THE REV-IT-UP RUB",
+      "page": 292,
+      "index_page": 7
+    },
+    {
+      "chapter": 141,
+      "name": "SPORK",
+      "label": "Chapter 141 - SPORK",
+      "page": 294,
+      "index_page": 7
+    },
+    {
+      "chapter": 142,
+      "name": "THE BUTTERFLY",
+      "label": "Chapter 142 - THE BUTTERFLY",
+      "page": 296,
+      "index_page": 7
+    },
+    {
+      "chapter": 143,
+      "name": "HIDEAWAY",
+      "label": "Chapter 143 - HIDEAWAY",
+      "page": 298,
+      "index_page": 7
+    },
+    {
+      "chapter": 144,
+      "name": "MUTUAL OF O",
+      "label": "Chapter 144 - MUTUAL OF O",
+      "page": 300,
+      "index_page": 7
+    },
+    {
+      "chapter": 145,
+      "name": "THE SURPRISE",
+      "label": "Chapter 145 - THE SURPRISE",
+      "page": 302,
+      "index_page": 7
+    },
+    {
+      "chapter": 146,
+      "name": "SWORD SWALLOWER",
+      "label": "Chapter 146 - SWORD SWALLOWER",
+      "page": 304,
+      "index_page": 7
+    },
+    {
+      "chapter": 147,
+      "name": "THE CRAWL",
+      "label": "Chapter 147 - THE CRAWL",
+      "page": 306,
+      "index_page": 7
+    },
+    {
+      "chapter": 148,
+      "name": "THE WOW WOW",
+      "label": "Chapter 148 - THE WOW WOW",
+      "page": 308,
+      "index_page": 7
+    },
+    {
+      "chapter": 149,
+      "name": "THE TUMBLER",
+      "label": "Chapter 149 - THE TUMBLER",
+      "page": 310,
+      "index_page": 7
+    },
+    {
+      "chapter": 150,
+      "name": "THREE-FINGER THRILL",
+      "label": "Chapter 150 - THREE-FINGER THRILL",
+      "page": 312,
+      "index_page": 7
+    },
+    {
+      "chapter": 151,
+      "name": "THE MIXER",
+      "label": "Chapter 151 - THE MIXER",
+      "page": 314,
+      "index_page": 7
+    },
+    {
+      "chapter": 152,
+      "name": "YAWNING POSITION",
+      "label": "Chapter 152 - YAWNING POSITION",
+      "page": 316,
+      "index_page": 7
+    },
+    {
+      "chapter": 153,
+      "name": "THE STALLION",
+      "label": "Chapter 153 - THE STALLION",
+      "page": 318,
+      "index_page": 7
+    },
+    {
+      "chapter": 154,
+      "name": "SIDEWINDER",
+      "label": "Chapter 154 - SIDEWINDER",
+      "page": 320,
+      "index_page": 7
+    },
+    {
+      "chapter": 155,
+      "name": "SEATED WHEELBARROW",
+      "label": "Chapter 155 - SEATED WHEELBARROW",
+      "page": 322,
+      "index_page": 7
+    },
+    {
+      "chapter": 156,
+      "name": "THE HOOK",
+      "label": "Chapter 156 - THE HOOK",
+      "page": 324,
+      "index_page": 7
+    },
+    {
+      "chapter": 157,
+      "name": "STAND AND CARRY",
+      "label": "Chapter 157 - STAND AND CARRY",
+      "page": 326,
+      "index_page": 7
+    },
+    {
+      "chapter": 158,
+      "name": "THE CAMEL",
+      "label": "Chapter 158 - THE CAMEL",
+      "page": 328,
+      "index_page": 7
+    },
+    {
+      "chapter": 159,
+      "name": "HOT SPOT",
+      "label": "Chapter 159 - HOT SPOT",
+      "page": 330,
+      "index_page": 7
+    },
+    {
+      "chapter": 160,
+      "name": "TANTALIZING TEE-OFF",
+      "label": "Chapter 160 - TANTALIZING TEE-OFF",
+      "page": 332,
+      "index_page": 7
+    },
+    {
+      "chapter": 161,
+      "name": "BABE IN TOYLAND",
+      "label": "Chapter 161 - BABE IN TOYLAND",
+      "page": 334,
+      "index_page": 7
+    },
+    {
+      "chapter": 162,
+      "name": "LAZY 69",
+      "label": "Chapter 162 - LAZY 69",
+      "page": 336,
+      "index_page": 7
+    },
+    {
+      "chapter": 163,
+      "name": "THE TIPSTER",
+      "label": "Chapter 163 - THE TIPSTER",
+      "page": 338,
+      "index_page": 7
+    },
+    {
+      "chapter": 164,
+      "name": "THE CARNAL CLENCH",
+      "label": "Chapter 164 - THE CARNAL CLENCH",
+      "page": 340,
+      "index_page": 7
+    },
+    {
+      "chapter": 165,
+      "name": "HEISMAN",
+      "label": "Chapter 165 - HEISMAN",
+      "page": 342,
+      "index_page": 7
+    },
+    {
+      "chapter": 166,
+      "name": "ON A ROLL",
+      "label": "Chapter 166 - ON A ROLL",
+      "page": 344,
+      "index_page": 7
+    },
+    {
+      "chapter": 167,
+      "name": "THE SEXY BALLERINA",
+      "label": "Chapter 167 - THE SEXY BALLERINA",
+      "page": 346,
+      "index_page": 7
+    },
+    {
+      "chapter": 168,
+      "name": "SHIMMY SHIMMY SHAKE",
+      "label": "Chapter 168 - SHIMMY SHIMMY SHAKE",
+      "page": 348,
+      "index_page": 7
+    },
+    {
+      "chapter": 169,
+      "name": "THE KNEELER",
+      "label": "Chapter 169 - THE KNEELER",
+      "page": 350,
+      "index_page": 7
+    },
+    {
+      "chapter": 170,
+      "name": "BLIND SPOT",
+      "label": "Chapter 170 - BLIND SPOT",
+      "page": 352,
+      "index_page": 7
+    },
+    {
+      "chapter": 171,
+      "name": "THE CHEERLEADER",
+      "label": "Chapter 171 - THE CHEERLEADER",
+      "page": 354,
+      "index_page": 7
+    },
+    {
+      "chapter": 172,
+      "name": "CHAIR TRYST",
+      "label": "Chapter 172 - CHAIR TRYST",
+      "page": 356,
+      "index_page": 7
+    },
+    {
+      "chapter": 173,
+      "name": "THE “V”",
+      "label": "Chapter 173 - THE “V”",
+      "page": 358,
+      "index_page": 8
+    },
+    {
+      "chapter": 174,
+      "name": "THE SCORPION",
+      "label": "Chapter 174 - THE SCORPION",
+      "page": 360,
+      "index_page": 8
+    },
+    {
+      "chapter": 175,
+      "name": "ELECTRIFIED",
+      "label": "Chapter 175 - ELECTRIFIED",
+      "page": 362,
+      "index_page": 8
+    },
+    {
+      "chapter": 176,
+      "name": "DRAWBRIDGE",
+      "label": "Chapter 176 - DRAWBRIDGE",
+      "page": 364,
+      "index_page": 8
+    },
+    {
+      "chapter": 177,
+      "name": "THE W.C.",
+      "label": "Chapter 177 - THE W.C.",
+      "page": 366,
+      "index_page": 8
+    },
+    {
+      "chapter": 178,
+      "name": "DRIVER’S SEAT",
+      "label": "Chapter 178 - DRIVER’S SEAT",
+      "page": 368,
+      "index_page": 8
+    },
+    {
+      "chapter": 179,
+      "name": "TAKE ME TO YOUR LEADER",
+      "label": "Chapter 179 - TAKE ME TO YOUR LEADER",
+      "page": 370,
+      "index_page": 8
+    },
+    {
+      "chapter": 180,
+      "name": "THE PRAYING MANTIS",
+      "label": "Chapter 180 - THE PRAYING MANTIS",
+      "page": 372,
+      "index_page": 8
+    },
+    {
+      "chapter": 181,
+      "name": "POSSESSION",
+      "label": "Chapter 181 - POSSESSION",
+      "page": 374,
+      "index_page": 8
+    },
+    {
+      "chapter": 182,
+      "name": "LITTLE BIRDY",
+      "label": "Chapter 182 - LITTLE BIRDY",
+      "page": 376,
+      "index_page": 8
+    },
+    {
+      "chapter": 183,
+      "name": "STEP UP",
+      "label": "Chapter 183 - STEP UP",
+      "page": 378,
+      "index_page": 8
+    },
+    {
+      "chapter": 184,
+      "name": "HOKEY POKEY",
+      "label": "Chapter 184 - HOKEY POKEY",
+      "page": 380,
+      "index_page": 8
+    },
+    {
+      "chapter": 185,
+      "name": "THE HIP LIFT",
+      "label": "Chapter 185 - THE HIP LIFT",
+      "page": 382,
+      "index_page": 8
+    },
+    {
+      "chapter": 186,
+      "name": "CHAIR LIFT",
+      "label": "Chapter 186 - CHAIR LIFT",
+      "page": 384,
+      "index_page": 8
+    },
+    {
+      "chapter": 187,
+      "name": "BACK DIVE",
+      "label": "Chapter 187 - BACK DIVE",
+      "page": 386,
+      "index_page": 8
+    },
+    {
+      "chapter": 188,
+      "name": "STRADDLE UP",
+      "label": "Chapter 188 - STRADDLE UP",
+      "page": 388,
+      "index_page": 8
+    },
+    {
+      "chapter": 189,
+      "name": "FANTASY ISLAND",
+      "label": "Chapter 189 - FANTASY ISLAND",
+      "page": 390,
+      "index_page": 8
+    },
+    {
+      "chapter": 190,
+      "name": "TABLE TOP",
+      "label": "Chapter 190 - TABLE TOP",
+      "page": 392,
+      "index_page": 8
+    },
+    {
+      "chapter": 191,
+      "name": "HER MISSIONARY",
+      "label": "Chapter 191 - HER MISSIONARY",
+      "page": 394,
+      "index_page": 8
+    },
+    {
+      "chapter": 192,
+      "name": "COURTING CHAIRS",
+      "label": "Chapter 192 - COURTING CHAIRS",
+      "page": 396,
+      "index_page": 8
+    },
+    {
+      "chapter": 193,
+      "name": "WHEELBARROW",
+      "label": "Chapter 193 - WHEELBARROW",
+      "page": 398,
+      "index_page": 8
+    },
+    {
+      "chapter": 194,
+      "name": "THE BODYGUARD",
+      "label": "Chapter 194 - THE BODYGUARD",
+      "page": 400,
+      "index_page": 8
+    },
+    {
+      "chapter": 195,
+      "name": "69 MASSAGE",
+      "label": "Chapter 195 - 69 MASSAGE",
+      "page": 402,
+      "index_page": 8
+    },
+    {
+      "chapter": 196,
+      "name": "FOOTSIE",
+      "label": "Chapter 196 - FOOTSIE",
+      "page": 404,
+      "index_page": 8
+    },
+    {
+      "chapter": 197,
+      "name": "WALK THE WALL",
+      "label": "Chapter 197 - WALK THE WALL",
+      "page": 406,
+      "index_page": 8
+    },
+    {
+      "chapter": 198,
+      "name": "RIDE ’EM, COWBOY",
+      "label": "Chapter 198 - RIDE ’EM, COWBOY",
+      "page": 408,
+      "index_page": 8
+    },
+    {
+      "chapter": 199,
+      "name": "CARNAL CLUTCH",
+      "label": "Chapter 199 - CARNAL CLUTCH",
+      "page": 410,
+      "index_page": 8
+    },
+    {
+      "chapter": 200,
+      "name": "THE BUFFET",
+      "label": "Chapter 200 - THE BUFFET",
+      "page": 412,
+      "index_page": 8
+    },
+    {
+      "chapter": 201,
+      "name": "LONDON BRIDGER",
+      "label": "Chapter 201 - LONDON BRIDGER",
+      "page": 414,
+      "index_page": 8
+    },
+    {
+      "chapter": 202,
+      "name": "ROCK, PAPER, SCISSORS",
+      "label": "Chapter 202 - ROCK, PAPER, SCISSORS",
+      "page": 416,
+      "index_page": 8
+    },
+    {
+      "chapter": 203,
+      "name": "RAUNCHY WRESTLER",
+      "label": "Chapter 203 - RAUNCHY WRESTLER",
+      "page": 418,
+      "index_page": 8
+    },
+    {
+      "chapter": 204,
+      "name": "MIDAIR DOCK",
+      "label": "Chapter 204 - MIDAIR DOCK",
+      "page": 420,
+      "index_page": 8
+    },
+    {
+      "chapter": 205,
+      "name": "AIRPLANE",
+      "label": "Chapter 205 - AIRPLANE",
+      "page": 422,
+      "index_page": 8
+    },
+    {
+      "chapter": 206,
+      "name": "REVERSE THE RIDE",
+      "label": "Chapter 206 - REVERSE THE RIDE",
+      "page": 424,
+      "index_page": 8
+    },
+    {
+      "chapter": 207,
+      "name": "SIT-IN",
+      "label": "Chapter 207 - SIT-IN",
+      "page": 426,
+      "index_page": 8
+    },
+    {
+      "chapter": 208,
+      "name": "HEAVEN KNOWS",
+      "label": "Chapter 208 - HEAVEN KNOWS",
+      "page": 428,
+      "index_page": 8
+    },
+    {
+      "chapter": 209,
+      "name": "TWO-HEADED SNAKE",
+      "label": "Chapter 209 - TWO-HEADED SNAKE",
+      "page": 430,
+      "index_page": 9
+    },
+    {
+      "chapter": 210,
+      "name": "LADIES’ CHOICE",
+      "label": "Chapter 210 - LADIES’ CHOICE",
+      "page": 432,
+      "index_page": 9
+    },
+    {
+      "chapter": 211,
+      "name": "THE LUSTY LIE-IN",
+      "label": "Chapter 211 - THE LUSTY LIE-IN",
+      "page": 434,
+      "index_page": 9
+    },
+    {
+      "chapter": 212,
+      "name": "EASY RIDER",
+      "label": "Chapter 212 - EASY RIDER",
+      "page": 436,
+      "index_page": 9
+    },
+    {
+      "chapter": 213,
+      "name": "HULA GIRL",
+      "label": "Chapter 213 - HULA GIRL",
+      "page": 438,
+      "index_page": 9
+    },
+    {
+      "chapter": 214,
+      "name": "SINKHOLE",
+      "label": "Chapter 214 - SINKHOLE",
+      "page": 440,
+      "index_page": 9
+    },
+    {
+      "chapter": 215,
+      "name": "TWIZZLER",
+      "label": "Chapter 215 - TWIZZLER",
+      "page": 442,
+      "index_page": 9
+    },
+    {
+      "chapter": 216,
+      "name": "GOOOOOOAL!",
+      "label": "Chapter 216 - GOOOOOOAL!",
+      "page": 444,
+      "index_page": 9
+    },
+    {
+      "chapter": 217,
+      "name": "SPIDER",
+      "label": "Chapter 217 - SPIDER",
+      "page": 446,
+      "index_page": 9
+    },
+    {
+      "chapter": 218,
+      "name": "THE CUDDLER",
+      "label": "Chapter 218 - THE CUDDLER",
+      "page": 448,
+      "index_page": 9
+    },
+    {
+      "chapter": 219,
+      "name": "SWEET SEAT",
+      "label": "Chapter 219 - SWEET SEAT",
+      "page": 450,
+      "index_page": 9
+    },
+    {
+      "chapter": 220,
+      "name": "THE CORKSCREW",
+      "label": "Chapter 220 - THE CORKSCREW",
+      "page": 452,
+      "index_page": 9
+    },
+    {
+      "chapter": 221,
+      "name": "AVALANCHE",
+      "label": "Chapter 221 - AVALANCHE",
+      "page": 453,
+      "index_page": 9
+    },
+    {
+      "chapter": 222,
+      "name": "BIG WHEELBARROW",
+      "label": "Chapter 222 - BIG WHEELBARROW",
+      "page": 455,
+      "index_page": 9
+    },
+    {
+      "chapter": 223,
+      "name": "THE “Y”",
+      "label": "Chapter 223 - THE “Y”",
+      "page": 457,
+      "index_page": 9
+    },
+    {
+      "chapter": 224,
+      "name": "THE FLOWER BUD",
+      "label": "Chapter 224 - THE FLOWER BUD",
+      "page": 459,
+      "index_page": 9
+    },
+    {
+      "chapter": 225,
+      "name": "THE CLIMBER",
+      "label": "Chapter 225 - THE CLIMBER",
+      "page": 461,
+      "index_page": 9
+    },
+    {
+      "chapter": 226,
+      "name": "DOWNWARD DOG",
+      "label": "Chapter 226 - DOWNWARD DOG",
+      "page": 463,
+      "index_page": 9
+    },
+    {
+      "chapter": 227,
+      "name": "COOL HAND LUKE",
+      "label": "Chapter 227 - COOL HAND LUKE",
+      "page": 465,
+      "index_page": 9
+    },
+    {
+      "chapter": 228,
+      "name": "ROW, ROW, ROW",
+      "label": "Chapter 228 - ROW, ROW, ROW",
+      "page": 467,
+      "index_page": 9
+    },
+    {
+      "chapter": 229,
+      "name": "THE TIPPING POINT",
+      "label": "Chapter 229 - THE TIPPING POINT",
+      "page": 469,
+      "index_page": 9
+    },
+    {
+      "chapter": 230,
+      "name": "GET INTO THE GROOVE",
+      "label": "Chapter 230 - GET INTO THE GROOVE",
+      "page": 471,
+      "index_page": 9
+    },
+    {
+      "chapter": 231,
+      "name": "ALL HANDS ON DECK",
+      "label": "Chapter 231 - ALL HANDS ON DECK",
+      "page": 473,
+      "index_page": 9
+    },
+    {
+      "chapter": 232,
+      "name": "FRONT AND REAR",
+      "label": "Chapter 232 - FRONT AND REAR",
+      "page": 475,
+      "index_page": 9
+    },
+    {
+      "chapter": 233,
+      "name": "THE SWING",
+      "label": "Chapter 233 - THE SWING",
+      "page": 477,
+      "index_page": 9
+    },
+    {
+      "chapter": 234,
+      "name": "TANGO",
+      "label": "Chapter 234 - TANGO",
+      "page": 479,
+      "index_page": 9
+    },
+    {
+      "chapter": 235,
+      "name": "REVERSE JOCKEY",
+      "label": "Chapter 235 - REVERSE JOCKEY",
+      "page": 481,
+      "index_page": 9
+    },
+    {
+      "chapter": 236,
+      "name": "PASSION PRESS",
+      "label": "Chapter 236 - PASSION PRESS",
+      "page": 483,
+      "index_page": 9
+    },
+    {
+      "chapter": 237,
+      "name": "DOING LAPS",
+      "label": "Chapter 237 - DOING LAPS",
+      "page": 485,
+      "index_page": 9
+    },
+    {
+      "chapter": 238,
+      "name": "LUST LESSON",
+      "label": "Chapter 238 - LUST LESSON",
+      "page": 487,
+      "index_page": 9
+    },
+    {
+      "chapter": 239,
+      "name": "SCREW",
+      "label": "Chapter 239 - SCREW",
+      "page": 489,
+      "index_page": 9
+    },
+    {
+      "chapter": 240,
+      "name": "OVER THE EDGE",
+      "label": "Chapter 240 - OVER THE EDGE",
+      "page": 491,
+      "index_page": 9
+    },
+    {
+      "chapter": 241,
+      "name": "THE DOWN LOW",
+      "label": "Chapter 241 - THE DOWN LOW",
+      "page": 493,
+      "index_page": 9
+    },
+    {
+      "chapter": 242,
+      "name": "BLIND LOVE",
+      "label": "Chapter 242 - BLIND LOVE",
+      "page": 495,
+      "index_page": 9
+    },
+    {
+      "chapter": 243,
+      "name": "BOOT IT UP",
+      "label": "Chapter 243 - BOOT IT UP",
+      "page": 497,
+      "index_page": 9
+    },
+    {
+      "chapter": 244,
+      "name": "THE LIFT",
+      "label": "Chapter 244 - THE LIFT",
+      "page": 499,
+      "index_page": 9
+    },
+    {
+      "chapter": 245,
+      "name": "SIDE SLIDE",
+      "label": "Chapter 245 - SIDE SLIDE",
+      "page": 501,
+      "index_page": 10
+    },
+    {
+      "chapter": 246,
+      "name": "PICNIC TABLE",
+      "label": "Chapter 246 - PICNIC TABLE",
+      "page": 503,
+      "index_page": 10
+    },
+    {
+      "chapter": 247,
+      "name": "LAUNCH PAD",
+      "label": "Chapter 247 - LAUNCH PAD",
+      "page": 505,
+      "index_page": 10
+    },
+    {
+      "chapter": 248,
+      "name": "MUSICAL CHAIR",
+      "label": "Chapter 248 - MUSICAL CHAIR",
+      "page": 507,
+      "index_page": 10
+    },
+    {
+      "chapter": 249,
+      "name": "PUSH-UP",
+      "label": "Chapter 249 - PUSH-UP",
+      "page": 509,
+      "index_page": 10
+    },
+    {
+      "chapter": 250,
+      "name": "HANDRAIL",
+      "label": "Chapter 250 - HANDRAIL",
+      "page": 511,
+      "index_page": 10
+    },
+    {
+      "chapter": 251,
+      "name": "HOT CROSS BUNS",
+      "label": "Chapter 251 - HOT CROSS BUNS",
+      "page": 513,
+      "index_page": 10
+    },
+    {
+      "chapter": 252,
+      "name": "ON THE SPOT",
+      "label": "Chapter 252 - ON THE SPOT",
+      "page": 515,
+      "index_page": 10
+    },
+    {
+      "chapter": 253,
+      "name": "HORNY HORSEY",
+      "label": "Chapter 253 - HORNY HORSEY",
+      "page": 517,
+      "index_page": 10
+    },
+    {
+      "chapter": 254,
+      "name": "OFFICE PLAY",
+      "label": "Chapter 254 - OFFICE PLAY",
+      "page": 519,
+      "index_page": 10
+    },
+    {
+      "chapter": 255,
+      "name": "TRIPLE X",
+      "label": "Chapter 255 - TRIPLE X",
+      "page": 521,
+      "index_page": 10
+    },
+    {
+      "chapter": 256,
+      "name": "HIGHER PLANE",
+      "label": "Chapter 256 - HIGHER PLANE",
+      "page": 523,
+      "index_page": 10
+    },
+    {
+      "chapter": 257,
+      "name": "THE PIN-UP",
+      "label": "Chapter 257 - THE PIN-UP",
+      "page": 525,
+      "index_page": 10
+    },
+    {
+      "chapter": 258,
+      "name": "THE DUMBBELL",
+      "label": "Chapter 258 - THE DUMBBELL",
+      "page": 527,
+      "index_page": 10
+    },
+    {
+      "chapter": 259,
+      "name": "THE MAGIC SLIDE",
+      "label": "Chapter 259 - THE MAGIC SLIDE",
+      "page": 529,
+      "index_page": 10
+    },
+    {
+      "chapter": 260,
+      "name": "LOVE BUG",
+      "label": "Chapter 260 - LOVE BUG",
+      "page": 531,
+      "index_page": 10
+    },
+    {
+      "chapter": 261,
+      "name": "BUTTERFLY IN FLIGHT",
+      "label": "Chapter 261 - BUTTERFLY IN FLIGHT",
+      "page": 533,
+      "index_page": 10
+    },
+    {
+      "chapter": 262,
+      "name": "HOT SEAT",
+      "label": "Chapter 262 - HOT SEAT",
+      "page": 535,
+      "index_page": 10
+    },
+    {
+      "chapter": 263,
+      "name": "NUTCRACKER",
+      "label": "Chapter 263 - NUTCRACKER",
+      "page": 537,
+      "index_page": 10
+    },
+    {
+      "chapter": 264,
+      "name": "ON THE LEVEL",
+      "label": "Chapter 264 - ON THE LEVEL",
+      "page": 539,
+      "index_page": 10
+    },
+    {
+      "chapter": 265,
+      "name": "THE ARCH",
+      "label": "Chapter 265 - THE ARCH",
+      "page": 541,
+      "index_page": 10
+    },
+    {
+      "chapter": 266,
+      "name": "FULL EXPOSURE",
+      "label": "Chapter 266 - FULL EXPOSURE",
+      "page": 543,
+      "index_page": 10
+    },
+    {
+      "chapter": 267,
+      "name": "SLOWLY DOES IT",
+      "label": "Chapter 267 - SLOWLY DOES IT",
+      "page": 545,
+      "index_page": 10
+    },
+    {
+      "chapter": 268,
+      "name": "THE THRONE",
+      "label": "Chapter 268 - THE THRONE",
+      "page": 547,
+      "index_page": 10
+    },
+    {
+      "chapter": 269,
+      "name": "SCREW IT TIGHT",
+      "label": "Chapter 269 - SCREW IT TIGHT",
+      "page": 549,
+      "index_page": 10
+    },
+    {
+      "chapter": 270,
+      "name": "REVERSE COWGIRL",
+      "label": "Chapter 270 - REVERSE COWGIRL",
+      "page": 551,
+      "index_page": 10
+    },
+    {
+      "chapter": 271,
+      "name": "THE BALL BOB",
+      "label": "Chapter 271 - THE BALL BOB",
+      "page": 553,
+      "index_page": 10
+    },
+    {
+      "chapter": 272,
+      "name": "THE ULTIMATE HUG",
+      "label": "Chapter 272 - THE ULTIMATE HUG",
+      "page": 555,
+      "index_page": 10
+    },
+    {
+      "chapter": 273,
+      "name": "THE GO AROUND",
+      "label": "Chapter 273 - THE GO AROUND",
+      "page": 557,
+      "index_page": 10
+    },
+    {
+      "chapter": 274,
+      "name": "69",
+      "label": "Chapter 274 - 69",
+      "page": 559,
+      "index_page": 10
+    },
+    {
+      "chapter": 275,
+      "name": "THE SHOULDER HOLDER",
+      "label": "Chapter 275 - THE SHOULDER HOLDER",
+      "page": 561,
+      "index_page": 10
+    },
+    {
+      "chapter": 276,
+      "name": "SCISSORS",
+      "label": "Chapter 276 - SCISSORS",
+      "page": 563,
+      "index_page": 10
+    },
+    {
+      "chapter": 277,
+      "name": "MILE-HIGH CLUB",
+      "label": "Chapter 277 - MILE-HIGH CLUB",
+      "page": 565,
+      "index_page": 10
+    },
+    {
+      "chapter": 278,
+      "name": "LADY IN WAITING",
+      "label": "Chapter 278 - LADY IN WAITING",
+      "page": 567,
+      "index_page": 10
+    },
+    {
+      "chapter": 279,
+      "name": "THE FUSION",
+      "label": "Chapter 279 - THE FUSION",
+      "page": 569,
+      "index_page": 10
+    },
+    {
+      "chapter": 280,
+      "name": "THE SPOTTER",
+      "label": "Chapter 280 - THE SPOTTER",
+      "page": 571,
+      "index_page": 10
+    },
+    {
+      "chapter": 281,
+      "name": "HOT-SPOT SUPERHERO",
+      "label": "Chapter 281 - HOT-SPOT SUPERHERO",
+      "page": 573,
+      "index_page": 11
+    },
+    {
+      "chapter": 282,
+      "name": "WATERSLIDE",
+      "label": "Chapter 282 - WATERSLIDE",
+      "page": 575,
+      "index_page": 11
+    },
+    {
+      "chapter": 283,
+      "name": "THE TENDER EMBRACE",
+      "label": "Chapter 283 - THE TENDER EMBRACE",
+      "page": 577,
+      "index_page": 11
+    },
+    {
+      "chapter": 284,
+      "name": "CANINE CANOODLING",
+      "label": "Chapter 284 - CANINE CANOODLING",
+      "page": 579,
+      "index_page": 11
+    },
+    {
+      "chapter": 285,
+      "name": "UP-CLOSE AND HOT",
+      "label": "Chapter 285 - UP-CLOSE AND HOT",
+      "page": 581,
+      "index_page": 11
+    },
+    {
+      "chapter": 286,
+      "name": "NECKING",
+      "label": "Chapter 286 - NECKING",
+      "page": 583,
+      "index_page": 11
+    },
+    {
+      "chapter": 287,
+      "name": "DEEP DIVE",
+      "label": "Chapter 287 - DEEP DIVE",
+      "page": 585,
+      "index_page": 11
+    },
+    {
+      "chapter": 288,
+      "name": "PLAY BALL!",
+      "label": "Chapter 288 - PLAY BALL!",
+      "page": 587,
+      "index_page": 11
+    },
+    {
+      "chapter": 289,
+      "name": "BOTTOM JIG",
+      "label": "Chapter 289 - BOTTOM JIG",
+      "page": 589,
+      "index_page": 11
+    },
+    {
+      "chapter": 290,
+      "name": "LUSTY LAUNCH",
+      "label": "Chapter 290 - LUSTY LAUNCH",
+      "page": 591,
+      "index_page": 11
+    },
+    {
+      "chapter": 291,
+      "name": "ELEVATED JACKHAMMER",
+      "label": "Chapter 291 - ELEVATED JACKHAMMER",
+      "page": 593,
+      "index_page": 11
+    },
+    {
+      "chapter": 292,
+      "name": "BELLY DANCER",
+      "label": "Chapter 292 - BELLY DANCER",
+      "page": 595,
+      "index_page": 11
+    },
+    {
+      "chapter": 293,
+      "name": "BEACH BONFIRE",
+      "label": "Chapter 293 - BEACH BONFIRE",
+      "page": 597,
+      "index_page": 11
+    },
+    {
+      "chapter": 294,
+      "name": "WORLD’S STRONGEST",
+      "label": "Chapter 294 - WORLD’S STRONGEST",
+      "page": 599,
+      "index_page": 11
+    },
+    {
+      "chapter": 295,
+      "name": "G-FORCE",
+      "label": "Chapter 295 - G-FORCE",
+      "page": 601,
+      "index_page": 11
+    },
+    {
+      "chapter": 296,
+      "name": "RISE AND SHINE",
+      "label": "Chapter 296 - RISE AND SHINE",
+      "page": 603,
+      "index_page": 11
+    },
+    {
+      "chapter": 297,
+      "name": "LOCK AND LOAD",
+      "label": "Chapter 297 - LOCK AND LOAD",
+      "page": 605,
+      "index_page": 11
+    },
+    {
+      "chapter": 298,
+      "name": "MAN TRAP",
+      "label": "Chapter 298 - MAN TRAP",
+      "page": 607,
+      "index_page": 11
+    },
+    {
+      "chapter": 299,
+      "name": "UP AGAINST THE WALL",
+      "label": "Chapter 299 - UP AGAINST THE WALL",
+      "page": 609,
+      "index_page": 11
+    },
+    {
+      "chapter": 300,
+      "name": "MISSIONARY",
+      "label": "Chapter 300 - MISSIONARY",
+      "page": 611,
+      "index_page": 11
+    },
+    {
+      "chapter": 301,
+      "name": "THE CRANKSHAFT",
+      "label": "Chapter 301 - THE CRANKSHAFT",
+      "page": 613,
+      "index_page": 11
+    },
+    {
+      "chapter": 302,
+      "name": "68 HER",
+      "label": "Chapter 302 - 68 HER",
+      "page": 615,
+      "index_page": 11
+    },
+    {
+      "chapter": 303,
+      "name": "DEEP IMPACT",
+      "label": "Chapter 303 - DEEP IMPACT",
+      "page": 617,
+      "index_page": 11
+    },
+    {
+      "chapter": 304,
+      "name": "LEANING TOWER",
+      "label": "Chapter 304 - LEANING TOWER",
+      "page": 619,
+      "index_page": 11
+    },
+    {
+      "chapter": 305,
+      "name": "69 BACK",
+      "label": "Chapter 305 - 69 BACK",
+      "page": 621,
+      "index_page": 11
+    },
+    {
+      "chapter": 306,
+      "name": "RUB DOWN",
+      "label": "Chapter 306 - RUB DOWN",
+      "page": 623,
+      "index_page": 11
+    },
+    {
+      "chapter": 307,
+      "name": "THE STRADDLE",
+      "label": "Chapter 307 - THE STRADDLE",
+      "page": 625,
+      "index_page": 11
+    },
+    {
+      "chapter": 308,
+      "name": "HANDY 69",
+      "label": "Chapter 308 - HANDY 69",
+      "page": 627,
+      "index_page": 11
+    },
+    {
+      "chapter": 309,
+      "name": "THE SITTING CAT",
+      "label": "Chapter 309 - THE SITTING CAT",
+      "page": 629,
+      "index_page": 11
+    },
+    {
+      "chapter": 310,
+      "name": "HOT AND SPICY",
+      "label": "Chapter 310 - HOT AND SPICY",
+      "page": 631,
+      "index_page": 11
+    },
+    {
+      "chapter": 311,
+      "name": "THE X FACTOR",
+      "label": "Chapter 311 - THE X FACTOR",
+      "page": 633,
+      "index_page": 11
+    },
+    {
+      "chapter": 312,
+      "name": "FIGHTER PLANE",
+      "label": "Chapter 312 - FIGHTER PLANE",
+      "page": 635,
+      "index_page": 11
+    },
+    {
+      "chapter": 313,
+      "name": "BE SEATED AND BESOTTED",
+      "label": "Chapter 313 - BE SEATED AND BESOTTED",
+      "page": 637,
+      "index_page": 11
+    },
+    {
+      "chapter": 314,
+      "name": "THE BICYCLIST",
+      "label": "Chapter 314 - THE BICYCLIST",
+      "page": 639,
+      "index_page": 11
+    },
+    {
+      "chapter": 315,
+      "name": "THE VIBE",
+      "label": "Chapter 315 - THE VIBE",
+      "page": 641,
+      "index_page": 11
+    },
+    {
+      "chapter": 316,
+      "name": "DUET",
+      "label": "Chapter 316 - DUET",
+      "page": 643,
+      "index_page": 11
+    },
+    {
+      "chapter": 317,
+      "name": "ANYTHING GOES",
+      "label": "Chapter 317 - ANYTHING GOES",
+      "page": 645,
+      "index_page": 12
+    },
+    {
+      "chapter": 318,
+      "name": "LOVE PUMP",
+      "label": "Chapter 318 - LOVE PUMP",
+      "page": 647,
+      "index_page": 12
+    },
+    {
+      "chapter": 319,
+      "name": "THE PANORAMA",
+      "label": "Chapter 319 - THE PANORAMA",
+      "page": 649,
+      "index_page": 12
+    },
+    {
+      "chapter": 320,
+      "name": "KISSING THE PINK",
+      "label": "Chapter 320 - KISSING THE PINK",
+      "page": 651,
+      "index_page": 12
+    },
+    {
+      "chapter": 321,
+      "name": "THE ACROBAT",
+      "label": "Chapter 321 - THE ACROBAT",
+      "page": 653,
+      "index_page": 12
+    },
+    {
+      "chapter": 322,
+      "name": "THE BIG BOUNCE",
+      "label": "Chapter 322 - THE BIG BOUNCE",
+      "page": 655,
+      "index_page": 12
+    },
+    {
+      "chapter": 323,
+      "name": "LAY, LADY, LAY",
+      "label": "Chapter 323 - LAY, LADY, LAY",
+      "page": 657,
+      "index_page": 12
+    },
+    {
+      "chapter": 324,
+      "name": "BENT SPOON",
+      "label": "Chapter 324 - BENT SPOON",
+      "page": 659,
+      "index_page": 12
+    },
+    {
+      "chapter": 325,
+      "name": "HAPPY HANDS",
+      "label": "Chapter 325 - HAPPY HANDS",
+      "page": 661,
+      "index_page": 12
+    },
+    {
+      "chapter": 326,
+      "name": "RAISE THE MAST",
+      "label": "Chapter 326 - RAISE THE MAST",
+      "page": 663,
+      "index_page": 12
+    },
+    {
+      "chapter": 327,
+      "name": "UPWARD DOG",
+      "label": "Chapter 327 - UPWARD DOG",
+      "page": 665,
+      "index_page": 12
+    },
+    {
+      "chapter": 328,
+      "name": "THE HEADLOCK",
+      "label": "Chapter 328 - THE HEADLOCK",
+      "page": 667,
+      "index_page": 12
+    },
+    {
+      "chapter": 329,
+      "name": "APHRODITE’S DELIGHT",
+      "label": "Chapter 329 - APHRODITE’S DELIGHT",
+      "page": 669,
+      "index_page": 12
+    },
+    {
+      "chapter": 330,
+      "name": "STAND AND DELIVER",
+      "label": "Chapter 330 - STAND AND DELIVER",
+      "page": 671,
+      "index_page": 12
+    },
+    {
+      "chapter": 331,
+      "name": "DIRTY DOGGY",
+      "label": "Chapter 331 - DIRTY DOGGY",
+      "page": 673,
+      "index_page": 12
+    },
+    {
+      "chapter": 332,
+      "name": "ROLLING WHEELBARROW",
+      "label": "Chapter 332 - ROLLING WHEELBARROW",
+      "page": 675,
+      "index_page": 12
+    },
+    {
+      "chapter": 333,
+      "name": "HIGH IN THE SADDLE",
+      "label": "Chapter 333 - HIGH IN THE SADDLE",
+      "page": 677,
+      "index_page": 12
+    },
+    {
+      "chapter": 334,
+      "name": "HEAD BENDER",
+      "label": "Chapter 334 - HEAD BENDER",
+      "page": 679,
+      "index_page": 12
+    },
+    {
+      "chapter": 335,
+      "name": "FLYING MISSIONARY",
+      "label": "Chapter 335 - FLYING MISSIONARY",
+      "page": 681,
+      "index_page": 12
+    },
+    {
+      "chapter": 336,
+      "name": "FOOT IN MOUTH",
+      "label": "Chapter 336 - FOOT IN MOUTH",
+      "page": 683,
+      "index_page": 12
+    },
+    {
+      "chapter": 337,
+      "name": "LEAN-TO",
+      "label": "Chapter 337 - LEAN-TO",
+      "page": 685,
+      "index_page": 12
+    },
+    {
+      "chapter": 338,
+      "name": "DINING AT THEY",
+      "label": "Chapter 338 - DINING AT THEY",
+      "page": 687,
+      "index_page": 12
+    },
+    {
+      "chapter": 339,
+      "name": "TRICK OR TREAT",
+      "label": "Chapter 339 - TRICK OR TREAT",
+      "page": 689,
+      "index_page": 12
+    },
+    {
+      "chapter": 340,
+      "name": "THE ROCKER",
+      "label": "Chapter 340 - THE ROCKER",
+      "page": 691,
+      "index_page": 12
+    },
+    {
+      "chapter": 341,
+      "name": "THE “X”",
+      "label": "Chapter 341 - THE “X”",
+      "page": 693,
+      "index_page": 12
+    },
+    {
+      "chapter": 342,
+      "name": "EVOLVED DOG",
+      "label": "Chapter 342 - EVOLVED DOG",
+      "page": 695,
+      "index_page": 12
+    },
+    {
+      "chapter": 343,
+      "name": "ROLLER COASTER",
+      "label": "Chapter 343 - ROLLER COASTER",
+      "page": 697,
+      "index_page": 12
+    },
+    {
+      "chapter": 344,
+      "name": "A LITTLE ON THE SIDE",
+      "label": "Chapter 344 - A LITTLE ON THE SIDE",
+      "page": 699,
+      "index_page": 12
+    },
+    {
+      "chapter": 345,
+      "name": "CRUISE CONTROL",
+      "label": "Chapter 345 - CRUISE CONTROL",
+      "page": 701,
+      "index_page": 12
+    },
+    {
+      "chapter": 346,
+      "name": "FLAMINGO",
+      "label": "Chapter 346 - FLAMINGO",
+      "page": 703,
+      "index_page": 12
+    },
+    {
+      "chapter": 347,
+      "name": "MAN OVERBOARD",
+      "label": "Chapter 347 - MAN OVERBOARD",
+      "page": 705,
+      "index_page": 12
+    },
+    {
+      "chapter": 348,
+      "name": "THE SPEED RACER",
+      "label": "Chapter 348 - THE SPEED RACER",
+      "page": 707,
+      "index_page": 12
+    },
+    {
+      "chapter": 349,
+      "name": "DUTCH PRETZEL",
+      "label": "Chapter 349 - DUTCH PRETZEL",
+      "page": 709,
+      "index_page": 12
+    },
+    {
+      "chapter": 350,
+      "name": "MANUAL CONTROL",
+      "label": "Chapter 350 - MANUAL CONTROL",
+      "page": 711,
+      "index_page": 12
+    },
+    {
+      "chapter": 351,
+      "name": "G-SPOT STRINKER",
+      "label": "Chapter 351 - G-SPOT STRINKER",
+      "page": 713,
+      "index_page": 12
+    },
+    {
+      "chapter": 352,
+      "name": "SPOTLIGHT",
+      "label": "Chapter 352 - SPOTLIGHT",
+      "page": 715,
+      "index_page": 12
+    },
+    {
+      "chapter": 353,
+      "name": "BUTTOCK DELIGHT",
+      "label": "Chapter 353 - BUTTOCK DELIGHT",
+      "page": 716,
+      "index_page": 13
+    },
+    {
+      "chapter": 354,
+      "name": "SOUL SIDE",
+      "label": "Chapter 354 - SOUL SIDE",
+      "page": 718,
+      "index_page": 13
+    },
+    {
+      "chapter": 355,
+      "name": "FROM BALL TO WALL",
+      "label": "Chapter 355 - FROM BALL TO WALL",
+      "page": 720,
+      "index_page": 13
+    },
+    {
+      "chapter": 356,
+      "name": "LEG OVER EASY",
+      "label": "Chapter 356 - LEG OVER EASY",
+      "page": 722,
+      "index_page": 13
+    },
+    {
+      "chapter": 357,
+      "name": "BACK BEND",
+      "label": "Chapter 357 - BACK BEND",
+      "page": 724,
+      "index_page": 13
+    },
+    {
+      "chapter": 358,
+      "name": "REVERSE MISSIONARY",
+      "label": "Chapter 358 - REVERSE MISSIONARY",
+      "page": 726,
+      "index_page": 13
+    },
+    {
+      "chapter": 359,
+      "name": "THE BUTTER CHURN",
+      "label": "Chapter 359 - THE BUTTER CHURN",
+      "page": 728,
+      "index_page": 13
+    },
+    {
+      "chapter": 360,
+      "name": "THE DRIVER",
+      "label": "Chapter 360 - THE DRIVER",
+      "page": 730,
+      "index_page": 13
+    },
+    {
+      "chapter": 361,
+      "name": "CANNONBALL",
+      "label": "Chapter 361 - CANNONBALL",
+      "page": 732,
+      "index_page": 13
+    },
+    {
+      "chapter": 362,
+      "name": "POWER BALL",
+      "label": "Chapter 362 - POWER BALL",
+      "page": 734,
+      "index_page": 13
+    },
+    {
+      "chapter": 363,
+      "name": "TILT-A-GIRL",
+      "label": "Chapter 363 - TILT-A-GIRL",
+      "page": 736,
+      "index_page": 13
+    },
+    {
+      "chapter": 364,
+      "name": "TRIPLE WHAMMY",
+      "label": "Chapter 364 - TRIPLE WHAMMY",
+      "page": 738,
+      "index_page": 13
+    },
+    {
+      "chapter": 365,
+      "name": "TOP LOAD",
+      "label": "Chapter 365 - TOP LOAD",
+      "page": 740,
+      "index_page": 13
+    }
+  ]
+}

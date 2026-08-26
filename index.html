@@ -41,12 +41,17 @@
         @keyframes slideInUp {
             from {
                 opacity: 0;
-                transform: translateY(40px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @keyframes cardSwipeLeft {
@@ -86,7 +91,7 @@
 
         @keyframes floatSlow {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-12px) rotate(3deg); }
+            50% { transform: translateY(-10px) rotate(3deg); }
         }
 
         @keyframes floatParticle {
@@ -103,7 +108,11 @@
         }
 
         .slide-up {
-            animation: slideInUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: slideInUp 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
         }
 
         .swipe-left {
@@ -206,7 +215,7 @@
             pointer-events: none;
         }
 
-        /* Glassmorphism Onboarding & Setup Container */
+        /* Glassmorphism Container */
         .onboarding-content {
             backdrop-filter: blur(24px);
             border-radius: 32px;
@@ -214,7 +223,113 @@
             transition: all 0.4s ease;
         }
 
-        /* Neon Ring Buttons (Inspired by Reference UI) */
+        /* Top Bar Floating Controls */
+        .top-controls-bar {
+            width: 100%;
+            max-width: 440px;
+            margin: 0 auto 12px auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 40;
+            position: relative;
+        }
+
+        .control-pill-btn {
+            backdrop-filter: blur(16px);
+            background: rgba(18, 10, 20, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 9999px;
+            padding: 6px 14px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #f3f4f6;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .control-pill-btn:hover {
+            transform: scale(1.04);
+            border-color: var(--theme-primary);
+            box-shadow: 0 8px 25px var(--theme-glow);
+        }
+
+        .journey-count-badge {
+            background: var(--theme-primary);
+            color: #ffffff;
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 9999px;
+            font-weight: 800;
+        }
+
+        /* Compact Theme Dropdown Menu */
+        .theme-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 240px;
+            backdrop-filter: blur(28px);
+            background: rgba(16, 7, 18, 0.96);
+            border: 1px solid var(--theme-border);
+            border-radius: 20px;
+            padding: 10px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 30px var(--theme-glow);
+            z-index: 60;
+            animation: slideInUp 0.25s ease-out;
+        }
+
+        .theme-dropdown-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 12px;
+            font-weight: 600;
+            color: #d1d5db;
+            margin-bottom: 2px;
+        }
+
+        .theme-dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+        }
+
+        .theme-dropdown-item.active {
+            background: var(--theme-badge-bg);
+            color: var(--theme-badge-text);
+            border: 1px solid var(--theme-border);
+        }
+
+        /* Action Buttons with Clear Labels */
+        .action-btn-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .action-btn-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: #9ca3af;
+            transition: color 0.2s ease;
+            user-select: none;
+        }
+
+        .action-btn-item:hover .action-btn-label {
+            color: #ffffff;
+        }
+
         .neon-ring-btn {
             position: relative;
             width: 68px;
@@ -256,34 +371,113 @@
         .neon-ring-btn.primary {
             background: var(--theme-bg);
             border-color: var(--theme-primary);
+            width: 74px;
+            height: 74px;
+            font-size: 30px;
         }
 
-        /* Swatch Bar Styles */
-        .swatch-pill {
-            backdrop-filter: blur(16px);
-            background: rgba(15, 8, 18, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        .neon-ring-btn.primary::after {
+            opacity: 0.75;
         }
 
-        .swatch-btn {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: 2px solid transparent;
+        /* Love Journey Modal Overlay & Timeline */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            animation: fadeIn 0.25s ease-out;
+        }
+
+        .modal-card {
+            background: linear-gradient(145deg, rgba(24, 10, 24, 0.98) 0%, rgba(12, 4, 14, 0.99) 100%);
+            border: 1px solid var(--theme-border);
+            border-radius: 28px;
+            max-width: 480px;
+            width: 100%;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9), 0 0 40px var(--theme-glow);
+            overflow: hidden;
+            animation: slideInUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .timeline-scroll {
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--theme-primary) rgba(0, 0, 0, 0.3);
+        }
+
+        .timeline-scroll::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .timeline-scroll::-webkit-scrollbar-thumb {
+            background-color: var(--theme-primary);
+            border-radius: 10px;
+        }
+
+        .timeline-item {
             position: relative;
+            padding-left: 28px;
+            margin-bottom: 18px;
         }
 
-        .swatch-btn:hover {
-            transform: scale(1.2);
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 14px;
+            bottom: -18px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--theme-primary), rgba(255, 255, 255, 0.1));
         }
 
-        .swatch-btn.active {
-            transform: scale(1.3);
-            border-color: #ffffff;
-            box-shadow: 0 0 12px currentColor, inset 0 0 4px #ffffff;
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 1px;
+            top: 4px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--theme-primary);
+            box-shadow: 0 0 10px var(--theme-primary);
+            border: 2px solid #ffffff;
+        }
+
+        /* Session Pace Options */
+        .pace-option {
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            padding: 8px 12px;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: rgba(0, 0, 0, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .pace-option:hover {
+            transform: translateY(-2px);
+            border-color: var(--theme-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .pace-option.active {
+            border-color: var(--theme-primary);
+            background: var(--theme-badge-bg);
+            box-shadow: 0 0 16px var(--theme-glow);
         }
 
         /* Partner Setup Card */
@@ -323,6 +517,12 @@
                 font-size: 22px;
             }
 
+            .neon-ring-btn.primary {
+                width: 66px;
+                height: 66px;
+                font-size: 26px;
+            }
+
             .card-flip-inner {
                 height: 490px;
             }
@@ -339,7 +539,7 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        // Sensual Mood Themes inspired by Reference UI
+        // Sensual Mood Themes
         const THEMES = {
           crimson: {
             id: 'crimson',
@@ -426,7 +626,6 @@
             const now = ctx.currentTime;
             
             if (type === 'flip') {
-              // Smooth seductive dual-tone chime
               const osc1 = ctx.createOscillator();
               const osc2 = ctx.createOscillator();
               const gain = ctx.createGain();
@@ -446,7 +645,6 @@
               osc1.stop(now + 0.5);
               osc2.stop(now + 0.5);
             } else if (type === 'complete') {
-              // Harmonic celebration chord
               [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
@@ -460,17 +658,32 @@
                 osc.stop(now + 0.65);
               });
             }
-          } catch (e) {
-            // Audio context not allowed or unsupported
-          }
+          } catch (e) {}
         };
 
+        const SECTION_META = {
+          1: { name: 'Love & Romantic', emoji: '🥂 Romance & Whispers 💜' },
+          2: { name: 'Hug & Kisses', emoji: '💋 Kisses & Caresses 🫦' },
+          3: { name: 'Strip & Playful', emoji: '✨ Strip & Tease 👙' },
+          4: { name: 'Fantasy & Extended', emoji: '🔥 Wild Desires & Fantasy ⛓️' },
+          5: { name: 'Intense & Aftercare', emoji: '💥 Peak Passion & Aftercare 🛏️' }
+        };
+
+        const PACE_OPTIONS = [
+          { count: 3, label: '⚡ Quick Spark', time: '~15-20 min', desc: 'Fast intimate connection' },
+          { count: 5, label: '💋 Romantic Date', time: '~30-45 min', desc: 'Sweet romantic pace' },
+          { count: 8, label: '🔥 Passionate Evening', time: '~1 hour', desc: 'Deep seductive escalation' },
+          { count: 10, label: '😈 Deep Seduction', time: '~1.5 hours', desc: 'The classic full experience', isDefault: true },
+          { count: 15, label: '💥 All Night Romance', time: 'Marathon', desc: 'Uncensored extended journey' }
+        ];
+
         function App() {
-          const [gameState, setGameState] = useState('onboarding'); // 'onboarding' | 'whoStarts' | 'playing' | 'sectionComplete' | 'gameComplete'
+          const [gameState, setGameState] = useState('onboarding'); // 'onboarding' | 'setup' | 'playing' | 'sectionComplete' | 'gameComplete'
           const [currentTurn, setCurrentTurn] = useState('male'); // 'male' | 'female'
           const [isCardFlipped, setIsCardFlipped] = useState(false);
           const [currentSection, setCurrentSection] = useState(1);
           const [completedTasksInSection, setCompletedTasksInSection] = useState(0);
+          const [tasksPerSection, setTasksPerSection] = useState(10);
           const [availableCards, setAvailableCards] = useState([]);
           const [currentCard, setCurrentCard] = useState(null);
           const [timerActive, setTimerActive] = useState(false);
@@ -480,6 +693,10 @@
           const [cardAnimation, setCardAnimation] = useState(null);
           const [currentTheme, setCurrentTheme] = useState('crimson');
           const [soundEnabled, setSoundEnabled] = useState(true);
+          const [journeyHistory, setJourneyHistory] = useState([]);
+          const [showJourneyModal, setShowJourneyModal] = useState(false);
+          const [showThemeDropdown, setShowThemeDropdown] = useState(false);
+          const [savedGameData, setSavedGameData] = useState(null);
           const timerRef = useRef(null);
 
           // Apply dynamic CSS variables on theme change
@@ -495,6 +712,7 @@
             document.body.style.background = theme.bgGradient;
           }, [currentTheme]);
 
+          // Load cards and check for saved game on mount
           useEffect(() => {
             const loadCards = async () => {
               try {
@@ -508,6 +726,17 @@
                   ...data.section_5_intense_aftercare
                 ];
                 setAllCards(allCardsArray);
+
+                // Check localStorage for saved session
+                try {
+                  const saved = localStorage.getItem('shades_game_save');
+                  if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed && parsed.currentSection) {
+                      setSavedGameData(parsed);
+                    }
+                  }
+                } catch (e) {}
               } catch (error) {
                 console.error('Failed to load cards:', error);
                 alert('Could not load cards. Please refresh the page.');
@@ -516,6 +745,26 @@
             loadCards();
           }, []);
 
+          // Auto-save game state on progress updates
+          useEffect(() => {
+            if (gameState === 'playing' || gameState === 'sectionComplete') {
+              try {
+                const stateToSave = {
+                  currentSection,
+                  completedTasksInSection,
+                  tasksPerSection,
+                  totalCompleted,
+                  currentTurn,
+                  currentTheme,
+                  journeyHistory,
+                  timestamp: new Date().toISOString()
+                };
+                localStorage.setItem('shades_game_save', JSON.stringify(stateToSave));
+              } catch (e) {}
+            }
+          }, [currentSection, completedTasksInSection, totalCompleted, currentTurn, currentTheme, journeyHistory, tasksPerSection, gameState]);
+
+          // Timer effect
           useEffect(() => {
             if (timerActive && timeRemaining > 0) {
               timerRef.current = setTimeout(() => {
@@ -532,26 +781,53 @@
             const sectionCards = allCards.filter(c => c.section === sectionNum);
             const shuffled = [...sectionCards].sort(() => Math.random() - 0.5);
             setAvailableCards(shuffled);
-            setCurrentCard(shuffled[0]);
+            setCurrentCard(shuffled[0] || null);
             setCompletedTasksInSection(0);
             setCurrentSection(sectionNum);
             setIsCardFlipped(false);
+            setCardAnimation(null); // Critical bug fix: always reset swipe animation
+            setTimerActive(false);
+            setTimeRemaining(0);
           };
 
-          const goToWhoStarts = () => {
+          const goToSetup = () => {
             if (allCards.length === 0) {
               alert('Cards not loaded yet. Please refresh.');
               return;
             }
-            setGameState('whoStarts');
+            setGameState('setup');
           };
 
-          const startGame = (startingPartner) => {
-            initializeSection(1);
+          const startGame = (startingPartner, paceCount, chosenSection = 1) => {
+            setTasksPerSection(paceCount || 10);
             setCurrentTurn(startingPartner || 'male');
+            initializeSection(chosenSection || 1);
             setIsCardFlipped(false);
+            setCardAnimation(null);
             setGameState('playing');
             setTotalCompleted(0);
+            setJourneyHistory([]);
+          };
+
+          const resumeSavedGame = () => {
+            if (!savedGameData || allCards.length === 0) return;
+            const sec = savedGameData.currentSection || 1;
+            setTasksPerSection(savedGameData.tasksPerSection || 10);
+            setCurrentTurn(savedGameData.currentTurn || 'male');
+            setCurrentTheme(savedGameData.currentTheme || 'crimson');
+            setTotalCompleted(savedGameData.totalCompleted || 0);
+            setJourneyHistory(savedGameData.journeyHistory || []);
+            setCompletedTasksInSection(savedGameData.completedTasksInSection || 0);
+            setCurrentSection(sec);
+
+            const sectionCards = allCards.filter(c => c.section === sec);
+            const shuffled = [...sectionCards].sort(() => Math.random() - 0.5);
+            setAvailableCards(shuffled);
+            setCurrentCard(shuffled[0] || null);
+            setIsCardFlipped(false);
+            setCardAnimation(null);
+            setTimerActive(false);
+            setGameState('playing');
           };
 
           const handleCardFlip = () => {
@@ -572,43 +848,66 @@
               const remaining = availableCards.slice(1);
               const reshuffled = [...remaining, currentCard].sort(() => Math.random() - 0.5);
               setAvailableCards(reshuffled);
-              setCurrentCard(reshuffled[0]);
+              setCurrentCard(reshuffled[0] || null);
               setCardAnimation(null);
               setTimerActive(false);
               setIsCardFlipped(false);
               // Alternate turn to partner
               setCurrentTurn(prev => prev === 'male' ? 'female' : 'male');
-            }, 450);
+            }, 400);
           };
 
           const handleComplete = () => {
             playSensualSound('complete', soundEnabled);
             setCardAnimation('complete');
+
+            // Record to Love Journey history
+            if (currentCard) {
+              const historyEntry = {
+                id: currentCard.id,
+                title: currentCard.title,
+                category: currentCard.category,
+                description: currentCard.description,
+                section: currentSection,
+                sectionName: SECTION_META[currentSection]?.name || `Section ${currentSection}`,
+                sectionEmoji: SECTION_META[currentSection]?.emoji || '🔥',
+                partner: currentTurn,
+                intensity: currentCard.intensity || 2,
+                completedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                taskIndex: totalCompleted + 1
+              };
+              setJourneyHistory(prev => [...prev, historyEntry]);
+            }
+
             setTimeout(() => {
               setTimerActive(false);
-              setCompletedTasksInSection(prev => prev + 1);
+              const newCompletedInSection = completedTasksInSection + 1;
+              setCompletedTasksInSection(newCompletedInSection);
               setTotalCompleted(prev => prev + 1);
               setIsCardFlipped(false);
+              setCardAnimation(null); // Critical bug fix: reset animation
+
               // Alternate turn to partner
               setCurrentTurn(prev => prev === 'male' ? 'female' : 'male');
 
               const remaining = availableCards.slice(1);
-              if (remaining.length === 0 || completedTasksInSection + 1 >= 10) {
+              if (remaining.length === 0 || newCompletedInSection >= tasksPerSection) {
                 setGameState('sectionComplete');
               } else {
-                setCurrentCard(remaining[0]);
+                setCurrentCard(remaining[0] || null);
                 setAvailableCards(remaining);
-                setCardAnimation(null);
               }
-            }, 450);
+            }, 400);
           };
 
           const nextSection = () => {
+            setCardAnimation(null); // Critical bug fix: clear residual swipe animation
             if (currentSection < 5) {
               initializeSection(currentSection + 1);
               setGameState('playing');
             } else {
               setGameState('gameComplete');
+              try { localStorage.removeItem('shades_game_save'); } catch (e) {}
             }
           };
 
@@ -618,6 +917,10 @@
             setCompletedTasksInSection(0);
             setTotalCompleted(0);
             setIsCardFlipped(false);
+            setCardAnimation(null);
+            setJourneyHistory([]);
+            try { localStorage.removeItem('shades_game_save'); } catch (e) {}
+            setSavedGameData(null);
           };
 
           const formatTime = (seconds) => {
@@ -626,63 +929,102 @@
             return `${mins}:${secs.toString().padStart(2, '0')}`;
           };
 
-          const sectionMeta = {
-            1: { name: 'Love & Romantic', emoji: '🥂 Romance & Whispers 💜' },
-            2: { name: 'Hug & Kisses', emoji: '💋 Kisses & Caresses 🫦' },
-            3: { name: 'Strip & Playful', emoji: '✨ Strip & Tease 👙' },
-            4: { name: 'Fantasy & Extended', emoji: '🔥 Wild Desires & Fantasy ⛓️' },
-            5: { name: 'Intense & Aftercare', emoji: '💥 Peak Passion & Aftercare 🛏️' }
-          };
-
           const theme = THEMES[currentTheme] || THEMES.crimson;
 
           return (
-            <div className="min-h-screen w-full flex flex-col items-center justify-between p-4 relative overflow-hidden">
-              {/* Subtle Floating Ambient Particles */}
-              <div className="ambient-particle text-xl" style={{ left: '10%', animationDuration: '14s', animationDelay: '0s' }}>❤️</div>
-              <div className="ambient-particle text-lg" style={{ left: '85%', animationDuration: '18s', animationDelay: '3s' }}>🔥</div>
-              <div className="ambient-particle text-2xl" style={{ left: '25%', animationDuration: '16s', animationDelay: '6s' }}>💋</div>
-              <div className="ambient-particle text-sm" style={{ left: '75%', animationDuration: '20s', animationDelay: '9s' }}>✨</div>
-              <div className="ambient-particle text-xl" style={{ left: '50%', animationDuration: '22s', animationDelay: '4s' }}>🌹</div>
+            <div className="min-h-screen w-full flex flex-col items-center justify-between p-3.5 relative overflow-hidden"
+              onClick={() => { if (showThemeDropdown) setShowThemeDropdown(false); }}
+            >
+              {/* Floating Ambient Particles */}
+              <div className="ambient-particle text-xl" style={{ left: '8%', animationDuration: '14s', animationDelay: '0s' }}>❤️</div>
+              <div className="ambient-particle text-lg" style={{ left: '88%', animationDuration: '18s', animationDelay: '3s' }}>🔥</div>
+              <div className="ambient-particle text-2xl" style={{ left: '22%', animationDuration: '16s', animationDelay: '6s' }}>💋</div>
+              <div className="ambient-particle text-sm" style={{ left: '78%', animationDuration: '20s', animationDelay: '9s' }}>✨</div>
+              <div className="ambient-particle text-xl" style={{ left: '52%', animationDuration: '22s', animationDelay: '4s' }}>🌹</div>
 
-              {/* Top Floating Mood Swatch Bar */}
-              <div className="w-full max-w-md mx-auto flex items-center justify-between py-2 px-4 rounded-full swatch-pill z-20 mb-4">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm">{theme.icon}</span>
-                  <span className="text-xs font-bold text-gray-200 tracking-wider uppercase">{theme.name}</span>
-                </div>
+              {/* Top Controls Bar: Love Journey & Compact Theme Dropdown */}
+              <div className="top-controls-bar" onClick={(e) => e.stopPropagation()}>
+                {/* Love Journey Button */}
+                <button
+                  onClick={() => setShowJourneyModal(true)}
+                  title="View Our Love Journey Timeline"
+                  className="control-pill-btn"
+                >
+                  <span className="text-sm">📖</span>
+                  <span>Love Journey</span>
+                  {journeyHistory.length > 0 && (
+                    <span className="journey-count-badge">{journeyHistory.length}</span>
+                  )}
+                </button>
 
-                <div className="flex items-center gap-2.5">
-                  {/* Swatches */}
-                  {Object.values(THEMES).map((t) => (
-                    <button
-                      key={t.id}
-                      onClick={() => setCurrentTheme(t.id)}
-                      title={`Switch to ${t.name}`}
-                      className={`swatch-btn ${currentTheme === t.id ? 'active' : ''}`}
-                      style={{ backgroundColor: t.swatch }}
-                    />
-                  ))}
-
-                  {/* Sound Toggle */}
+                {/* Compact Theme Dropdown Toggle */}
+                <div className="relative">
                   <button
-                    onClick={() => setSoundEnabled(!soundEnabled)}
-                    title={soundEnabled ? "Mute sound effects" : "Enable sound effects"}
-                    className="text-xs px-2 py-1 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 ml-1 transition-all"
+                    onClick={() => setShowThemeDropdown(!showThemeDropdown)}
+                    title="Change Color / Mood Theme & Audio"
+                    className="control-pill-btn"
                   >
-                    {soundEnabled ? '🔊' : '🔇'}
+                    <span className="w-2.5 h-2.5 rounded-full shadow-sm" style={{ backgroundColor: theme.primary }}></span>
+                    <span className="text-xs">{theme.name}</span>
+                    <span className="text-[10px] text-gray-400">▼</span>
                   </button>
+
+                  {/* Dropdown Menu */}
+                  {showThemeDropdown && (
+                    <div className="theme-dropdown-menu">
+                      <div className="text-[10px] uppercase font-bold tracking-wider text-gray-400 px-3 py-1 mb-1 border-b border-white/10">
+                        ✨ Game Mood & Colors ✨
+                      </div>
+                      
+                      {Object.values(THEMES).map((t) => (
+                        <div
+                          key={t.id}
+                          onClick={() => {
+                            setCurrentTheme(t.id);
+                            setShowThemeDropdown(false);
+                          }}
+                          className={`theme-dropdown-item ${currentTheme === t.id ? 'active' : ''}`}
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <span className="w-3.5 h-3.5 rounded-full border border-white/20" style={{ backgroundColor: t.swatch }}></span>
+                            <span>{t.name}</span>
+                          </div>
+                          <span>{t.icon}</span>
+                        </div>
+                      ))}
+
+                      {/* Sound Toggle Item */}
+                      <div className="mt-2 pt-2 border-t border-white/10 flex items-center justify-between px-3 py-1.5 text-xs text-gray-300">
+                        <span className="font-semibold">Audio Effects</span>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSoundEnabled(!soundEnabled);
+                          }}
+                          className="px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20 text-xs font-bold transition-all"
+                        >
+                          {soundEnabled ? '🔊 ON' : '🔇 OFF'}
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              {/* Main Content Area */}
+              {/* Main Content View */}
               <div className="w-full max-w-md my-auto z-10">
                 {gameState === 'onboarding' && (
-                  <OnboardingScreen onNext={goToWhoStarts} theme={theme} />
+                  <OnboardingScreen onNext={goToSetup} theme={theme} />
                 )}
 
-                {gameState === 'whoStarts' && (
-                  <WhoStartsFirstScreen onSelectStarter={startGame} theme={theme} soundEnabled={soundEnabled} />
+                {gameState === 'setup' && (
+                  <GameSetupScreen
+                    onStartGame={startGame}
+                    onResumeSaved={resumeSavedGame}
+                    savedGameData={savedGameData}
+                    theme={theme}
+                    soundEnabled={soundEnabled}
+                  />
                 )}
 
                 {gameState === 'playing' && currentCard && (
@@ -690,6 +1032,7 @@
                     currentCard={currentCard}
                     currentSection={currentSection}
                     completedInSection={completedTasksInSection}
+                    tasksPerSection={tasksPerSection}
                     totalCompleted={totalCompleted}
                     cardAnimation={cardAnimation}
                     timerActive={timerActive}
@@ -705,7 +1048,6 @@
                       setTimerActive(true);
                     }}
                     formatTime={formatTime}
-                    sectionMeta={sectionMeta}
                     theme={theme}
                   />
                 )}
@@ -714,39 +1056,56 @@
                   <SectionCompleteScreen
                     sectionNum={currentSection}
                     totalCompleted={totalCompleted}
+                    tasksPerSection={tasksPerSection}
                     nextSection={nextSection}
-                    sectionMeta={sectionMeta}
+                    onOpenJourney={() => setShowJourneyModal(true)}
                     theme={theme}
                   />
                 )}
 
                 {gameState === 'gameComplete' && (
-                  <GameCompleteScreen totalCompleted={totalCompleted} resetGame={resetGame} theme={theme} />
+                  <GameCompleteScreen
+                    totalCompleted={totalCompleted}
+                    resetGame={resetGame}
+                    onOpenJourney={() => setShowJourneyModal(true)}
+                    theme={theme}
+                  />
                 )}
               </div>
 
+              {/* Love Journey Timeline Modal */}
+              {showJourneyModal && (
+                <LoveJourneyModal
+                  journeyHistory={journeyHistory}
+                  totalCompleted={totalCompleted}
+                  onClose={() => setShowJourneyModal(false)}
+                  theme={theme}
+                />
+              )}
+
               {/* Footer text */}
-              <div className="w-full text-center py-2 text-[11px] text-gray-500 z-10">
-                69 Shades of Play • Intimate Couple's Game
+              <div className="w-full text-center py-1 text-[11px] text-gray-500 z-10">
+                69 Shades of Play • Sensual Couple's Intimacy Game
               </div>
             </div>
           );
         }
 
+        // Onboarding Screen
         function OnboardingScreen({ onNext, theme }) {
           const [confirmed, setConfirmed] = useState(false);
 
           return (
             <div className="w-full max-w-md mx-auto slide-up">
               <div
-                className="onboarding-content p-8 text-center border"
+                className="onboarding-content p-7 sm:p-8 text-center border"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(20, 8, 16, 0.92) 0%, rgba(10, 4, 10, 0.96) 100%)',
+                  background: 'linear-gradient(135deg, rgba(20, 8, 16, 0.94) 0%, rgba(10, 4, 10, 0.98) 100%)',
                   borderColor: theme.border
                 }}
               >
-                <div className="mb-6">
-                  <div className="inline-block p-3 rounded-full bg-white/5 border border-white/10 mb-3 pulse-hint">
+                <div className="mb-5">
+                  <div className="inline-block p-3 rounded-full bg-white/5 border border-white/10 mb-2.5 pulse-hint">
                     <span className="text-4xl">💋</span>
                   </div>
                   <h1 className="serif-font text-5xl font-bold mb-1 tracking-tight bg-clip-text text-transparent"
@@ -757,9 +1116,9 @@
                   <p className="text-xs tracking-[0.3em] uppercase font-bold text-gray-300">Of Intimate Play</p>
                 </div>
 
-                <div className="space-y-3.5 text-left mb-7 bg-black/40 p-4 rounded-2xl border border-white/5 text-xs">
+                <div className="space-y-3 text-left mb-6 bg-black/40 p-4 rounded-2xl border border-white/5 text-xs">
                   <p className="text-gray-200 leading-relaxed font-medium">
-                    A sensual journey designed for passionate couples. Discover <strong>5 progressive escalation levels</strong> with curated intimate tasks.
+                    A sensual journey for passionate couples across <strong>5 progressive escalation levels</strong>:
                   </p>
                   <div className="space-y-1.5 text-gray-400">
                     <div className="flex items-center gap-2"><span>💜</span> <strong>Romance & Whispers</strong> — Deep emotional connection</div>
@@ -770,7 +1129,7 @@
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 mb-6 bg-black/40 p-3.5 rounded-xl border border-white/10">
+                <div className="flex items-start gap-3 mb-6 bg-black/40 p-3 rounded-xl border border-white/10">
                   <input
                     type="checkbox"
                     id="ageConfirm"
@@ -779,7 +1138,7 @@
                     className="w-5 h-5 rounded mt-0.5 cursor-pointer accent-red-500"
                   />
                   <label htmlFor="ageConfirm" className="text-xs text-gray-300 text-left cursor-pointer leading-tight">
-                    We confirm we are <strong>18+</strong> and fully consent to explore intimate tasks together.
+                    We confirm we are <strong>18+</strong> and ready to explore intimacy together.
                   </label>
                 </div>
 
@@ -803,28 +1162,29 @@
           );
         }
 
-        function WhoStartsFirstScreen({ onSelectStarter, theme, soundEnabled }) {
+        // Comprehensive Game Setup Screen (Starter, Session Pace & Take Control)
+        function GameSetupScreen({ onStartGame, onResumeSaved, savedGameData, theme, soundEnabled }) {
           const [selectedPartner, setSelectedPartner] = useState(null); // 'male' | 'female'
           const [isSpinning, setIsSpinning] = useState(false);
           const [spinHighlight, setSpinHighlight] = useState(null);
-          const [revealed, setRevealed] = useState(false);
+          const [selectedPace, setSelectedPace] = useState(10);
+          const [chosenSection, setChosenSection] = useState(1);
+          const [showTakeControl, setShowTakeControl] = useState(false);
 
           const handleDirectSelect = (gender) => {
             if (isSpinning) return;
             setSelectedPartner(gender);
-            setRevealed(true);
             playSensualSound('flip', soundEnabled);
           };
 
           const handleSpinFate = () => {
             if (isSpinning) return;
             setIsSpinning(true);
-            setRevealed(false);
             setSelectedPartner(null);
 
             let count = 0;
             const totalSteps = 16;
-            const intervalTime = 90;
+            const intervalTime = 80;
 
             const interval = setInterval(() => {
               count++;
@@ -837,118 +1197,178 @@
                 setSpinHighlight(finalWinner);
                 setSelectedPartner(finalWinner);
                 setIsSpinning(false);
-                setRevealed(true);
                 playSensualSound('complete', soundEnabled);
               }
             }, intervalTime);
           };
 
-          const handleStartGame = () => {
+          const handleBegin = () => {
             if (!selectedPartner) return;
-            onSelectStarter(selectedPartner);
+            onStartGame(selectedPartner, selectedPace, chosenSection);
           };
 
           return (
             <div className="w-full max-w-md mx-auto slide-up">
               <div
-                className="onboarding-content p-7 text-center relative overflow-hidden border"
+                className="onboarding-content p-6 sm:p-7 text-center relative overflow-hidden border"
                 style={{
                   background: 'linear-gradient(135deg, rgba(20, 8, 16, 0.94) 0%, rgba(10, 4, 10, 0.98) 100%)',
                   borderColor: theme.border
                 }}
               >
-                <div className="mb-6">
+                {/* Resume Saved Game Banner if Available */}
+                {savedGameData && (
+                  <div className="mb-4 p-3 rounded-2xl bg-amber-950/40 border border-amber-500/40 flex items-center justify-between text-left">
+                    <div>
+                      <p className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+                        <span>⚡</span> Saved Journey Found
+                      </p>
+                      <p className="text-[11px] text-gray-300">
+                        Level {savedGameData.currentSection} • {savedGameData.totalCompleted} tasks completed
+                      </p>
+                    </div>
+                    <button
+                      onClick={onResumeSaved}
+                      className="px-3 py-1.5 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs shadow-md transition-all cursor-pointer"
+                    >
+                      Resume ➜
+                    </button>
+                  </div>
+                )}
+
+                {/* Section Header */}
+                <div className="mb-4">
                   <span
-                    className="text-xs uppercase tracking-widest font-bold px-3 py-1 rounded-full border mb-3 inline-block"
+                    className="text-xs uppercase tracking-widest font-bold px-3 py-0.5 rounded-full border mb-2 inline-block"
                     style={{ background: theme.badgeBg, color: theme.badgeText, borderColor: theme.border }}
                   >
                     ✨ Game Setup ✨
                   </span>
-                  <h2 className="serif-font text-3xl sm:text-4xl font-bold mb-1.5 text-white">
-                    Who Starts First?
+                  <h2 className="serif-font text-2xl sm:text-3xl font-bold mb-1 text-white">
+                    Set Your Intimate Scene
                   </h2>
-                  <p className="text-gray-300 text-xs">
-                    Choose who will lead and flip the first intimate card.
+                </div>
+
+                {/* Step 1: Who Starts First */}
+                <div className="mb-5 text-left">
+                  <p className="text-xs font-bold uppercase tracking-wider text-gray-300 mb-2.5 flex items-center justify-between">
+                    <span>1. Who Starts First?</span>
+                    {selectedPartner && (
+                      <span className="text-[11px] text-pink-400 font-bold">
+                        {selectedPartner === 'male' ? '🤴 King Leading' : '👸 Queen Leading'}
+                      </span>
+                    )}
                   </p>
-                </div>
 
-                {/* Partner Choices */}
-                <div className="grid grid-cols-2 gap-4 mb-5">
-                  {/* Male / He Option */}
-                  <div
-                    onClick={() => handleDirectSelect('male')}
-                    className={`partner-card cursor-pointer p-5 rounded-2xl border text-center transition-all ${
-                      (selectedPartner === 'male' || spinHighlight === 'male')
-                        ? 'bg-indigo-950/90 border-cyan-400 shadow-lg shadow-cyan-500/30 scale-105'
-                        : 'bg-black/40 border-indigo-500/30 hover:border-indigo-400/60'
-                    }`}
-                  >
-                    <div className="text-4xl mb-2 floating-element">👑</div>
-                    <h3 className="font-bold text-white text-base mb-0.5">He / Him</h3>
-                    <p className="text-xs text-indigo-300">King's Lead ♂️</p>
-                    {selectedPartner === 'male' && (
-                      <span className="inline-block mt-2 text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/40">
-                        Selected ✓
-                      </span>
-                    )}
+                  <div className="grid grid-cols-2 gap-3 mb-2.5">
+                    {/* He / Him */}
+                    <div
+                      onClick={() => handleDirectSelect('male')}
+                      className={`partner-card cursor-pointer p-3.5 rounded-2xl border text-center transition-all ${
+                        (selectedPartner === 'male' || spinHighlight === 'male')
+                          ? 'bg-indigo-950/90 border-cyan-400 shadow-lg shadow-cyan-500/30 scale-105'
+                          : 'bg-black/40 border-indigo-500/30 hover:border-indigo-400/60'
+                      }`}
+                    >
+                      <div className="text-3xl mb-1">👑</div>
+                      <h3 className="font-bold text-white text-sm">He / Him</h3>
+                      <p className="text-[11px] text-indigo-300">King's Lead ♂️</p>
+                    </div>
+
+                    {/* She / Her */}
+                    <div
+                      onClick={() => handleDirectSelect('female')}
+                      className={`partner-card cursor-pointer p-3.5 rounded-2xl border text-center transition-all ${
+                        (selectedPartner === 'female' || spinHighlight === 'female')
+                          ? 'bg-pink-950/90 border-pink-400 shadow-lg shadow-pink-500/30 scale-105'
+                          : 'bg-black/40 border-pink-500/30 hover:border-pink-400/60'
+                      }`}
+                    >
+                      <div className="text-3xl mb-1">👑</div>
+                      <h3 className="font-bold text-white text-sm">She / Her</h3>
+                      <p className="text-[11px] text-pink-300">Queen's Lead ♀️</p>
+                    </div>
                   </div>
 
-                  {/* Female / She Option */}
-                  <div
-                    onClick={() => handleDirectSelect('female')}
-                    className={`partner-card cursor-pointer p-5 rounded-2xl border text-center transition-all ${
-                      (selectedPartner === 'female' || spinHighlight === 'female')
-                        ? 'bg-pink-950/90 border-pink-400 shadow-lg shadow-pink-500/30 scale-105'
-                        : 'bg-black/40 border-pink-500/30 hover:border-pink-400/60'
-                    }`}
-                  >
-                    <div className="text-4xl mb-2 floating-element">👑</div>
-                    <h3 className="font-bold text-white text-base mb-0.5">She / Her</h3>
-                    <p className="text-xs text-pink-300">Queen's Lead ♀️</p>
-                    {selectedPartner === 'female' && (
-                      <span className="inline-block mt-2 text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-pink-500/20 text-pink-300 border border-pink-400/40">
-                        Selected ✓
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Fate / Random Decision Button */}
-                <div className="mb-5">
+                  {/* Fate Spin Button */}
                   <button
                     onClick={handleSpinFate}
                     disabled={isSpinning}
-                    className={`w-full py-3 px-4 rounded-xl border bg-black/50 text-sm font-semibold flex items-center justify-center gap-2 transition-all ${
-                      isSpinning ? 'opacity-75 cursor-wait' : 'hover:scale-[1.02] cursor-pointer'
-                    }`}
+                    className="w-full py-2 px-3 rounded-xl border bg-black/40 text-xs font-semibold flex items-center justify-center gap-2 transition-all hover:bg-black/60 cursor-pointer"
                     style={{ borderColor: theme.border, color: theme.badgeText }}
                   >
-                    <span className="text-lg">🎲</span>
-                    {isSpinning ? 'Consulting the Passion Oracle...' : 'Let Fate Decide (Random Pick)'}
+                    <span>🎲</span>
+                    <span>{isSpinning ? 'Consulting the Oracle...' : 'Let Fate Decide (Random Pick)'}</span>
                   </button>
                 </div>
 
-                {/* Announcement Card once revealed */}
-                {revealed && selectedPartner && (
-                  <div
-                    className="mb-5 p-4 rounded-2xl border slide-up"
-                    style={{ background: 'rgba(0,0,0,0.6)', borderColor: theme.border }}
-                  >
-                    <p className="text-[11px] uppercase tracking-wider font-bold mb-1" style={{ color: theme.primary }}>
-                      First Seduction
-                    </p>
-                    <p className="text-lg font-bold text-white">
-                      🎉 {selectedPartner === 'male' ? 'The King (♂️ He / Him)' : 'The Queen (♀️ She / Her)'} starts first!
-                    </p>
-                    <p className="text-xs text-gray-400 mt-1">
-                      Turns will alternate between you after every card.
-                    </p>
+                {/* Step 2: How Much Time Do You Have for Each Other? */}
+                <div className="mb-5 text-left">
+                  <p className="text-xs font-bold uppercase tracking-wider text-gray-300 mb-2">
+                    2. Time for Each Other (Pace)
+                  </p>
+                  
+                  <div className="space-y-1.5">
+                    {PACE_OPTIONS.map((opt) => (
+                      <div
+                        key={opt.count}
+                        onClick={() => setSelectedPace(opt.count)}
+                        className={`pace-option ${selectedPace === opt.count ? 'active' : ''}`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-bold text-white">{opt.label}</span>
+                          <span className="text-[11px] text-gray-400">({opt.count} tasks/level)</span>
+                        </div>
+                        <span className="text-[11px] font-bold text-amber-300">{opt.time}</span>
+                      </div>
+                    ))}
                   </div>
-                )}
+                </div>
+
+                {/* Step 3: Take Control (Choose Starting Section) */}
+                <div className="mb-5 text-left border-t border-white/10 pt-3.5">
+                  <div className="flex items-center justify-between mb-2">
+                    <button
+                      onClick={() => setShowTakeControl(!showTakeControl)}
+                      className="text-xs font-bold uppercase tracking-wider text-pink-300 hover:text-pink-200 flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <span>🎯 Take Control</span>
+                      <span className="text-[10px]">{showTakeControl ? '▲ Hide' : '▼ Pick Section'}</span>
+                    </button>
+
+                    {chosenSection > 1 && (
+                      <span className="text-[11px] px-2 py-0.5 rounded-full bg-pink-500/20 text-pink-300 border border-pink-500/30 font-bold">
+                        Starts at Level {chosenSection}
+                      </span>
+                    )}
+                  </div>
+
+                  {showTakeControl && (
+                    <div className="bg-black/50 p-3 rounded-2xl border border-white/10 space-y-1.5 slide-up">
+                      <p className="text-[11px] text-gray-400 mb-2">
+                        Choose any level to jump straight in and play through to the climax:
+                      </p>
+                      {[1, 2, 3, 4, 5].map((sNum) => (
+                        <div
+                          key={sNum}
+                          onClick={() => setChosenSection(sNum)}
+                          className={`p-2 rounded-xl text-xs flex items-center justify-between cursor-pointer transition-all ${
+                            chosenSection === sNum
+                              ? 'bg-pink-950 border border-pink-400 font-bold text-white shadow-sm'
+                              : 'bg-white/5 border border-transparent text-gray-300 hover:bg-white/10'
+                          }`}
+                        >
+                          <span>{SECTION_META[sNum].emoji}</span>
+                          {chosenSection === sNum && <span className="text-pink-400 text-xs">Selected ✓</span>}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
 
                 {/* Start Game Action */}
                 <button
-                  onClick={handleStartGame}
+                  onClick={handleBegin}
                   disabled={!selectedPartner || isSpinning}
                   className={`w-full py-4 rounded-full font-bold text-base tracking-wider uppercase transition-all ${
                     selectedPartner && !isSpinning
@@ -962,17 +1382,19 @@
                     boxShadow: selectedPartner && !isSpinning ? `0 10px 30px ${theme.glow}` : undefined
                   }}
                 >
-                  {selectedPartner ? "Begin Intimacy Journey ➜" : "Select Starter"}
+                  {selectedPartner ? "Begin Intimacy Journey ➜" : "Select Who Starts First"}
                 </button>
               </div>
             </div>
           );
         }
 
+        // Active Playing Screen
         function PlayingScreen({
           currentCard,
           currentSection,
           completedInSection,
+          tasksPerSection,
           totalCompleted,
           cardAnimation,
           timerActive,
@@ -985,19 +1407,17 @@
           onComplete,
           onStartTimer,
           formatTime,
-          sectionMeta,
           theme
         }) {
           const circumference = 2 * Math.PI * 45;
           const strokeDashoffset = circumference - (timeRemaining / (currentCard.timer || 180)) * circumference;
           
-          // Spicy Intensity Map
           const heatLevels = {
-            1: { label: 'Mild & Sweet', emoji: '🌸', count: 1 },
-            2: { label: 'Sensual & Teasing', emoji: '💋', count: 2 },
-            3: { label: 'Steamy & Seductive', emoji: '🔥', count: 3 },
-            4: { label: 'Hot & Daring', emoji: '🌶️', count: 4 },
-            5: { label: 'Wild & Uncensored', emoji: '😈', count: 5 }
+            1: { label: 'Mild & Sweet', emoji: '🌸' },
+            2: { label: 'Sensual & Teasing', emoji: '💋' },
+            3: { label: 'Steamy & Seductive', emoji: '🔥' },
+            4: { label: 'Hot & Daring', emoji: '🌶️' },
+            5: { label: 'Wild & Uncensored', emoji: '😈' }
           };
           const heat = heatLevels[currentCard.intensity || 2] || heatLevels[2];
 
@@ -1005,16 +1425,18 @@
             ? { label: "King's Turn ♂️", action: "He leads & acts 💋", bg: 'bg-indigo-950/80', border: 'border-cyan-400/50', text: 'text-cyan-300' }
             : { label: "Queen's Turn ♀️", action: "She leads & acts 💋", bg: 'bg-pink-950/80', border: 'border-pink-400/50', text: 'text-pink-300' };
 
+          const progressPercent = Math.min(100, Math.round((completedInSection / tasksPerSection) * 100));
+
           return (
-            <div className="w-full max-w-md mx-auto flex flex-col items-center gap-5">
+            <div className="w-full max-w-md mx-auto flex flex-col items-center gap-4">
               {/* Header Bar: Escalation Section + Interactive Turn Switch + Task Progress */}
               <div className="w-full">
-                <div className="flex justify-between items-center mb-2.5">
+                <div className="flex justify-between items-center mb-2">
                   <span
                     className="text-xs px-3 py-1 rounded-full font-bold border"
                     style={{ background: theme.badgeBg, color: theme.badgeText, borderColor: theme.border }}
                   >
-                    {sectionMeta[currentSection]?.name}
+                    Level {currentSection}: {SECTION_META[currentSection]?.name}
                   </span>
 
                   {/* Switch Turn Button */}
@@ -1028,7 +1450,7 @@
                   </button>
 
                   <span className="text-xs font-semibold text-gray-400">
-                    {completedInSection}/10 Completed
+                    {completedInSection}/{tasksPerSection}
                   </span>
                 </div>
 
@@ -1037,7 +1459,7 @@
                   <div
                     className="h-full transition-all duration-300 rounded-full"
                     style={{
-                      width: `${(completedInSection / 10) * 100}%`,
+                      width: `${progressPercent}%`,
                       background: `linear-gradient(90deg, ${theme.primary} 0%, #ffffff 100%)`
                     }}
                   ></div>
@@ -1060,7 +1482,7 @@
                     {/* Card Back Top Badge */}
                     <div className="flex items-center justify-between z-10">
                       <span className="text-xs tracking-wider uppercase font-bold text-gray-300">
-                        {sectionMeta[currentSection]?.emoji}
+                        {SECTION_META[currentSection]?.emoji}
                       </span>
                       <span className={`text-[11px] px-2.5 py-0.5 rounded-full font-bold border ${partnerBadge.bg} ${partnerBadge.border} ${partnerBadge.text}`}>
                         {partnerBadge.label}
@@ -1083,7 +1505,7 @@
                       <h2 className="serif-font text-3xl font-bold text-white mb-1 tracking-wide">
                         69 Shades
                       </h2>
-                      <p className="text-xs uppercase tracking-[0.25em] font-semibold mb-6" style={{ color: theme.primary }}>
+                      <p className="text-xs uppercase tracking-[0.25em] font-semibold mb-5" style={{ color: theme.primary }}>
                         Secret Task
                       </p>
 
@@ -1127,7 +1549,6 @@
                           {currentCard.category}
                         </span>
 
-                        {/* Spicy Heat Meter */}
                         <div className="flex items-center gap-1.5 text-xs font-bold text-gray-300" title={`Heat: ${heat.label}`}>
                           <span>{heat.emoji}</span>
                           <span className="text-[11px] text-amber-300">{heat.label}</span>
@@ -1201,41 +1622,47 @@
                 </div>
               </div>
 
-              {/* Action Buttons (Inspired by Reference UI - Neon Ring Style) */}
+              {/* Action Buttons with Explicit Text Labels */}
               <div className="flex flex-col items-center gap-2">
-                <div className="flex gap-6 justify-center items-center">
-                  {/* Skip Button */}
-                  <button
-                    onClick={isCardFlipped ? onSkip : onFlipCard}
-                    className="neon-ring-btn"
-                    title={isCardFlipped ? "Skip / Reroll Task" : "Reveal Card First"}
-                  >
-                    🎲
-                  </button>
+                <div className="flex gap-8 justify-center items-end">
+                  {/* Skip / Reroll Button */}
+                  <div className="action-btn-item" onClick={isCardFlipped ? onSkip : onFlipCard}>
+                    <button
+                      className="neon-ring-btn"
+                      title={isCardFlipped ? "Skip / Reroll Task" : "Reveal Card First"}
+                    >
+                      🎲
+                    </button>
+                    <span className="action-btn-label">Reroll</span>
+                  </div>
 
-                  {/* Complete Button */}
-                  <button
-                    onClick={isCardFlipped ? onComplete : onFlipCard}
-                    className="neon-ring-btn primary"
-                    title={isCardFlipped ? "Task Complete! (Switch Turns)" : "Reveal Card First"}
-                  >
-                    🔥
-                  </button>
+                  {/* Complete Button (Primary) */}
+                  <div className="action-btn-item" onClick={isCardFlipped ? onComplete : onFlipCard}>
+                    <button
+                      className="neon-ring-btn primary"
+                      title={isCardFlipped ? "Task Complete! (Switch Turns)" : "Reveal Card First"}
+                    >
+                      🔥
+                    </button>
+                    <span className="action-btn-label font-bold" style={{ color: theme.badgeText }}>Complete</span>
+                  </div>
 
                   {/* Switch Turn Button */}
-                  <button
-                    onClick={onSwitchTurn}
-                    className="neon-ring-btn"
-                    title="Switch active partner turn"
-                  >
-                    ⇄
-                  </button>
+                  <div className="action-btn-item" onClick={onSwitchTurn}>
+                    <button
+                      className="neon-ring-btn"
+                      title="Switch active partner turn"
+                    >
+                      ⇄
+                    </button>
+                    <span className="action-btn-label">Swap Turn</span>
+                  </div>
                 </div>
 
                 <p className="text-xs text-gray-400 font-medium">
                   {!isCardFlipped
                     ? "👆 Tap the card to reveal task"
-                    : "Tap 🔥 when completed to switch turns"}
+                    : "Tap 🔥 Complete when finished to alternate turns"}
                 </p>
               </div>
 
@@ -1248,76 +1675,215 @@
           );
         }
 
-        function SectionCompleteScreen({ sectionNum, totalCompleted, nextSection, sectionMeta, theme }) {
+        // Section Complete Screen
+        function SectionCompleteScreen({ sectionNum, totalCompleted, tasksPerSection, nextSection, onOpenJourney, theme }) {
           return (
             <div className="w-full max-w-md mx-auto slide-up">
               <div
-                className="onboarding-content p-8 text-center border"
+                className="onboarding-content p-7 sm:p-8 text-center border"
                 style={{
                   background: 'linear-gradient(135deg, rgba(20, 8, 16, 0.94) 0%, rgba(10, 4, 10, 0.98) 100%)',
                   borderColor: theme.border
                 }}
               >
-                <div className="text-6xl mb-3 floating-element">🎉</div>
-                <h2 className="serif-font text-4xl font-bold mb-1 text-white">
+                <div className="text-6xl mb-2.5 floating-element">🎉</div>
+                <h2 className="serif-font text-3xl sm:text-4xl font-bold mb-1 text-white">
                   Sensational!
                 </h2>
-                <p className="text-gray-300 text-sm mb-5">
-                  Section {sectionNum} ({sectionMeta[sectionNum]?.name}) Complete
+                <p className="text-gray-300 text-sm mb-4">
+                  Level {sectionNum} ({SECTION_META[sectionNum]?.name}) Complete
                 </p>
 
-                <div className="bg-black/50 rounded-2xl p-5 mb-6 border border-white/10">
-                  <p className="text-4xl font-bold mb-1" style={{ color: theme.primary }}>{totalCompleted}</p>
-                  <p className="text-gray-400 text-xs uppercase tracking-wider">Intimate Milestones Reached</p>
+                <div className="bg-black/50 rounded-2xl p-4 mb-5 border border-white/10 grid grid-cols-2 gap-3">
+                  <div>
+                    <p className="text-2xl font-bold" style={{ color: theme.primary }}>{tasksPerSection}</p>
+                    <p className="text-[10px] text-gray-400 uppercase tracking-wider">Level Tasks Done</p>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-white">{totalCompleted}</p>
+                    <p className="text-[10px] text-gray-400 uppercase tracking-wider">Total Journey</p>
+                  </div>
                 </div>
 
-                <button
-                  onClick={nextSection}
-                  className="w-full py-4 rounded-full font-bold text-base tracking-wider uppercase text-white shadow-lg hover:scale-105 transition-all cursor-pointer"
-                  style={{
-                    background: `linear-gradient(135deg, ${theme.primary} 0%, ${theme.primaryDark} 100%)`,
-                    boxShadow: `0 10px 30px ${theme.glow}`
-                  }}
-                >
-                  {sectionNum < 5 ? `Ascend to Section ${sectionNum + 1} ➜` : 'View Grand Summary 🏆'}
-                </button>
+                <div className="space-y-2.5">
+                  <button
+                    onClick={nextSection}
+                    className="w-full py-4 rounded-full font-bold text-base tracking-wider uppercase text-white shadow-lg hover:scale-105 transition-all cursor-pointer"
+                    style={{
+                      background: `linear-gradient(135deg, ${theme.primary} 0%, ${theme.primaryDark} 100%)`,
+                      boxShadow: `0 10px 30px ${theme.glow}`
+                    }}
+                  >
+                    {sectionNum < 5 ? `Ascend to Level ${sectionNum + 1} ➜` : 'View Grand Summary 🏆'}
+                  </button>
+
+                  <button
+                    onClick={onOpenJourney}
+                    className="w-full py-2.5 rounded-full font-bold text-xs uppercase tracking-wider text-gray-300 bg-white/5 hover:bg-white/10 border border-white/10 transition-all cursor-pointer"
+                  >
+                    📖 View Our Love Journey Timeline
+                  </button>
+                </div>
               </div>
             </div>
           );
         }
 
-        function GameCompleteScreen({ totalCompleted, resetGame, theme }) {
+        // Game Complete Screen
+        function GameCompleteScreen({ totalCompleted, resetGame, onOpenJourney, theme }) {
           return (
             <div className="w-full max-w-md mx-auto slide-up">
               <div
-                className="onboarding-content p-8 text-center border"
+                className="onboarding-content p-7 sm:p-8 text-center border"
                 style={{
                   background: 'linear-gradient(135deg, rgba(20, 8, 16, 0.94) 0%, rgba(10, 4, 10, 0.98) 100%)',
                   borderColor: theme.border
                 }}
               >
-                <div className="text-6xl mb-3 floating-element">🏆</div>
-                <h2 className="serif-font text-4xl font-bold mb-2 text-white">
+                <div className="text-6xl mb-2.5 floating-element">🏆</div>
+                <h2 className="serif-font text-3xl sm:text-4xl font-bold mb-1 text-white">
                   Journey Complete
                 </h2>
-                <div className="bg-black/50 rounded-2xl p-5 mb-6 border border-white/10">
-                  <p className="text-3xl font-bold text-white mb-1">{totalCompleted}</p>
-                  <p className="text-gray-400 text-xs mb-3 uppercase tracking-wider">Passionate Tasks Completed</p>
+                <div className="bg-black/50 rounded-2xl p-4 mb-5 border border-white/10">
+                  <p className="text-3xl font-bold text-white mb-0.5">{totalCompleted}</p>
+                  <p className="text-gray-400 text-xs mb-2 uppercase tracking-wider">Passionate Tasks Explored</p>
                   <p className="text-gray-300 text-xs leading-relaxed">
-                    You've journeyed through all 5 sections of romance, touch, tease, and passion. You've deepened your intimacy and ignited a lasting spark!
+                    You've traveled through all 5 realms of romance, touch, tease, and ecstasy together. You've ignited a lasting, passionate bond!
                   </p>
                 </div>
 
-                <button
-                  onClick={resetGame}
-                  className="w-full py-4 rounded-full font-bold text-base tracking-wider uppercase text-white shadow-lg hover:scale-105 transition-all cursor-pointer"
-                  style={{
-                    background: `linear-gradient(135deg, ${theme.primary} 0%, ${theme.primaryDark} 100%)`,
-                    boxShadow: `0 10px 30px ${theme.glow}`
-                  }}
-                >
-                  Play Again 🔄
-                </button>
+                <div className="space-y-2.5">
+                  <button
+                    onClick={onOpenJourney}
+                    className="w-full py-3.5 rounded-full font-bold text-sm tracking-wider uppercase text-white shadow-lg hover:scale-105 transition-all cursor-pointer"
+                    style={{
+                      background: `linear-gradient(135deg, ${theme.primary} 0%, ${theme.primaryDark} 100%)`,
+                      boxShadow: `0 10px 30px ${theme.glow}`
+                    }}
+                  >
+                    📖 Open Love Journey Timeline 🏆
+                  </button>
+
+                  <button
+                    onClick={resetGame}
+                    className="w-full py-3 rounded-full font-bold text-xs uppercase tracking-wider text-gray-300 bg-white/5 hover:bg-white/10 border border-white/10 transition-all cursor-pointer"
+                  >
+                    Play Again 🔄
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        }
+
+        // Love Journey Timeline Modal
+        function LoveJourneyModal({ journeyHistory, totalCompleted, onClose, theme }) {
+          // Group completed tasks by section
+          const grouped = journeyHistory.reduce((acc, item) => {
+            const sec = item.section || 1;
+            if (!acc[sec]) acc[sec] = [];
+            acc[sec].push(item);
+            return acc;
+          }, {});
+
+          return (
+            <div className="modal-overlay" onClick={onClose}>
+              <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+                {/* Modal Header */}
+                <div className="p-4 border-b border-white/10 flex items-center justify-between bg-black/40">
+                  <div>
+                    <h3 className="serif-font text-lg font-bold text-white flex items-center gap-2">
+                      <span>📖</span> Our Love Journey
+                    </h3>
+                    <p className="text-[11px] text-gray-400">
+                      {journeyHistory.length} intimate moments recorded
+                    </p>
+                  </div>
+                  <button
+                    onClick={onClose}
+                    className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 flex items-center justify-center text-sm font-bold transition-all cursor-pointer"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                {/* Timeline Scrollable Content */}
+                <div className="p-5 timeline-scroll flex-1">
+                  {journeyHistory.length === 0 ? (
+                    <div className="text-center py-10">
+                      <span className="text-5xl mb-3 block floating-element">🌹</span>
+                      <h4 className="font-bold text-white text-base mb-1">Your Story Awaits</h4>
+                      <p className="text-xs text-gray-400 max-w-xs mx-auto leading-relaxed">
+                        Complete your first intimate task card and your shared romantic timeline will blossom here!
+                      </p>
+                    </div>
+                  ) : (
+                    <div>
+                      {Object.keys(grouped).map((secKey) => {
+                        const secNum = parseInt(secKey);
+                        const secItems = grouped[secKey];
+                        return (
+                          <div key={secNum} className="mb-6">
+                            {/* Section Milestone Header */}
+                            <div
+                              className="px-3 py-1.5 rounded-xl border mb-3 flex items-center justify-between"
+                              style={{ background: theme.badgeBg, borderColor: theme.border }}
+                            >
+                              <span className="text-xs font-bold" style={{ color: theme.badgeText }}>
+                                {SECTION_META[secNum]?.emoji || `Level ${secNum}`}
+                              </span>
+                              <span className="text-[10px] font-semibold text-gray-400">
+                                {secItems.length} tasks
+                              </span>
+                            </div>
+
+                            {/* Timeline Items */}
+                            <div className="ml-1">
+                              {secItems.map((item, idx) => (
+                                <div key={idx} className="timeline-item">
+                                  <div className="timeline-dot" style={{ backgroundColor: theme.primary }}></div>
+                                  <div className="bg-black/40 p-3 rounded-2xl border border-white/5">
+                                    <div className="flex items-center justify-between mb-1">
+                                      <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                                        Task #{item.taskIndex || idx + 1}
+                                      </span>
+                                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold border ${
+                                        item.partner === 'male'
+                                          ? 'bg-indigo-950 text-cyan-300 border-cyan-500/30'
+                                          : 'bg-pink-950 text-pink-300 border-pink-500/30'
+                                      }`}>
+                                        {item.partner === 'male' ? '🤴 King Led (♂️)' : '👸 Queen Led (♀️)'}
+                                      </span>
+                                    </div>
+                                    <h4 className="text-sm font-bold text-white mb-1">{item.title}</h4>
+                                    <p className="text-[11px] text-gray-300 leading-snug line-clamp-2 mb-1.5">
+                                      {item.description}
+                                    </p>
+                                    <div className="flex items-center justify-between text-[10px] text-gray-400 border-t border-white/5 pt-1">
+                                      <span>{item.category}</span>
+                                      <span>⏱️ {item.completedAt}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                {/* Modal Footer */}
+                <div className="p-3 border-t border-white/10 bg-black/40 text-center">
+                  <button
+                    onClick={onClose}
+                    className="w-full py-2.5 rounded-full text-xs font-bold uppercase tracking-wider text-white shadow-md transition-all cursor-pointer"
+                    style={{ background: `linear-gradient(135deg, ${theme.primary} 0%, ${theme.primaryDark} 100%)` }}
+                  >
+                    Continue Playing ➜
+                  </button>
+                </div>
               </div>
             </div>
           );

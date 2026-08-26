@@ -1,5 +1,6 @@
-const allCards = [
-          // Section 1: Love & Romantic (80 cards)
+{
+// Section 1: Love & Romantic (80 cards)
+  "section_1_love_romantic": [
           { id: 1, category: "Love & Romantic", title: "Whisper Your Admiration", description: "Take a moment to connect. Whisper three things you find romantic about your partner right now—notice their smile, their kindness, their energy. Let them feel truly seen.", timer: 180, intensity: 1, section: 1 },
           { id: 2, category: "Love & Romantic", title: "Eye Contact Meditation", description: "Hold eye contact for 60 seconds while gently holding hands. No words needed. Just breathe together and let your eyes do the talking. This simple act deepens connection like nothing else.", timer: 60, intensity: 1, section: 1 },
           { id: 3, category: "Love & Romantic", title: "Memory Lane Moment", description: "Share one happy memory of the two of you and explain why it still matters. Relive the warmth of that moment together right now.", timer: 300, intensity: 1, section: 1 },
@@ -80,8 +81,10 @@ const allCards = [
           { id: 78, category: "Love & Romantic", title: "Dance in Darkness", description: "Dance together in dim or darkness, relying only on touch and presence. This builds trust and intimacy in a whole new way.", timer: 240, intensity: 1, section: 1 },
           { id: 79, category: "Love & Romantic", title: "Reflection of Love", description: "Tell them how you've changed because of their love. Have you become braver? Kinder? More open? Let them know their love transformed you.", timer: 240, intensity: 1, section: 1 },
           { id: 80, category: "Love & Romantic", title: "Sacred Space Closing", description: "End Section 1 by creating a sacred space together—physically or verbally. This is your sanctuary. You did beautiful work here. Celebrate that.", timer: 180, intensity: 1, section: 1 },
+          ],
           
-          // Section 2: Hug & Kisses (80 cards - abbreviated for space)
+// Section 2: Hug & Kisses (80 cards - abbreviated for space)
+"section_2_hug_kisses": [
           { id: 81, category: "Hug & Kisses", title: "Long Warm Embrace", description: "Give a long, warm full-body hug that lasts at least 60 seconds. Don't rush. Let your bodies settle into each other. This is where safety lives.", timer: 60, intensity: 2, section: 2 },
           { id: 82, category: "Hug & Kisses", title: "Slow Neck Kiss", description: "Kiss the back of their neck slowly for 30 seconds. Feel their skin. Breathe gently. This tender area is surprisingly sensitive—explore it with care.", timer: 30, intensity: 2, section: 2 },
           { id: 83, category: "Hug & Kisses", title: "Forehead to Cheek Trail", description: "Trail light kisses from their forehead down to their cheek. Let each kiss be soft, intentional. You're mapping their face with affection.", timer: 120, intensity: 2, section: 2 },
@@ -162,8 +165,10 @@ const allCards = [
           { id: 158, category: "Hug & Kisses", title: "Soft Moan Kiss", description: "Kiss deeply and allow soft sounds to escape. Vocalize your pleasure. They'll find this incredibly appealing.", timer: 120, intensity: 2, section: 2 },
           { id: 159, category: "Hug & Kisses", title: "Around the Neck Hold Kiss", description: "Hold them around the neck while kissing—not restricting, just intimate contact. Feel their pulse.", timer: 120, intensity: 2, section: 2 },
           { id: 160, category: "Hug & Kisses", title: "Section 2 Complete", description: "You've explored touch and kisses in all their forms. You're building genuine intimacy. Recognize what you've achieved.", timer: 180, intensity: 2, section: 2 },
+          ],
           
-          // Section 3: Strip & Playful (80 cards - abbreviated)
+// Section 3: Strip & Playful (80 cards - abbreviated)
+"section_3_strip_playful": [
           { id: 161, category: "Strip & Playful", title: "First Layer Remove", description: "Slowly remove one item of their clothing while maintaining eye contact. A shirt. A sock. Whatever comes first. Make this moment last. Let them feel desired as each layer falls.", timer: 180, intensity: 3, section: 3 },
           { id: 162, category: "Strip & Playful", title: "Sensual Striptease", description: "Perform a playful striptease to a song of their choice. Move slowly. Make them watch. This is about confidence and seduction. Own your body.", timer: 300, intensity: 3, section: 3 },
           { id: 163, category: "Strip & Playful", title: "Blindfold Feeding", description: "Blindfold them and feed them something by hand—chocolate, fruit, whipped cream. They can't see what's coming. The anticipation intensifies everything.", timer: 240, intensity: 3, section: 3 },
@@ -225,8 +230,10 @@ const allCards = [
           { id: 218, category: "Strip & Playful", title: "Underwear Last", description: "Remove all clothing except underwear, then spend time appreciating their nearly-naked body before the final reveal.", timer: 240, intensity: 3, section: 3 },
           { id: 219, category: "Strip & Playful", title: "Tease Elastic", description: "Tease by playing with the elastic of their underwear before finally removing it. This final boundary moment is intense.", timer: 180, intensity: 3, section: 3 },
           { id: 220, category: "Strip & Playful", title: "Section 3 Intimacy Milestone", description: "You've exposed yourselves—literally and figuratively. You're vulnerable. You're trusting. This is profound intimacy. Honor what you've shared.", timer: 180, intensity: 3, section: 3 },
+            ],
           
-          // Section 4: Fantasy & Extended Play (80 cards - abbreviated)
+// Section 4: Fantasy & Extended Play (80 cards - abbreviated)
+  "section_4_fantasy_extended_play": [
             { id: 221, category: "Fantasy & Extended Play", title: "Deepthroat Practice", description: "Have your partner open wide and take your cock as deep as they can. Hold their head gently and guide them into a slow, wet deepthroat. Praise them every time they take more. Edge yourself while their throat is wrapped around you.", timer: 300, intensity: 4, section: 4 },
             { id: 222, category: "Fantasy & Extended Play", title: "Facesitting Worship", description: "Sit fully on your partner’s face. Grind your pussy or cock against their mouth and tongue. Order them to lick, suck, and devour you while you ride their face. Hold their head in place and use them until you’re dripping or throbbing.", timer: 360, intensity: 4, section: 4 },
             { id: 223, category: "Fantasy & Extended Play", title: "Classic 69", description: "Get into 69 position. Suck each other at the same time—cock in mouth, pussy or cock on tongue. Match rhythms, moan into each other, and edge together without finishing. Keep going until both of you are shaking.", timer: 420, intensity: 4, section: 4 },
@@ -288,8 +295,10 @@ const allCards = [
             { id: 278, category: "Fantasy & Extended Play", title: "Overstimulation After Edge", description: "Edge them to the brink, let them calm for ten seconds, then immediately attack with intense sucking and stroking again. Repeat until they’re oversensitive and begging for release or mercy.", timer: 420, intensity: 4, section: 4 },
             { id: 279, category: "Fantasy & Extended Play", title: "Spit-Roast Fantasy Solo", description: "Role-play a spit-roast: fuck their mouth while describing another cock or toy in their pussy or ass. Use your hand to simulate the second penetration while you face-fuck them.", timer: 360, intensity: 4, section: 4 },
             { id: 280, category: "Fantasy & Extended Play", title: "Final Oral Free-For-All", description: "Ten full minutes of unrestricted oral and manual play. Facesitting, 69, deepthroating, nipple sucking, milking, ass licking—use everything. Edge as many times as you want and only finish when both are ready.", timer: 600, intensity: 4, section: 4 },
+          ],
           
-          // Section 5: Intense & Aftercare (80 cards - abbreviated)
+// Section 5: Intense & Aftercare (80 cards - abbreviated)
+  "section_5_intense_aftercare": [
             { id: 281, category: "Intense & Aftercare", title: "Doggy Style Pounding", description: "Bend your partner over and fuck them hard in doggy style. Grip their hips, pull them back onto you, and spank them between thrusts. Go deep and fast until both of you are moaning loudly.", timer: 420, intensity: 5, section: 5 },
             { id: 282, category: "Intense & Aftercare", title: "Missionary Legs Up", description: "Put their legs over your shoulders and fuck them deep in missionary. Look into their eyes while you bottom out. Grind against their clit or prostate with every thrust.", timer: 360, intensity: 5, section: 5 },
             { id: 283, category: "Intense & Aftercare", title: "Cowgirl Grind", description: "Have your partner ride you in cowgirl. Let them control the pace at first, then grab their hips and fuck up into them hard. Make them bounce and grind until they’re shaking.", timer: 420, intensity: 5, section: 5 },
@@ -371,4 +380,5 @@ const allCards = [
             { id: 358, category: "Intense & Aftercare", title: "Warm Cloth and Kiss Ritual", description: "Clean both of you with a warm cloth, then follow every wiped area with a soft kiss. Turn aftercare into a gentle, loving ritual.", timer: 240, intensity: 5, section: 5 },
             { id: 359, category: "Intense & Aftercare", title: "Open Needs Question", description: "Ask softly: “What do you need from me right now?” Then give exactly that—tighter hold, more space, water, silence, or more words—without hesitation.", timer: 180, intensity: 5, section: 5 },
             { id: 360, category: "Intense & Aftercare", title: "Complete Session Close", description: "End fully: long cuddle under a blanket, shared water, mutual soft affirmations, and quiet rest. You’ve fucked with full intensity and cared for each other completely. Stay close as long as you both want.", timer: 600, intensity: 5, section: 5 }
-        ];
+          ]
+}

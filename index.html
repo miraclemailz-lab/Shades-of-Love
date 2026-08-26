@@ -56,6 +56,16 @@
             50% { transform: scale(1.1); }
         }
 
+        @keyframes pulseHint {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 12px rgba(236, 72, 153, 0.8)); }
+        }
+
+        @keyframes rotateSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         .slide-up {
             animation: slideInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -72,6 +82,10 @@
             animation: pop 0.4s ease-out;
         }
 
+        .pulse-hint {
+            animation: pulseHint 2s infinite ease-in-out;
+        }
+
         .gradient-pink {
             background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
         }
@@ -80,21 +94,81 @@
             background: linear-gradient(135deg, #1a0f2e 0%, #2d1b2e 100%);
         }
 
-        .card-container {
-            perspective: 1000px;
+        /* 3D Card Flip Architecture */
+        .card-flip-container {
+            perspective: 1200px;
+            width: 100%;
         }
 
-        .task-card {
-            background: linear-gradient(135deg, rgba(45, 27, 46, 0.95) 0%, rgba(26, 15, 46, 0.95) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(236, 72, 153, 0.2);
+        .card-flip-inner {
+            position: relative;
+            width: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.7s cubic-bezier(0.34, 1.4, 0.64, 1);
+            min-height: 480px;
+        }
+
+        .card-flip-inner.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            width: 100%;
+            height: 100%;
+            min-height: 480px;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
             border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .card-face-back {
+            transform: rotateY(0deg);
+            cursor: pointer;
+            background: linear-gradient(145deg, rgba(38, 18, 48, 0.97) 0%, rgba(22, 11, 38, 0.98) 100%);
+            border: 2px solid rgba(236, 72, 153, 0.35);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), inset 0 0 35px rgba(236, 72, 153, 0.12);
+            transition: all 0.35s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             position: relative;
             overflow: hidden;
         }
 
-        .task-card::before {
+        .card-face-back::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(236, 72, 153, 0.12) 0%, transparent 60%);
+            pointer-events: none;
+            animation: rotateSlow 25s linear infinite;
+        }
+
+        .card-face-back:hover {
+            border-color: rgba(236, 72, 153, 0.7);
+            box-shadow: 0 25px 70px rgba(236, 72, 153, 0.3), inset 0 0 40px rgba(236, 72, 153, 0.2);
+            transform: translateY(-4px) scale(1.01);
+        }
+
+        .card-face-front {
+            transform: rotateY(180deg);
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, rgba(45, 27, 46, 0.97) 0%, rgba(26, 15, 46, 0.98) 100%);
+            border: 1px solid rgba(236, 72, 153, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-face-front::before {
             content: '';
             position: absolute;
             top: 0;
@@ -103,6 +177,14 @@
             bottom: 0;
             background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, transparent 50%, rgba(219, 39, 119, 0.05) 100%);
             pointer-events: none;
+        }
+
+        .partner-card {
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .partner-card:hover {
+            transform: translateY(-4px) scale(1.02);
         }
 
         .panic-button {
@@ -251,6 +333,10 @@
                 height: 44px;
                 font-size: 20px;
             }
+
+            .card-flip-inner, .card-face {
+                min-height: 440px;
+            }
         }
     </style>
 </head>
@@ -261,7 +347,9 @@
         const { useState, useEffect, useRef } = React;
 
         function App() {
-          const [gameState, setGameState] = useState('onboarding');
+          const [gameState, setGameState] = useState('onboarding'); // 'onboarding' | 'whoStarts' | 'playing' | 'sectionComplete' | 'gameComplete'
+          const [currentTurn, setCurrentTurn] = useState('male'); // 'male' | 'female'
+          const [isCardFlipped, setIsCardFlipped] = useState(false);
           const [currentSection, setCurrentSection] = useState(1);
           const [completedTasksInSection, setCompletedTasksInSection] = useState(0);
           const [availableCards, setAvailableCards] = useState([]);
@@ -312,16 +400,33 @@
             setCurrentCard(shuffled[0]);
             setCompletedTasksInSection(0);
             setCurrentSection(sectionNum);
+            setIsCardFlipped(false);
           };
 
-          const startGame = () => {
+          const goToWhoStarts = () => {
             if (allCards.length === 0) {
               alert('Cards not loaded yet. Please refresh.');
               return;
             }
+            setGameState('whoStarts');
+          };
+
+          const startGame = (startingPartner) => {
             initializeSection(1);
+            setCurrentTurn(startingPartner || 'male');
+            setIsCardFlipped(false);
             setGameState('playing');
             setTotalCompleted(0);
+          };
+
+          const handleCardFlip = () => {
+            if (!isCardFlipped) {
+              setIsCardFlipped(true);
+            }
+          };
+
+          const handleSwitchTurn = () => {
+            setCurrentTurn(prev => prev === 'male' ? 'female' : 'male');
           };
 
           const handleSkip = () => {
@@ -333,6 +438,9 @@
               setCurrentCard(reshuffled[0]);
               setCardAnimation(null);
               setTimerActive(false);
+              setIsCardFlipped(false);
+              // Alternate turn to partner
+              setCurrentTurn(prev => prev === 'male' ? 'female' : 'male');
             }, 500);
           };
 
@@ -342,6 +450,9 @@
               setTimerActive(false);
               setCompletedTasksInSection(prev => prev + 1);
               setTotalCompleted(prev => prev + 1);
+              setIsCardFlipped(false);
+              // Alternate turn to partner
+              setCurrentTurn(prev => prev === 'male' ? 'female' : 'male');
 
               const remaining = availableCards.slice(1);
               if (remaining.length === 0 || completedTasksInSection + 1 >= 10) {
@@ -374,6 +485,7 @@
             setCurrentSection(1);
             setCompletedTasksInSection(0);
             setTotalCompleted(0);
+            setIsCardFlipped(false);
           };
 
           const formatTime = (seconds) => {
@@ -395,7 +507,11 @@
               <button onClick={panicClick} className="panic-button">✕</button>
 
               {gameState === 'onboarding' && (
-                <OnboardingScreen startGame={startGame} />
+                <OnboardingScreen onNext={goToWhoStarts} />
+              )}
+
+              {gameState === 'whoStarts' && (
+                <WhoStartsFirstScreen onSelectStarter={startGame} />
               )}
 
               {gameState === 'playing' && currentCard && (
@@ -407,6 +523,10 @@
                   cardAnimation={cardAnimation}
                   timerActive={timerActive}
                   timeRemaining={timeRemaining}
+                  currentTurn={currentTurn}
+                  isCardFlipped={isCardFlipped}
+                  onFlipCard={handleCardFlip}
+                  onSwitchTurn={handleSwitchTurn}
                   onSkip={handleSkip}
                   onComplete={handleComplete}
                   onStartTimer={() => {
@@ -434,7 +554,7 @@
           );
         }
 
-        function OnboardingScreen({ startGame }) {
+        function OnboardingScreen({ onNext }) {
           const [confirmed, setConfirmed] = useState(false);
 
           return (
@@ -468,17 +588,17 @@
                     onChange={(e) => setConfirmed(e.target.checked)}
                     className="w-5 h-5 rounded accent-pink-500 mt-1"
                   />
-                  <label htmlFor="ageConfirm" className="text-xs text-gray-400">
+                  <label htmlFor="ageConfirm" className="text-xs text-gray-400 cursor-pointer">
                     I confirm I am 18+ and ready to explore intimacy responsibly with my partner.
                   </label>
                 </div>
 
                 <button
-                  onClick={startGame}
+                  onClick={onNext}
                   disabled={!confirmed}
                   className={`w-full py-4 rounded-full font-bold text-lg transition-all ${
                     confirmed
-                      ? 'gradient-pink text-white hover:shadow-lg hover:shadow-pink-500/50'
+                      ? 'gradient-pink text-white hover:shadow-lg hover:shadow-pink-500/50 cursor-pointer'
                       : 'bg-gray-700 text-gray-400 cursor-not-allowed'
                   }`}
                 >
@@ -489,19 +609,202 @@
           );
         }
 
-        function PlayingScreen({ currentCard, currentSection, completedInSection, totalCompleted, cardAnimation, timerActive, timeRemaining, onSkip, onComplete, onStartTimer, formatTime, sectionNames }) {
-          const circumference = 2 * Math.PI * 45;
-          const strokeDashoffset = circumference - (timeRemaining / currentCard.timer) * circumference;
-          const intensityDots = Array(5).fill(0).map((_, i) => i < (currentCard.intensity || 2));
+        function WhoStartsFirstScreen({ onSelectStarter }) {
+          const [selectedPartner, setSelectedPartner] = useState(null); // 'male' | 'female'
+          const [isSpinning, setIsSpinning] = useState(false);
+          const [spinHighlight, setSpinHighlight] = useState(null);
+          const [revealed, setRevealed] = useState(false);
+
+          const handleDirectSelect = (gender) => {
+            if (isSpinning) return;
+            setSelectedPartner(gender);
+            setRevealed(true);
+          };
+
+          const handleSpinFate = () => {
+            if (isSpinning) return;
+            setIsSpinning(true);
+            setRevealed(false);
+            setSelectedPartner(null);
+
+            let count = 0;
+            const totalSteps = 16;
+            const intervalTime = 90;
+
+            const interval = setInterval(() => {
+              count++;
+              const current = count % 2 === 0 ? 'male' : 'female';
+              setSpinHighlight(current);
+
+              if (count >= totalSteps) {
+                clearInterval(interval);
+                const finalWinner = Math.random() < 0.5 ? 'male' : 'female';
+                setSpinHighlight(finalWinner);
+                setSelectedPartner(finalWinner);
+                setIsSpinning(false);
+                setRevealed(true);
+              }
+            }, intervalTime);
+          };
+
+          const handleStartGame = () => {
+            if (!selectedPartner) return;
+            onSelectStarter(selectedPartner);
+          };
 
           return (
-            <div className="w-full max-w-md mx-auto flex flex-col items-center justify-center gap-8">
-              {/* Progress & Section Info */}
+            <div className="w-full max-w-md mx-auto slide-up">
+              <div className="onboarding-content p-8 text-center relative overflow-hidden">
+                <div className="mb-6">
+                  <span className="text-xs uppercase tracking-widest text-pink-400 font-semibold mb-2 block">
+                    Game Setup
+                  </span>
+                  <h2 className="serif-font text-3xl sm:text-4xl font-bold mb-2 bg-gradient-to-r from-pink-300 via-rose-300 to-purple-300 bg-clip-text text-transparent">
+                    Who Starts First?
+                  </h2>
+                  <p className="text-gray-300 text-xs sm:text-sm">
+                    Choose who will take the lead to reveal and start the very first task.
+                  </p>
+                </div>
+
+                {/* Partner Choices */}
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  {/* Male / He Option */}
+                  <div
+                    onClick={() => handleDirectSelect('male')}
+                    className={`partner-card cursor-pointer p-5 rounded-2xl border text-center transition-all ${
+                      (selectedPartner === 'male' || spinHighlight === 'male')
+                        ? 'bg-gradient-to-b from-indigo-950/90 to-purple-950/90 border-cyan-400 shadow-lg shadow-cyan-500/30 scale-105'
+                        : 'bg-black/30 border-indigo-500/30 hover:border-indigo-400/60'
+                    }`}
+                  >
+                    <div className="text-4xl mb-2">♂️</div>
+                    <h3 className="font-bold text-white text-base mb-1">He / Him</h3>
+                    <p className="text-xs text-indigo-300">Male Partner</p>
+                    {selectedPartner === 'male' && (
+                      <span className="inline-block mt-2 text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/40">
+                        Selected ✓
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Female / She Option */}
+                  <div
+                    onClick={() => handleDirectSelect('female')}
+                    className={`partner-card cursor-pointer p-5 rounded-2xl border text-center transition-all ${
+                      (selectedPartner === 'female' || spinHighlight === 'female')
+                        ? 'bg-gradient-to-b from-pink-950/90 to-rose-950/90 border-pink-400 shadow-lg shadow-pink-500/30 scale-105'
+                        : 'bg-black/30 border-pink-500/30 hover:border-pink-400/60'
+                    }`}
+                  >
+                    <div className="text-4xl mb-2">♀️</div>
+                    <h3 className="font-bold text-white text-base mb-1">She / Her</h3>
+                    <p className="text-xs text-pink-300">Female Partner</p>
+                    {selectedPartner === 'female' && (
+                      <span className="inline-block mt-2 text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-pink-500/20 text-pink-300 border border-pink-400/40">
+                        Selected ✓
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Fate / Random Decision Button */}
+                <div className="mb-6">
+                  <button
+                    onClick={handleSpinFate}
+                    disabled={isSpinning}
+                    className={`w-full py-3 px-4 rounded-xl border border-pink-500/40 bg-black/40 text-pink-200 text-sm font-semibold flex items-center justify-center gap-2 transition-all ${
+                      isSpinning ? 'opacity-75 cursor-wait' : 'hover:bg-pink-950/40 hover:border-pink-400 cursor-pointer'
+                    }`}
+                  >
+                    <span className="text-lg">🎲</span>
+                    {isSpinning ? 'Consulting the Oracle...' : 'Let Fate Decide (Random)'}
+                  </button>
+                </div>
+
+                {/* Announcement Card once revealed */}
+                {revealed && selectedPartner && (
+                  <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-pink-950/60 to-purple-950/60 border border-pink-500/40 slide-up">
+                    <p className="text-xs uppercase tracking-wider text-pink-400 font-bold mb-1">
+                      Ready to Begin
+                    </p>
+                    <p className="text-lg font-bold text-white">
+                      🎉 {selectedPartner === 'male' ? 'He / Him (♂️)' : 'She / Her (♀️)'} will flip first!
+                    </p>
+                    <p className="text-xs text-gray-300 mt-1">
+                      Partners will automatically alternate turns after every task.
+                    </p>
+                  </div>
+                )}
+
+                {/* Start Game Action */}
+                <button
+                  onClick={handleStartGame}
+                  disabled={!selectedPartner || isSpinning}
+                  className={`w-full py-4 rounded-full font-bold text-lg transition-all ${
+                    selectedPartner && !isSpinning
+                      ? 'gradient-pink text-white hover:shadow-lg hover:shadow-pink-500/50 cursor-pointer'
+                      : 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                  }`}
+                >
+                  {selectedPartner ? "Start Game ➜" : "Select Who Starts"}
+                </button>
+              </div>
+            </div>
+          );
+        }
+
+        function PlayingScreen({
+          currentCard,
+          currentSection,
+          completedInSection,
+          totalCompleted,
+          cardAnimation,
+          timerActive,
+          timeRemaining,
+          currentTurn,
+          isCardFlipped,
+          onFlipCard,
+          onSwitchTurn,
+          onSkip,
+          onComplete,
+          onStartTimer,
+          formatTime,
+          sectionNames
+        }) {
+          const circumference = 2 * Math.PI * 45;
+          const strokeDashoffset = circumference - (timeRemaining / (currentCard.timer || 180)) * circumference;
+          const intensityDots = Array(5).fill(0).map((_, i) => i < (currentCard.intensity || 2));
+
+          const partnerLabel = currentTurn === 'male' ? "His Turn (♂️)" : "Her Turn (♀️)";
+          const partnerAction = currentTurn === 'male' ? "He flips & leads" : "She flips & leads";
+
+          return (
+            <div className="w-full max-w-md mx-auto flex flex-col items-center justify-center gap-6">
+              {/* Top Header: Section + Active Turn Pill + Task Progress */}
               <div className="w-full">
-                <div className="flex justify-between items-center mb-4">
+                <div className="flex justify-between items-center mb-3">
                   <span className="badge">{sectionNames[currentSection]}</span>
+                  
+                  {/* Interactive Turn Switch Badge */}
+                  <button
+                    onClick={onSwitchTurn}
+                    title="Click to switch partner turn manually"
+                    className={`text-xs px-3 py-1.5 rounded-full font-semibold border flex items-center gap-1.5 transition-all hover:scale-105 cursor-pointer ${
+                      currentTurn === 'male'
+                        ? 'bg-indigo-950/80 border-cyan-400/50 text-cyan-300 shadow-sm shadow-cyan-500/20'
+                        : 'bg-pink-950/80 border-pink-400/50 text-pink-300 shadow-sm shadow-pink-500/20'
+                    }`}
+                  >
+                    <span>{currentTurn === 'male' ? '♂️' : '♀️'}</span>
+                    <span>{currentTurn === 'male' ? 'His Turn' : 'Her Turn'}</span>
+                    <span className="text-[10px] opacity-70">⇄</span>
+                  </button>
+
                   <span className="text-xs text-gray-400">Task {completedInSection}/10</span>
                 </div>
+
+                {/* Progress Bar */}
                 <div className="w-full h-1 bg-gray-800 rounded-full overflow-hidden border border-pink-500/20">
                   <div 
                     className="h-full gradient-pink transition-all duration-300"
@@ -510,87 +813,162 @@
                 </div>
               </div>
 
-              {/* Card */}
-              <div className={`w-full ${cardAnimation ? (cardAnimation === 'skip' ? 'swipe-left' : 'swipe-right') : ''}`}>
-                <div className="task-card p-10 min-h-96 flex flex-col justify-between relative">
-                  {/* Top Section */}
-                  <div>
-                    <div className="flex items-center justify-between mb-6">
-                      <span className="timer-display">{currentCard.category}</span>
-                      <div className="intensity-indicator">
-                        {intensityDots.map((active, i) => (
-                          <div key={i} className={`intensity-dot ${active ? 'active' : ''}`}></div>
-                        ))}
+              {/* 3D Flip Card Container */}
+              <div className={`card-flip-container ${cardAnimation ? (cardAnimation === 'skip' ? 'swipe-left' : 'swipe-right') : ''}`}>
+                <div className={`card-flip-inner ${isCardFlipped ? 'is-flipped' : ''}`}>
+                  
+                  {/* CARD BACK (Facedown - Tap to Reveal) */}
+                  <div
+                    onClick={onFlipCard}
+                    className="card-face card-face-back p-8 flex flex-col justify-between"
+                  >
+                    {/* Card Back Top Badge */}
+                    <div className="flex items-center justify-between z-10">
+                      <span className="timer-display">{sectionNames[currentSection]}</span>
+                      <span className={`text-xs px-2.5 py-1 rounded-full font-bold border ${
+                        currentTurn === 'male'
+                          ? 'bg-indigo-900/60 border-cyan-400/40 text-cyan-300'
+                          : 'bg-pink-900/60 border-pink-400/40 text-pink-300'
+                      }`}>
+                        {currentTurn === 'male' ? '♂️ He Leads' : '♀️ She Leads'}
+                      </span>
+                    </div>
+
+                    {/* Card Back Center Emblem */}
+                    <div className="my-auto text-center z-10 flex flex-col items-center">
+                      <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-pink-600/30 to-purple-600/30 border border-pink-400/40 flex items-center justify-center mb-4 pulse-hint shadow-lg shadow-pink-500/20">
+                        <span className="text-4xl">{currentTurn === 'male' ? '💋' : '🔥'}</span>
+                      </div>
+                      
+                      <h2 className="serif-font text-3xl font-bold text-white mb-2 tracking-wide">
+                        69 Shades
+                      </h2>
+                      <p className="text-xs uppercase tracking-widest text-pink-300 font-semibold mb-6">
+                        Secret Intimate Task
+                      </p>
+
+                      <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-pink-500/20 border border-pink-400/50 text-pink-200 text-sm font-semibold pulse-hint">
+                        <span>✨</span>
+                        <span>Tap to Reveal Task</span>
+                        <span>✨</span>
                       </div>
                     </div>
 
-                    <h2 className="serif-font text-3xl font-bold text-white mb-6 leading-tight">
-                      {currentCard.title}
-                    </h2>
-
-                    <p className="text-gray-300 text-sm leading-relaxed line-clamp-4">
-                      {currentCard.description}
-                    </p>
+                    {/* Card Back Bottom Info */}
+                    <div className="text-center text-xs text-gray-400 z-10">
+                      <p>Active Partner: <strong className="text-pink-300">{partnerLabel}</strong></p>
+                      <p className="text-[11px] text-gray-500 mt-0.5">Tap anywhere on the card to flip</p>
+                    </div>
                   </div>
 
-                  {/* Timer Section */}
-                  <div className="mt-8 flex flex-col items-center justify-center">
-                    {!timerActive ? (
-                      <div className="text-center">
-                        <p className="text-gray-400 text-xs uppercase mb-3">Recommended time</p>
-                        <p className="text-4xl font-bold gradient-pink bg-clip-text text-transparent mb-4">
-                          {formatTime(currentCard.timer)}
-                        </p>
-                        <button
-                          onClick={onStartTimer}
-                          className="gradient-pink text-white px-8 py-3 rounded-full font-bold text-sm hover:shadow-lg hover:shadow-pink-500/50 transition-all"
-                        >
-                          Start Timer
-                        </button>
+                  {/* CARD FRONT (Revealed Task Details) */}
+                  <div className="card-face card-face-front p-8 flex flex-col justify-between">
+                    {/* Top Section */}
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="timer-display">{currentCard.category}</span>
+                        <div className="intensity-indicator">
+                          {intensityDots.map((active, i) => (
+                            <div key={i} className={`intensity-dot ${active ? 'active' : ''}`}></div>
+                          ))}
+                        </div>
                       </div>
-                    ) : (
-                      <div className="text-center">
-                        <svg className="progress-ring w-32 h-32 mx-auto" width="140" height="140">
-                          <circle
-                            className="progress-ring-circle"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                            fill="transparent"
-                            r="45"
-                            cx="70"
-                            cy="70"
-                            style={{ strokeDasharray: circumference, strokeDashoffset }}
-                          />
-                          <text
-                            x="70"
-                            y="70"
-                            textAnchor="middle"
-                            dy="0.3em"
-                            className="text-2xl font-bold"
-                            fill="#ec4899"
+
+                      <div className="mb-2 flex items-center gap-2">
+                        <span className={`text-[11px] px-2 py-0.5 rounded-md font-bold uppercase ${
+                          currentTurn === 'male'
+                            ? 'bg-cyan-950 text-cyan-300 border border-cyan-500/30'
+                            : 'bg-pink-950 text-pink-300 border border-pink-500/30'
+                        }`}>
+                          {partnerAction}
+                        </span>
+                      </div>
+
+                      <h2 className="serif-font text-2xl sm:text-3xl font-bold text-white mb-4 leading-snug">
+                        {currentCard.title}
+                      </h2>
+
+                      <p className="text-gray-300 text-sm leading-relaxed max-h-36 overflow-y-auto pr-1">
+                        {currentCard.description}
+                      </p>
+                    </div>
+
+                    {/* Timer Section */}
+                    <div className="mt-4 flex flex-col items-center justify-center">
+                      {!timerActive ? (
+                        <div className="text-center">
+                          <p className="text-gray-400 text-xs uppercase mb-1">Recommended time</p>
+                          <p className="text-3xl font-bold gradient-pink bg-clip-text text-transparent mb-3">
+                            {formatTime(currentCard.timer)}
+                          </p>
+                          <button
+                            onClick={onStartTimer}
+                            className="gradient-pink text-white px-6 py-2.5 rounded-full font-bold text-sm hover:shadow-lg hover:shadow-pink-500/50 transition-all cursor-pointer"
                           >
-                            {formatTime(timeRemaining)}
-                          </text>
-                        </svg>
-                      </div>
-                    )}
+                            Start Timer
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="text-center">
+                          <svg className="progress-ring w-28 h-28 mx-auto" width="120" height="120">
+                            <circle
+                              className="progress-ring-circle"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                              fill="transparent"
+                              r="45"
+                              cx="60"
+                              cy="60"
+                              style={{ strokeDasharray: circumference, strokeDashoffset }}
+                            />
+                            <text
+                              x="60"
+                              y="60"
+                              textAnchor="middle"
+                              dy="0.3em"
+                              className="text-xl font-bold"
+                              fill="#ec4899"
+                            >
+                              {formatTime(timeRemaining)}
+                            </text>
+                          </svg>
+                        </div>
+                      )}
+                    </div>
                   </div>
+
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-6 justify-center items-center">
-                <button onClick={onSkip} className="action-button skip" title="Skip">
-                  ↻
-                </button>
-                <button onClick={onComplete} className="action-button love" title="Complete">
-                  ♥
-                </button>
+              <div className="flex flex-col items-center gap-2">
+                <div className="flex gap-6 justify-center items-center">
+                  <button
+                    onClick={isCardFlipped ? onSkip : onFlipCard}
+                    className="action-button skip"
+                    title={isCardFlipped ? "Skip Task" : "Reveal Card First"}
+                  >
+                    ↻
+                  </button>
+                  <button
+                    onClick={isCardFlipped ? onComplete : onFlipCard}
+                    className="action-button love"
+                    title={isCardFlipped ? "Complete Task" : "Reveal Card First"}
+                  >
+                    ♥
+                  </button>
+                </div>
+                
+                <p className="text-xs text-gray-400">
+                  {!isCardFlipped 
+                    ? "👆 Tap card to flip & reveal task" 
+                    : "Tap ♥ when completed (turns will switch)"}
+                </p>
               </div>
 
               {/* Stats */}
-              <div className="text-center text-gray-400 text-sm">
-                <p>{totalCompleted} tasks completed</p>
+              <div className="text-center text-gray-400 text-xs">
+                <p>{totalCompleted} tasks completed in total</p>
               </div>
             </div>
           );
@@ -599,21 +977,21 @@
         function SectionCompleteScreen({ sectionNum, totalCompleted, nextSection, sectionNames }) {
           return (
             <div className="w-full max-w-md mx-auto slide-up">
-              <div className="onboarding-content p-12 text-center">
+              <div className="onboarding-content p-10 text-center">
                 <div className="section-complete-illustration">🎉</div>
                 <h2 className="serif-font text-4xl font-bold mb-2 bg-gradient-to-r from-pink-300 to-rose-400 bg-clip-text text-transparent">
                   Excellent!
                 </h2>
                 <p className="text-gray-300 mb-6">
-                  Section {sectionNum} complete
+                  Section {sectionNum} ({sectionNames[sectionNum]}) complete
                 </p>
                 <div className="bg-black/30 rounded-lg p-6 mb-8 border border-pink-500/20">
-                  <p className="text-2xl font-bold text-pink-300 mb-2">{totalCompleted}</p>
+                  <p className="text-3xl font-bold text-pink-300 mb-2">{totalCompleted}</p>
                   <p className="text-gray-400 text-sm">tasks completed so far</p>
                 </div>
                 <button
                   onClick={nextSection}
-                  className="w-full gradient-pink text-white py-4 rounded-full font-bold hover:shadow-lg hover:shadow-pink-500/50 transition-all"
+                  className="w-full gradient-pink text-white py-4 rounded-full font-bold hover:shadow-lg hover:shadow-pink-500/50 transition-all cursor-pointer"
                 >
                   {sectionNum < 5 ? `Continue to Section ${sectionNum + 1}` : 'View Summary'}
                 </button>
@@ -625,27 +1003,25 @@
         function GameCompleteScreen({ totalCompleted, resetGame }) {
           return (
             <div className="w-full max-w-md mx-auto slide-up">
-              <div className="onboarding-content p-12 text-center">
+              <div className="onboarding-content p-10 text-center">
                 <div className="section-complete-illustration">✨</div>
-                <h2 className="serif-font text-4xl font-bold mb-6 bg-gradient-to-r from-pink-300 via-pink-400 to-rose-400 bg-clip-text text-transparent">
+                <h2 className="serif-font text-4xl font-bold mb-4 bg-gradient-to-r from-pink-300 via-pink-400 to-rose-400 bg-clip-text text-transparent">
                   Journey Complete
                 </h2>
-                <div className="bg-black/30 rounded-lg p-8 mb-8 border border-pink-500/20">
-                  <p className="text-5xl font-bold text-pink-300 mb-2">🏆</p>
-                  <p className="text-2xl font-bold text-white mb-2">{totalCompleted}</p>
-                  <p className="text-gray-400 text-sm mb-4">Tasks Completed</p>
-                  <p className="text-gray-400 text-xs leading-relaxed">
+                <div className="bg-black/30 rounded-lg p-6 mb-6 border border-pink-500/20">
+                  <p className="text-4xl font-bold text-pink-300 mb-2">🏆</p>
+                  <p className="text-2xl font-bold text-white mb-1">{totalCompleted}</p>
+                  <p className="text-gray-400 text-xs mb-3">Tasks Completed</p>
+                  <p className="text-gray-300 text-xs leading-relaxed">
                     You've explored all 5 sections of intimate connection. You've created trust, communication, and genuine intimacy together.
                   </p>
                 </div>
-                <div className="space-y-3">
-                  <button
-                    onClick={resetGame}
-                    className="w-full gradient-pink text-white py-3 rounded-full font-bold hover:shadow-lg hover:shadow-pink-500/50 transition-all"
-                  >
-                    Play Again
-                  </button>
-                </div>
+                <button
+                  onClick={resetGame}
+                  className="w-full gradient-pink text-white py-3.5 rounded-full font-bold hover:shadow-lg hover:shadow-pink-500/50 transition-all cursor-pointer"
+                >
+                  Play Again
+                </button>
               </div>
             </div>
           );

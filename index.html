@@ -15,21 +15,33 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --theme-bg: linear-gradient(135deg, #180508 0%, #0f0205 50%, #050002 100%);
+            --theme-primary: #ef4444;
+            --theme-primary-dark: #b91c1c;
+            --theme-glow: rgba(239, 68, 68, 0.45);
+            --theme-border: rgba(239, 68, 68, 0.35);
+            --theme-badge-bg: rgba(239, 68, 68, 0.18);
+            --theme-badge-text: #fca5a5;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-            background: linear-gradient(135deg, #2d1b2e 0%, #1a0f2e 50%, #0f0a1a 100%);
-            color: #e0e0e0;
+            background: #0d0408;
+            color: #f1f1f1;
             min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.6s ease;
         }
 
         .serif-font {
-            font-family: 'Georgia', 'Garamond', serif;
+            font-family: 'Georgia', 'Garamond', 'Playfair Display', serif;
         }
 
         @keyframes slideInUp {
             from {
                 opacity: 0;
-                transform: translateY(50px);
+                transform: translateY(40px);
             }
             to {
                 opacity: 1;
@@ -40,25 +52,31 @@
         @keyframes cardSwipeLeft {
             to {
                 opacity: 0;
-                transform: translateX(-500px) rotate(-20deg);
+                transform: translateX(-400px) rotate(-18deg);
             }
         }
 
         @keyframes cardSwipeRight {
             to {
                 opacity: 0;
-                transform: translateX(500px) rotate(20deg);
+                transform: translateX(400px) rotate(18deg);
             }
         }
 
         @keyframes pop {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            50% { transform: scale(1.08); }
         }
 
-        @keyframes pulseHint {
-            0%, 100% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 12px rgba(236, 72, 153, 0.8)); }
+        @keyframes pulseGlow {
+            0%, 100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 10px var(--theme-primary));
+            }
+            50% {
+                transform: scale(1.06);
+                filter: drop-shadow(0 0 25px var(--theme-primary));
+            }
         }
 
         @keyframes rotateSlow {
@@ -66,16 +84,34 @@
             to { transform: rotate(360deg); }
         }
 
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(3deg); }
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(0.6);
+                opacity: 0;
+            }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.6; }
+            100% {
+                transform: translateY(-20vh) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
         .slide-up {
-            animation: slideInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: slideInUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .swipe-left {
-            animation: cardSwipeLeft 0.5s ease-out forwards;
+            animation: cardSwipeLeft 0.45s ease-out forwards;
         }
 
         .swipe-right {
-            animation: cardSwipeRight 0.5s ease-out forwards;
+            animation: cardSwipeRight 0.45s ease-out forwards;
         }
 
         .pop-animation {
@@ -83,29 +119,27 @@
         }
 
         .pulse-hint {
-            animation: pulseHint 2s infinite ease-in-out;
+            animation: pulseGlow 2.4s infinite ease-in-out;
         }
 
-        .gradient-pink {
-            background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+        .floating-element {
+            animation: floatSlow 4s infinite ease-in-out;
         }
 
-        .gradient-dark {
-            background: linear-gradient(135deg, #1a0f2e 0%, #2d1b2e 100%);
-        }
-
-        /* 3D Card Flip Architecture */
+        /* 3D Card Flip Architecture - Absolute Inset Alignment */
         .card-flip-container {
             perspective: 1200px;
             width: 100%;
+            max-width: 440px;
+            margin: 0 auto;
         }
 
         .card-flip-inner {
             position: relative;
             width: 100%;
+            height: 520px;
             transform-style: preserve-3d;
-            transition: transform 0.7s cubic-bezier(0.34, 1.4, 0.64, 1);
-            min-height: 480px;
+            transition: transform 0.7s cubic-bezier(0.34, 1.35, 0.64, 1);
         }
 
         .card-flip-inner.is-flipped {
@@ -113,26 +147,27 @@
         }
 
         .card-face {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
-            min-height: 480px;
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
             border-radius: 30px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2rem 1.75rem;
+            backdrop-filter: blur(20px);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
         }
 
         .card-face-back {
             transform: rotateY(0deg);
+            z-index: 2;
             cursor: pointer;
-            background: linear-gradient(145deg, rgba(38, 18, 48, 0.97) 0%, rgba(22, 11, 38, 0.98) 100%);
-            border: 2px solid rgba(236, 72, 153, 0.35);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), inset 0 0 35px rgba(236, 72, 153, 0.12);
-            transition: all 0.35s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65), inset 0 0 35px rgba(255, 255, 255, 0.04);
         }
 
         .card-face-back::before {
@@ -142,30 +177,21 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle at center, rgba(236, 72, 153, 0.12) 0%, transparent 60%);
+            background: radial-gradient(circle at center, var(--theme-glow) 0%, transparent 60%);
             pointer-events: none;
-            animation: rotateSlow 25s linear infinite;
+            opacity: 0.45;
+            animation: rotateSlow 30s linear infinite;
         }
 
         .card-face-back:hover {
-            border-color: rgba(236, 72, 153, 0.7);
-            box-shadow: 0 25px 70px rgba(236, 72, 153, 0.3), inset 0 0 40px rgba(236, 72, 153, 0.2);
-            transform: translateY(-4px) scale(1.01);
+            transform: scale(1.015);
+            box-shadow: 0 25px 70px var(--theme-glow), inset 0 0 45px rgba(255, 255, 255, 0.08);
         }
 
         .card-face-front {
             transform: rotateY(180deg);
-            position: absolute;
-            top: 0;
-            left: 0;
-            background: linear-gradient(135deg, rgba(45, 27, 46, 0.97) 0%, rgba(26, 15, 46, 0.98) 100%);
-            border: 1px solid rgba(236, 72, 153, 0.3);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.12);
         }
 
         .card-face-front::before {
@@ -175,167 +201,134 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, transparent 50%, rgba(219, 39, 119, 0.05) 100%);
+            background: linear-gradient(135deg, var(--theme-glow) 0%, transparent 60%);
+            opacity: 0.25;
             pointer-events: none;
         }
 
+        /* Glassmorphism Onboarding & Setup Container */
+        .onboarding-content {
+            backdrop-filter: blur(24px);
+            border-radius: 32px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        /* Neon Ring Buttons (Inspired by Reference UI) */
+        .neon-ring-btn {
+            position: relative;
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: rgba(18, 10, 20, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .neon-ring-btn::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid var(--theme-primary);
+            opacity: 0.35;
+            transition: all 0.3s ease;
+        }
+
+        .neon-ring-btn:hover {
+            transform: scale(1.12);
+            box-shadow: 0 12px 35px var(--theme-glow);
+        }
+
+        .neon-ring-btn:hover::after {
+            inset: -6px;
+            opacity: 0.95;
+            box-shadow: 0 0 16px var(--theme-primary);
+        }
+
+        .neon-ring-btn.primary {
+            background: var(--theme-bg);
+            border-color: var(--theme-primary);
+        }
+
+        /* Swatch Bar Styles */
+        .swatch-pill {
+            backdrop-filter: blur(16px);
+            background: rgba(15, 8, 18, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .swatch-btn {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .swatch-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .swatch-btn.active {
+            transform: scale(1.3);
+            border-color: #ffffff;
+            box-shadow: 0 0 12px currentColor, inset 0 0 4px #ffffff;
+        }
+
+        /* Partner Setup Card */
         .partner-card {
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(12px);
         }
 
         .partner-card:hover {
-            transform: translateY(-4px) scale(1.02);
+            transform: translateY(-4px) scale(1.03);
         }
 
-        .panic-button {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-            border: 2px solid #fca5a5;
-            color: white;
-            cursor: pointer;
-            font-size: 24px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 0 20px rgba(220, 38, 38, 0.4);
-        }
-
-        .panic-button:hover {
-            transform: scale(1.15);
-            box-shadow: 0 0 30px rgba(220, 38, 38, 0.6);
-        }
-
-        .action-button {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            border: none;
-            font-size: 32px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .action-button.skip {
-            background: rgba(100, 100, 100, 0.8);
-            border: 2px solid rgba(150, 150, 150, 0.5);
-        }
-
-        .action-button.skip:hover {
-            background: rgba(120, 120, 120, 0.9);
-            transform: scale(1.1);
-        }
-
-        .action-button.love {
-            background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
-            border: 2px solid #f472b6;
-        }
-
-        .action-button.love:hover {
-            transform: scale(1.15);
-            box-shadow: 0 15px 40px rgba(236, 72, 153, 0.5);
-        }
-
-        .action-button.next {
-            background: rgba(80, 80, 120, 0.8);
-            border: 2px solid rgba(150, 150, 200, 0.5);
-        }
-
-        .action-button.next:hover {
-            background: rgba(100, 100, 150, 0.9);
-            transform: scale(1.1);
-        }
-
-        .timer-display {
-            font-size: 14px;
-            color: #ec4899;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            background: rgba(236, 72, 153, 0.2);
-            color: #f472b6;
-            border: 1px solid rgba(236, 72, 153, 0.4);
-        }
-
-        .intensity-indicator {
-            display: flex;
-            gap: 6px;
-        }
-
-        .intensity-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: rgba(236, 72, 153, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .intensity-dot.active {
-            background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
-            box-shadow: 0 0 10px rgba(236, 72, 153, 0.6);
-        }
-
+        /* Progress Rings */
         .progress-ring {
             transform: rotate(-90deg);
         }
 
         .progress-ring-circle {
-            transition: stroke-dashoffset 0.35s;
-            stroke: #ec4899;
+            transition: stroke-dashoffset 0.35s ease;
+            stroke: var(--theme-primary);
             fill: transparent;
         }
 
-        .onboarding-content {
-            background: linear-gradient(135deg, rgba(45, 27, 46, 0.9) 0%, rgba(26, 15, 46, 0.9) 100%);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(236, 72, 153, 0.2);
-            border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-        }
-
-        .section-complete-illustration {
-            font-size: 80px;
-            margin-bottom: 20px;
-            animation: pop 0.6s ease-out;
+        /* Ambient floating particles */
+        .ambient-particle {
+            position: fixed;
+            pointer-events: none;
+            user-select: none;
+            z-index: 0;
+            animation: floatParticle linear infinite;
         }
 
         @media (max-width: 768px) {
-            .action-button {
-                width: 60px;
-                height: 60px;
-                font-size: 28px;
+            .neon-ring-btn {
+                width: 58px;
+                height: 58px;
+                font-size: 22px;
             }
 
-            .panic-button {
-                width: 44px;
-                height: 44px;
-                font-size: 20px;
+            .card-flip-inner {
+                height: 490px;
             }
 
-            .card-flip-inner, .card-face {
-                min-height: 440px;
+            .card-face {
+                padding: 1.5rem 1.25rem;
             }
         }
     </style>
@@ -345,6 +338,132 @@
 
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
+
+        // Sensual Mood Themes inspired by Reference UI
+        const THEMES = {
+          crimson: {
+            id: 'crimson',
+            name: 'Crimson Passion',
+            icon: '🔥',
+            swatch: '#ef4444',
+            bgGradient: 'linear-gradient(135deg, #180508 0%, #0f0205 50%, #050002 100%)',
+            primary: '#ef4444',
+            primaryDark: '#b91c1c',
+            glow: 'rgba(239, 68, 68, 0.45)',
+            border: 'rgba(239, 68, 68, 0.35)',
+            badgeBg: 'rgba(239, 68, 68, 0.18)',
+            badgeText: '#fca5a5',
+            cardBackBg: 'linear-gradient(145deg, rgba(38, 10, 15, 0.97) 0%, rgba(18, 4, 8, 0.98) 100%)',
+            cardFrontBg: 'linear-gradient(135deg, rgba(42, 12, 18, 0.97) 0%, rgba(20, 5, 9, 0.98) 100%)'
+          },
+          rose: {
+            id: 'rose',
+            name: 'Midnight Rose',
+            icon: '💋',
+            swatch: '#ec4899',
+            bgGradient: 'linear-gradient(135deg, #240d21 0%, #15071a 50%, #09030d 100%)',
+            primary: '#ec4899',
+            primaryDark: '#db2777',
+            glow: 'rgba(236, 72, 153, 0.45)',
+            border: 'rgba(236, 72, 153, 0.35)',
+            badgeBg: 'rgba(236, 72, 153, 0.18)',
+            badgeText: '#f472b6',
+            cardBackBg: 'linear-gradient(145deg, rgba(42, 15, 38, 0.97) 0%, rgba(20, 7, 24, 0.98) 100%)',
+            cardFrontBg: 'linear-gradient(135deg, rgba(48, 18, 44, 0.97) 0%, rgba(24, 8, 28, 0.98) 100%)'
+          },
+          violet: {
+            id: 'violet',
+            name: 'Electric Orchid',
+            icon: '💜',
+            swatch: '#a855f7',
+            bgGradient: 'linear-gradient(135deg, #19092c 0%, #0e051c 50%, #06020c 100%)',
+            primary: '#a855f7',
+            primaryDark: '#7e22ce',
+            glow: 'rgba(168, 85, 247, 0.45)',
+            border: 'rgba(168, 85, 247, 0.35)',
+            badgeBg: 'rgba(168, 85, 247, 0.18)',
+            badgeText: '#c084fc',
+            cardBackBg: 'linear-gradient(145deg, rgba(32, 12, 54, 0.97) 0%, rgba(16, 6, 28, 0.98) 100%)',
+            cardFrontBg: 'linear-gradient(135deg, rgba(38, 14, 62, 0.97) 0%, rgba(18, 7, 32, 0.98) 100%)'
+          },
+          gold: {
+            id: 'gold',
+            name: 'Royal Champagne',
+            icon: '👑',
+            swatch: '#f59e0b',
+            bgGradient: 'linear-gradient(135deg, #1c1810 0%, #100e08 50%, #080704 100%)',
+            primary: '#f59e0b',
+            primaryDark: '#d97706',
+            glow: 'rgba(245, 158, 11, 0.45)',
+            border: 'rgba(245, 158, 11, 0.35)',
+            badgeBg: 'rgba(245, 158, 11, 0.18)',
+            badgeText: '#fde68a',
+            cardBackBg: 'linear-gradient(145deg, rgba(42, 34, 18, 0.97) 0%, rgba(22, 17, 8, 0.98) 100%)',
+            cardFrontBg: 'linear-gradient(135deg, rgba(48, 38, 20, 0.97) 0%, rgba(24, 19, 9, 0.98) 100%)'
+          },
+          ocean: {
+            id: 'ocean',
+            name: 'Sapphire Nights',
+            icon: '🌊',
+            swatch: '#06b6d4',
+            bgGradient: 'linear-gradient(135deg, #091a2e 0%, #040e1c 50%, #02070f 100%)',
+            primary: '#06b6d4',
+            primaryDark: '#0284c7',
+            glow: 'rgba(6, 182, 212, 0.45)',
+            border: 'rgba(6, 182, 212, 0.35)',
+            badgeBg: 'rgba(6, 182, 212, 0.18)',
+            badgeText: '#67e8f9',
+            cardBackBg: 'linear-gradient(145deg, rgba(12, 36, 58, 0.97) 0%, rgba(6, 18, 30, 0.98) 100%)',
+            cardFrontBg: 'linear-gradient(135deg, rgba(14, 42, 68, 0.97) 0%, rgba(7, 21, 35, 0.98) 100%)'
+          }
+        };
+
+        // Sensual Audio Synthesizer (Web Audio API)
+        const playSensualSound = (type, enabled = true) => {
+          if (!enabled) return;
+          try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const now = ctx.currentTime;
+            
+            if (type === 'flip') {
+              // Smooth seductive dual-tone chime
+              const osc1 = ctx.createOscillator();
+              const osc2 = ctx.createOscillator();
+              const gain = ctx.createGain();
+              osc1.type = 'sine';
+              osc2.type = 'triangle';
+              osc1.frequency.setValueAtTime(432, now);
+              osc1.frequency.exponentialRampToValueAtTime(648, now + 0.3);
+              osc2.frequency.setValueAtTime(216, now);
+              osc2.frequency.exponentialRampToValueAtTime(432, now + 0.3);
+              gain.gain.setValueAtTime(0.12, now);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+              osc1.connect(gain);
+              osc2.connect(gain);
+              gain.connect(ctx.destination);
+              osc1.start(now);
+              osc2.start(now);
+              osc1.stop(now + 0.5);
+              osc2.stop(now + 0.5);
+            } else if (type === 'complete') {
+              // Harmonic celebration chord
+              [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, now + idx * 0.05);
+                gain.gain.setValueAtTime(0.08, now + idx * 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now + idx * 0.05);
+                osc.stop(now + 0.65);
+              });
+            }
+          } catch (e) {
+            // Audio context not allowed or unsupported
+          }
+        };
 
         function App() {
           const [gameState, setGameState] = useState('onboarding'); // 'onboarding' | 'whoStarts' | 'playing' | 'sectionComplete' | 'gameComplete'
@@ -359,7 +478,22 @@
           const [totalCompleted, setTotalCompleted] = useState(0);
           const [allCards, setAllCards] = useState([]);
           const [cardAnimation, setCardAnimation] = useState(null);
+          const [currentTheme, setCurrentTheme] = useState('crimson');
+          const [soundEnabled, setSoundEnabled] = useState(true);
           const timerRef = useRef(null);
+
+          // Apply dynamic CSS variables on theme change
+          useEffect(() => {
+            const theme = THEMES[currentTheme] || THEMES.crimson;
+            document.documentElement.style.setProperty('--theme-bg', theme.bgGradient);
+            document.documentElement.style.setProperty('--theme-primary', theme.primary);
+            document.documentElement.style.setProperty('--theme-primary-dark', theme.primaryDark);
+            document.documentElement.style.setProperty('--theme-glow', theme.glow);
+            document.documentElement.style.setProperty('--theme-border', theme.border);
+            document.documentElement.style.setProperty('--theme-badge-bg', theme.badgeBg);
+            document.documentElement.style.setProperty('--theme-badge-text', theme.badgeText);
+            document.body.style.background = theme.bgGradient;
+          }, [currentTheme]);
 
           useEffect(() => {
             const loadCards = async () => {
@@ -389,6 +523,7 @@
               }, 1000);
             } else if (timeRemaining === 0 && timerActive) {
               setTimerActive(false);
+              playSensualSound('complete', soundEnabled);
             }
             return () => clearTimeout(timerRef.current);
           }, [timerActive, timeRemaining]);
@@ -422,11 +557,13 @@
           const handleCardFlip = () => {
             if (!isCardFlipped) {
               setIsCardFlipped(true);
+              playSensualSound('flip', soundEnabled);
             }
           };
 
           const handleSwitchTurn = () => {
             setCurrentTurn(prev => prev === 'male' ? 'female' : 'male');
+            playSensualSound('flip', soundEnabled);
           };
 
           const handleSkip = () => {
@@ -441,10 +578,11 @@
               setIsCardFlipped(false);
               // Alternate turn to partner
               setCurrentTurn(prev => prev === 'male' ? 'female' : 'male');
-            }, 500);
+            }, 450);
           };
 
           const handleComplete = () => {
+            playSensualSound('complete', soundEnabled);
             setCardAnimation('complete');
             setTimeout(() => {
               setTimerActive(false);
@@ -462,7 +600,7 @@
                 setAvailableCards(remaining);
                 setCardAnimation(null);
               }
-            }, 500);
+            }, 450);
           };
 
           const nextSection = () => {
@@ -471,12 +609,6 @@
               setGameState('playing');
             } else {
               setGameState('gameComplete');
-            }
-          };
-
-          const panicClick = () => {
-            if (confirm('Close game?')) {
-              window.location.href = 'https://www.google.com';
             }
           };
 
@@ -494,122 +626,184 @@
             return `${mins}:${secs.toString().padStart(2, '0')}`;
           };
 
-          const sectionNames = {
-            1: 'Love & Romantic',
-            2: 'Hug & Kisses',
-            3: 'Strip & Playful',
-            4: 'Fantasy & Extended',
-            5: 'Intense & Aftercare'
+          const sectionMeta = {
+            1: { name: 'Love & Romantic', emoji: '🥂 Romance & Whispers 💜' },
+            2: { name: 'Hug & Kisses', emoji: '💋 Kisses & Caresses 🫦' },
+            3: { name: 'Strip & Playful', emoji: '✨ Strip & Tease 👙' },
+            4: { name: 'Fantasy & Extended', emoji: '🔥 Wild Desires & Fantasy ⛓️' },
+            5: { name: 'Intense & Aftercare', emoji: '💥 Peak Passion & Aftercare 🛏️' }
           };
 
+          const theme = THEMES[currentTheme] || THEMES.crimson;
+
           return (
-            <div className="min-h-screen w-full flex items-center justify-center p-4 gradient-dark">
-              <button onClick={panicClick} className="panic-button">✕</button>
+            <div className="min-h-screen w-full flex flex-col items-center justify-between p-4 relative overflow-hidden">
+              {/* Subtle Floating Ambient Particles */}
+              <div className="ambient-particle text-xl" style={{ left: '10%', animationDuration: '14s', animationDelay: '0s' }}>❤️</div>
+              <div className="ambient-particle text-lg" style={{ left: '85%', animationDuration: '18s', animationDelay: '3s' }}>🔥</div>
+              <div className="ambient-particle text-2xl" style={{ left: '25%', animationDuration: '16s', animationDelay: '6s' }}>💋</div>
+              <div className="ambient-particle text-sm" style={{ left: '75%', animationDuration: '20s', animationDelay: '9s' }}>✨</div>
+              <div className="ambient-particle text-xl" style={{ left: '50%', animationDuration: '22s', animationDelay: '4s' }}>🌹</div>
 
-              {gameState === 'onboarding' && (
-                <OnboardingScreen onNext={goToWhoStarts} />
-              )}
+              {/* Top Floating Mood Swatch Bar */}
+              <div className="w-full max-w-md mx-auto flex items-center justify-between py-2 px-4 rounded-full swatch-pill z-20 mb-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm">{theme.icon}</span>
+                  <span className="text-xs font-bold text-gray-200 tracking-wider uppercase">{theme.name}</span>
+                </div>
 
-              {gameState === 'whoStarts' && (
-                <WhoStartsFirstScreen onSelectStarter={startGame} />
-              )}
+                <div className="flex items-center gap-2.5">
+                  {/* Swatches */}
+                  {Object.values(THEMES).map((t) => (
+                    <button
+                      key={t.id}
+                      onClick={() => setCurrentTheme(t.id)}
+                      title={`Switch to ${t.name}`}
+                      className={`swatch-btn ${currentTheme === t.id ? 'active' : ''}`}
+                      style={{ backgroundColor: t.swatch }}
+                    />
+                  ))}
 
-              {gameState === 'playing' && currentCard && (
-                <PlayingScreen
-                  currentCard={currentCard}
-                  currentSection={currentSection}
-                  completedInSection={completedTasksInSection}
-                  totalCompleted={totalCompleted}
-                  cardAnimation={cardAnimation}
-                  timerActive={timerActive}
-                  timeRemaining={timeRemaining}
-                  currentTurn={currentTurn}
-                  isCardFlipped={isCardFlipped}
-                  onFlipCard={handleCardFlip}
-                  onSwitchTurn={handleSwitchTurn}
-                  onSkip={handleSkip}
-                  onComplete={handleComplete}
-                  onStartTimer={() => {
-                    setTimeRemaining(currentCard.timer);
-                    setTimerActive(true);
-                  }}
-                  formatTime={formatTime}
-                  sectionNames={sectionNames}
-                />
-              )}
+                  {/* Sound Toggle */}
+                  <button
+                    onClick={() => setSoundEnabled(!soundEnabled)}
+                    title={soundEnabled ? "Mute sound effects" : "Enable sound effects"}
+                    className="text-xs px-2 py-1 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 ml-1 transition-all"
+                  >
+                    {soundEnabled ? '🔊' : '🔇'}
+                  </button>
+                </div>
+              </div>
 
-              {gameState === 'sectionComplete' && (
-                <SectionCompleteScreen
-                  sectionNum={currentSection}
-                  totalCompleted={totalCompleted}
-                  nextSection={nextSection}
-                  sectionNames={sectionNames}
-                />
-              )}
+              {/* Main Content Area */}
+              <div className="w-full max-w-md my-auto z-10">
+                {gameState === 'onboarding' && (
+                  <OnboardingScreen onNext={goToWhoStarts} theme={theme} />
+                )}
 
-              {gameState === 'gameComplete' && (
-                <GameCompleteScreen totalCompleted={totalCompleted} resetGame={resetGame} />
-              )}
+                {gameState === 'whoStarts' && (
+                  <WhoStartsFirstScreen onSelectStarter={startGame} theme={theme} soundEnabled={soundEnabled} />
+                )}
+
+                {gameState === 'playing' && currentCard && (
+                  <PlayingScreen
+                    currentCard={currentCard}
+                    currentSection={currentSection}
+                    completedInSection={completedTasksInSection}
+                    totalCompleted={totalCompleted}
+                    cardAnimation={cardAnimation}
+                    timerActive={timerActive}
+                    timeRemaining={timeRemaining}
+                    currentTurn={currentTurn}
+                    isCardFlipped={isCardFlipped}
+                    onFlipCard={handleCardFlip}
+                    onSwitchTurn={handleSwitchTurn}
+                    onSkip={handleSkip}
+                    onComplete={handleComplete}
+                    onStartTimer={() => {
+                      setTimeRemaining(currentCard.timer);
+                      setTimerActive(true);
+                    }}
+                    formatTime={formatTime}
+                    sectionMeta={sectionMeta}
+                    theme={theme}
+                  />
+                )}
+
+                {gameState === 'sectionComplete' && (
+                  <SectionCompleteScreen
+                    sectionNum={currentSection}
+                    totalCompleted={totalCompleted}
+                    nextSection={nextSection}
+                    sectionMeta={sectionMeta}
+                    theme={theme}
+                  />
+                )}
+
+                {gameState === 'gameComplete' && (
+                  <GameCompleteScreen totalCompleted={totalCompleted} resetGame={resetGame} theme={theme} />
+                )}
+              </div>
+
+              {/* Footer text */}
+              <div className="w-full text-center py-2 text-[11px] text-gray-500 z-10">
+                69 Shades of Play • Intimate Couple's Game
+              </div>
             </div>
           );
         }
 
-        function OnboardingScreen({ onNext }) {
+        function OnboardingScreen({ onNext, theme }) {
           const [confirmed, setConfirmed] = useState(false);
 
           return (
             <div className="w-full max-w-md mx-auto slide-up">
-              <div className="onboarding-content p-8 text-center">
+              <div
+                className="onboarding-content p-8 text-center border"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(20, 8, 16, 0.92) 0%, rgba(10, 4, 10, 0.96) 100%)',
+                  borderColor: theme.border
+                }}
+              >
                 <div className="mb-6">
-                  <h1 className="serif-font text-5xl font-bold mb-2 bg-gradient-to-r from-pink-300 via-pink-400 to-rose-400 bg-clip-text text-transparent">
+                  <div className="inline-block p-3 rounded-full bg-white/5 border border-white/10 mb-3 pulse-hint">
+                    <span className="text-4xl">💋</span>
+                  </div>
+                  <h1 className="serif-font text-5xl font-bold mb-1 tracking-tight bg-clip-text text-transparent"
+                    style={{ backgroundImage: `linear-gradient(135deg, #ffffff 0%, ${theme.primary} 100%)` }}
+                  >
                     69 Shades
                   </h1>
-                  <p className="text-pink-300 text-sm tracking-widest uppercase font-semibold">of Play</p>
+                  <p className="text-xs tracking-[0.3em] uppercase font-bold text-gray-300">Of Intimate Play</p>
                 </div>
 
-                <div className="space-y-4 text-left mb-8">
-                  <p className="text-gray-300 text-sm leading-relaxed">
-                    A journey of intimacy, trust, and connection. Explore <strong>5 progressive sections</strong> with <strong>80 cards each</strong>.
+                <div className="space-y-3.5 text-left mb-7 bg-black/40 p-4 rounded-2xl border border-white/5 text-xs">
+                  <p className="text-gray-200 leading-relaxed font-medium">
+                    A sensual journey designed for passionate couples. Discover <strong>5 progressive escalation levels</strong> with curated intimate tasks.
                   </p>
-                  <ul className="text-gray-400 text-xs space-y-2 ml-4">
-                    <li>💜 <strong>Love & Romantic</strong> - Emotional moments</li>
-                    <li>💋 <strong>Hug & Kisses</strong> - Touch & affection</li>
-                    <li>✨ <strong>Strip & Playful</strong> - Vulnerability</li>
-                    <li>🔥 <strong>Fantasy & Extended</strong> - Passion</li>
-                    <li>💥 <strong>Intense & Aftercare</strong> - Peak intimacy</li>
-                  </ul>
+                  <div className="space-y-1.5 text-gray-400">
+                    <div className="flex items-center gap-2"><span>💜</span> <strong>Romance & Whispers</strong> — Deep emotional connection</div>
+                    <div className="flex items-center gap-2"><span>💋</span> <strong>Kisses & Caresses</strong> — Slow touch & affection</div>
+                    <div className="flex items-center gap-2"><span>✨</span> <strong>Strip & Playful</strong> — Sensual vulnerability</div>
+                    <div className="flex items-center gap-2"><span>🔥</span> <strong>Wild Fantasy</strong> — Passion & raw desire</div>
+                    <div className="flex items-center gap-2"><span>💥</span> <strong>Peak Passion & Care</strong> — Climax & tenderness</div>
+                  </div>
                 </div>
 
-                <div className="flex items-start gap-3 mb-8 bg-black/30 p-4 rounded-lg border border-pink-500/20">
+                <div className="flex items-start gap-3 mb-6 bg-black/40 p-3.5 rounded-xl border border-white/10">
                   <input
                     type="checkbox"
                     id="ageConfirm"
                     checked={confirmed}
                     onChange={(e) => setConfirmed(e.target.checked)}
-                    className="w-5 h-5 rounded accent-pink-500 mt-1"
+                    className="w-5 h-5 rounded mt-0.5 cursor-pointer accent-red-500"
                   />
-                  <label htmlFor="ageConfirm" className="text-xs text-gray-400 cursor-pointer">
-                    I confirm I am 18+ and ready to explore intimacy responsibly with my partner.
+                  <label htmlFor="ageConfirm" className="text-xs text-gray-300 text-left cursor-pointer leading-tight">
+                    We confirm we are <strong>18+</strong> and fully consent to explore intimate tasks together.
                   </label>
                 </div>
 
                 <button
                   onClick={onNext}
                   disabled={!confirmed}
-                  className={`w-full py-4 rounded-full font-bold text-lg transition-all ${
+                  className={`w-full py-4 rounded-full font-bold text-base tracking-wider uppercase transition-all ${
                     confirmed
-                      ? 'gradient-pink text-white hover:shadow-lg hover:shadow-pink-500/50 cursor-pointer'
-                      : 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                      ? 'text-white cursor-pointer shadow-lg hover:scale-105'
+                      : 'bg-gray-800 text-gray-500 cursor-not-allowed'
                   }`}
+                  style={{
+                    background: confirmed ? `linear-gradient(135deg, ${theme.primary} 0%, ${theme.primaryDark} 100%)` : undefined,
+                    boxShadow: confirmed ? `0 10px 30px ${theme.glow}` : undefined
+                  }}
                 >
-                  Get Started ➜
+                  Enter The Playroom ➜
                 </button>
               </div>
             </div>
           );
         }
 
-        function WhoStartsFirstScreen({ onSelectStarter }) {
+        function WhoStartsFirstScreen({ onSelectStarter, theme, soundEnabled }) {
           const [selectedPartner, setSelectedPartner] = useState(null); // 'male' | 'female'
           const [isSpinning, setIsSpinning] = useState(false);
           const [spinHighlight, setSpinHighlight] = useState(null);
@@ -619,6 +813,7 @@
             if (isSpinning) return;
             setSelectedPartner(gender);
             setRevealed(true);
+            playSensualSound('flip', soundEnabled);
           };
 
           const handleSpinFate = () => {
@@ -643,6 +838,7 @@
                 setSelectedPartner(finalWinner);
                 setIsSpinning(false);
                 setRevealed(true);
+                playSensualSound('complete', soundEnabled);
               }
             }, intervalTime);
           };
@@ -654,33 +850,42 @@
 
           return (
             <div className="w-full max-w-md mx-auto slide-up">
-              <div className="onboarding-content p-8 text-center relative overflow-hidden">
+              <div
+                className="onboarding-content p-7 text-center relative overflow-hidden border"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(20, 8, 16, 0.94) 0%, rgba(10, 4, 10, 0.98) 100%)',
+                  borderColor: theme.border
+                }}
+              >
                 <div className="mb-6">
-                  <span className="text-xs uppercase tracking-widest text-pink-400 font-semibold mb-2 block">
-                    Game Setup
+                  <span
+                    className="text-xs uppercase tracking-widest font-bold px-3 py-1 rounded-full border mb-3 inline-block"
+                    style={{ background: theme.badgeBg, color: theme.badgeText, borderColor: theme.border }}
+                  >
+                    ✨ Game Setup ✨
                   </span>
-                  <h2 className="serif-font text-3xl sm:text-4xl font-bold mb-2 bg-gradient-to-r from-pink-300 via-rose-300 to-purple-300 bg-clip-text text-transparent">
+                  <h2 className="serif-font text-3xl sm:text-4xl font-bold mb-1.5 text-white">
                     Who Starts First?
                   </h2>
-                  <p className="text-gray-300 text-xs sm:text-sm">
-                    Choose who will take the lead to reveal and start the very first task.
+                  <p className="text-gray-300 text-xs">
+                    Choose who will lead and flip the first intimate card.
                   </p>
                 </div>
 
                 {/* Partner Choices */}
-                <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="grid grid-cols-2 gap-4 mb-5">
                   {/* Male / He Option */}
                   <div
                     onClick={() => handleDirectSelect('male')}
                     className={`partner-card cursor-pointer p-5 rounded-2xl border text-center transition-all ${
                       (selectedPartner === 'male' || spinHighlight === 'male')
-                        ? 'bg-gradient-to-b from-indigo-950/90 to-purple-950/90 border-cyan-400 shadow-lg shadow-cyan-500/30 scale-105'
-                        : 'bg-black/30 border-indigo-500/30 hover:border-indigo-400/60'
+                        ? 'bg-indigo-950/90 border-cyan-400 shadow-lg shadow-cyan-500/30 scale-105'
+                        : 'bg-black/40 border-indigo-500/30 hover:border-indigo-400/60'
                     }`}
                   >
-                    <div className="text-4xl mb-2">♂️</div>
-                    <h3 className="font-bold text-white text-base mb-1">He / Him</h3>
-                    <p className="text-xs text-indigo-300">Male Partner</p>
+                    <div className="text-4xl mb-2 floating-element">👑</div>
+                    <h3 className="font-bold text-white text-base mb-0.5">He / Him</h3>
+                    <p className="text-xs text-indigo-300">King's Lead ♂️</p>
                     {selectedPartner === 'male' && (
                       <span className="inline-block mt-2 text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/40">
                         Selected ✓
@@ -693,13 +898,13 @@
                     onClick={() => handleDirectSelect('female')}
                     className={`partner-card cursor-pointer p-5 rounded-2xl border text-center transition-all ${
                       (selectedPartner === 'female' || spinHighlight === 'female')
-                        ? 'bg-gradient-to-b from-pink-950/90 to-rose-950/90 border-pink-400 shadow-lg shadow-pink-500/30 scale-105'
-                        : 'bg-black/30 border-pink-500/30 hover:border-pink-400/60'
+                        ? 'bg-pink-950/90 border-pink-400 shadow-lg shadow-pink-500/30 scale-105'
+                        : 'bg-black/40 border-pink-500/30 hover:border-pink-400/60'
                     }`}
                   >
-                    <div className="text-4xl mb-2">♀️</div>
-                    <h3 className="font-bold text-white text-base mb-1">She / Her</h3>
-                    <p className="text-xs text-pink-300">Female Partner</p>
+                    <div className="text-4xl mb-2 floating-element">👑</div>
+                    <h3 className="font-bold text-white text-base mb-0.5">She / Her</h3>
+                    <p className="text-xs text-pink-300">Queen's Lead ♀️</p>
                     {selectedPartner === 'female' && (
                       <span className="inline-block mt-2 text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-pink-500/20 text-pink-300 border border-pink-400/40">
                         Selected ✓
@@ -709,30 +914,34 @@
                 </div>
 
                 {/* Fate / Random Decision Button */}
-                <div className="mb-6">
+                <div className="mb-5">
                   <button
                     onClick={handleSpinFate}
                     disabled={isSpinning}
-                    className={`w-full py-3 px-4 rounded-xl border border-pink-500/40 bg-black/40 text-pink-200 text-sm font-semibold flex items-center justify-center gap-2 transition-all ${
-                      isSpinning ? 'opacity-75 cursor-wait' : 'hover:bg-pink-950/40 hover:border-pink-400 cursor-pointer'
+                    className={`w-full py-3 px-4 rounded-xl border bg-black/50 text-sm font-semibold flex items-center justify-center gap-2 transition-all ${
+                      isSpinning ? 'opacity-75 cursor-wait' : 'hover:scale-[1.02] cursor-pointer'
                     }`}
+                    style={{ borderColor: theme.border, color: theme.badgeText }}
                   >
                     <span className="text-lg">🎲</span>
-                    {isSpinning ? 'Consulting the Oracle...' : 'Let Fate Decide (Random)'}
+                    {isSpinning ? 'Consulting the Passion Oracle...' : 'Let Fate Decide (Random Pick)'}
                   </button>
                 </div>
 
                 {/* Announcement Card once revealed */}
                 {revealed && selectedPartner && (
-                  <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-pink-950/60 to-purple-950/60 border border-pink-500/40 slide-up">
-                    <p className="text-xs uppercase tracking-wider text-pink-400 font-bold mb-1">
-                      Ready to Begin
+                  <div
+                    className="mb-5 p-4 rounded-2xl border slide-up"
+                    style={{ background: 'rgba(0,0,0,0.6)', borderColor: theme.border }}
+                  >
+                    <p className="text-[11px] uppercase tracking-wider font-bold mb-1" style={{ color: theme.primary }}>
+                      First Seduction
                     </p>
                     <p className="text-lg font-bold text-white">
-                      🎉 {selectedPartner === 'male' ? 'He / Him (♂️)' : 'She / Her (♀️)'} will flip first!
+                      🎉 {selectedPartner === 'male' ? 'The King (♂️ He / Him)' : 'The Queen (♀️ She / Her)'} starts first!
                     </p>
-                    <p className="text-xs text-gray-300 mt-1">
-                      Partners will automatically alternate turns after every task.
+                    <p className="text-xs text-gray-400 mt-1">
+                      Turns will alternate between you after every card.
                     </p>
                   </div>
                 )}
@@ -741,13 +950,19 @@
                 <button
                   onClick={handleStartGame}
                   disabled={!selectedPartner || isSpinning}
-                  className={`w-full py-4 rounded-full font-bold text-lg transition-all ${
+                  className={`w-full py-4 rounded-full font-bold text-base tracking-wider uppercase transition-all ${
                     selectedPartner && !isSpinning
-                      ? 'gradient-pink text-white hover:shadow-lg hover:shadow-pink-500/50 cursor-pointer'
-                      : 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                      ? 'text-white cursor-pointer shadow-lg hover:scale-105'
+                      : 'bg-gray-800 text-gray-500 cursor-not-allowed'
                   }`}
+                  style={{
+                    background: selectedPartner && !isSpinning
+                      ? `linear-gradient(135deg, ${theme.primary} 0%, ${theme.primaryDark} 100%)`
+                      : undefined,
+                    boxShadow: selectedPartner && !isSpinning ? `0 10px 30px ${theme.glow}` : undefined
+                  }}
                 >
-                  {selectedPartner ? "Start Game ➜" : "Select Who Starts"}
+                  {selectedPartner ? "Begin Intimacy Journey ➜" : "Select Starter"}
                 </button>
               </div>
             </div>
@@ -770,164 +985,210 @@
           onComplete,
           onStartTimer,
           formatTime,
-          sectionNames
+          sectionMeta,
+          theme
         }) {
           const circumference = 2 * Math.PI * 45;
           const strokeDashoffset = circumference - (timeRemaining / (currentCard.timer || 180)) * circumference;
-          const intensityDots = Array(5).fill(0).map((_, i) => i < (currentCard.intensity || 2));
+          
+          // Spicy Intensity Map
+          const heatLevels = {
+            1: { label: 'Mild & Sweet', emoji: '🌸', count: 1 },
+            2: { label: 'Sensual & Teasing', emoji: '💋', count: 2 },
+            3: { label: 'Steamy & Seductive', emoji: '🔥', count: 3 },
+            4: { label: 'Hot & Daring', emoji: '🌶️', count: 4 },
+            5: { label: 'Wild & Uncensored', emoji: '😈', count: 5 }
+          };
+          const heat = heatLevels[currentCard.intensity || 2] || heatLevels[2];
 
-          const partnerLabel = currentTurn === 'male' ? "His Turn (♂️)" : "Her Turn (♀️)";
-          const partnerAction = currentTurn === 'male' ? "He flips & leads" : "She flips & leads";
+          const partnerBadge = currentTurn === 'male'
+            ? { label: "King's Turn ♂️", action: "He leads & acts 💋", bg: 'bg-indigo-950/80', border: 'border-cyan-400/50', text: 'text-cyan-300' }
+            : { label: "Queen's Turn ♀️", action: "She leads & acts 💋", bg: 'bg-pink-950/80', border: 'border-pink-400/50', text: 'text-pink-300' };
 
           return (
-            <div className="w-full max-w-md mx-auto flex flex-col items-center justify-center gap-6">
-              {/* Top Header: Section + Active Turn Pill + Task Progress */}
+            <div className="w-full max-w-md mx-auto flex flex-col items-center gap-5">
+              {/* Header Bar: Escalation Section + Interactive Turn Switch + Task Progress */}
               <div className="w-full">
-                <div className="flex justify-between items-center mb-3">
-                  <span className="badge">{sectionNames[currentSection]}</span>
-                  
-                  {/* Interactive Turn Switch Badge */}
+                <div className="flex justify-between items-center mb-2.5">
+                  <span
+                    className="text-xs px-3 py-1 rounded-full font-bold border"
+                    style={{ background: theme.badgeBg, color: theme.badgeText, borderColor: theme.border }}
+                  >
+                    {sectionMeta[currentSection]?.name}
+                  </span>
+
+                  {/* Switch Turn Button */}
                   <button
                     onClick={onSwitchTurn}
-                    title="Click to switch partner turn manually"
-                    className={`text-xs px-3 py-1.5 rounded-full font-semibold border flex items-center gap-1.5 transition-all hover:scale-105 cursor-pointer ${
-                      currentTurn === 'male'
-                        ? 'bg-indigo-950/80 border-cyan-400/50 text-cyan-300 shadow-sm shadow-cyan-500/20'
-                        : 'bg-pink-950/80 border-pink-400/50 text-pink-300 shadow-sm shadow-pink-500/20'
-                    }`}
+                    title="Click to toggle active partner turn"
+                    className={`text-xs px-3 py-1 rounded-full font-bold border flex items-center gap-1.5 transition-all hover:scale-105 cursor-pointer ${partnerBadge.bg} ${partnerBadge.border} ${partnerBadge.text}`}
                   >
-                    <span>{currentTurn === 'male' ? '♂️' : '♀️'}</span>
-                    <span>{currentTurn === 'male' ? 'His Turn' : 'Her Turn'}</span>
+                    <span>{partnerBadge.label}</span>
                     <span className="text-[10px] opacity-70">⇄</span>
                   </button>
 
-                  <span className="text-xs text-gray-400">Task {completedInSection}/10</span>
+                  <span className="text-xs font-semibold text-gray-400">
+                    {completedInSection}/10 Completed
+                  </span>
                 </div>
 
                 {/* Progress Bar */}
-                <div className="w-full h-1 bg-gray-800 rounded-full overflow-hidden border border-pink-500/20">
-                  <div 
-                    className="h-full gradient-pink transition-all duration-300"
-                    style={{ width: `${(completedInSection / 10) * 100}%` }}
+                <div className="w-full h-1.5 bg-black/50 rounded-full overflow-hidden border border-white/10">
+                  <div
+                    className="h-full transition-all duration-300 rounded-full"
+                    style={{
+                      width: `${(completedInSection / 10) * 100}%`,
+                      background: `linear-gradient(90deg, ${theme.primary} 0%, #ffffff 100%)`
+                    }}
                   ></div>
                 </div>
               </div>
 
-              {/* 3D Flip Card Container */}
+              {/* 3D Flip Card Container - Locked Absolute Inset */}
               <div className={`card-flip-container ${cardAnimation ? (cardAnimation === 'skip' ? 'swipe-left' : 'swipe-right') : ''}`}>
                 <div className={`card-flip-inner ${isCardFlipped ? 'is-flipped' : ''}`}>
                   
                   {/* CARD BACK (Facedown - Tap to Reveal) */}
                   <div
                     onClick={onFlipCard}
-                    className="card-face card-face-back p-8 flex flex-col justify-between"
+                    className="card-face card-face-back border"
+                    style={{
+                      background: theme.cardBackBg,
+                      borderColor: theme.border
+                    }}
                   >
                     {/* Card Back Top Badge */}
                     <div className="flex items-center justify-between z-10">
-                      <span className="timer-display">{sectionNames[currentSection]}</span>
-                      <span className={`text-xs px-2.5 py-1 rounded-full font-bold border ${
-                        currentTurn === 'male'
-                          ? 'bg-indigo-900/60 border-cyan-400/40 text-cyan-300'
-                          : 'bg-pink-900/60 border-pink-400/40 text-pink-300'
-                      }`}>
-                        {currentTurn === 'male' ? '♂️ He Leads' : '♀️ She Leads'}
+                      <span className="text-xs tracking-wider uppercase font-bold text-gray-300">
+                        {sectionMeta[currentSection]?.emoji}
+                      </span>
+                      <span className={`text-[11px] px-2.5 py-0.5 rounded-full font-bold border ${partnerBadge.bg} ${partnerBadge.border} ${partnerBadge.text}`}>
+                        {partnerBadge.label}
                       </span>
                     </div>
 
                     {/* Card Back Center Emblem */}
                     <div className="my-auto text-center z-10 flex flex-col items-center">
-                      <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-pink-600/30 to-purple-600/30 border border-pink-400/40 flex items-center justify-center mb-4 pulse-hint shadow-lg shadow-pink-500/20">
+                      <div
+                        className="w-24 h-24 rounded-full border flex items-center justify-center mb-3.5 pulse-hint shadow-xl"
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.05)',
+                          borderColor: theme.border,
+                          boxShadow: `0 0 30px ${theme.glow}`
+                        }}
+                      >
                         <span className="text-4xl">{currentTurn === 'male' ? '💋' : '🔥'}</span>
                       </div>
-                      
-                      <h2 className="serif-font text-3xl font-bold text-white mb-2 tracking-wide">
+
+                      <h2 className="serif-font text-3xl font-bold text-white mb-1 tracking-wide">
                         69 Shades
                       </h2>
-                      <p className="text-xs uppercase tracking-widest text-pink-300 font-semibold mb-6">
-                        Secret Intimate Task
+                      <p className="text-xs uppercase tracking-[0.25em] font-semibold mb-6" style={{ color: theme.primary }}>
+                        Secret Task
                       </p>
 
-                      <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-pink-500/20 border border-pink-400/50 text-pink-200 text-sm font-semibold pulse-hint">
+                      <div
+                        className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border text-sm font-bold pulse-hint"
+                        style={{
+                          background: `linear-gradient(135deg, ${theme.primary} 0%, ${theme.primaryDark} 100%)`,
+                          borderColor: theme.border,
+                          color: '#ffffff',
+                          boxShadow: `0 8px 25px ${theme.glow}`
+                        }}
+                      >
                         <span>✨</span>
-                        <span>Tap to Reveal Task</span>
+                        <span>Tap Card to Reveal</span>
                         <span>✨</span>
                       </div>
                     </div>
 
                     {/* Card Back Bottom Info */}
                     <div className="text-center text-xs text-gray-400 z-10">
-                      <p>Active Partner: <strong className="text-pink-300">{partnerLabel}</strong></p>
-                      <p className="text-[11px] text-gray-500 mt-0.5">Tap anywhere on the card to flip</p>
+                      <p>Turn: <strong style={{ color: theme.badgeText }}>{partnerBadge.action}</strong></p>
+                      <p className="text-[11px] text-gray-500 mt-0.5">Click anywhere to flip</p>
                     </div>
                   </div>
 
                   {/* CARD FRONT (Revealed Task Details) */}
-                  <div className="card-face card-face-front p-8 flex flex-col justify-between">
-                    {/* Top Section */}
+                  <div
+                    className="card-face card-face-front border"
+                    style={{
+                      background: theme.cardFrontBg,
+                      borderColor: theme.border
+                    }}
+                  >
+                    {/* Top Row: Category + Spicy Heat Meter */}
                     <div>
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="timer-display">{currentCard.category}</span>
-                        <div className="intensity-indicator">
-                          {intensityDots.map((active, i) => (
-                            <div key={i} className={`intensity-dot ${active ? 'active' : ''}`}></div>
-                          ))}
+                      <div className="flex items-center justify-between mb-3">
+                        <span
+                          className="text-xs font-bold px-2.5 py-0.5 rounded-md uppercase tracking-wider"
+                          style={{ background: theme.badgeBg, color: theme.badgeText }}
+                        >
+                          {currentCard.category}
+                        </span>
+
+                        {/* Spicy Heat Meter */}
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-gray-300" title={`Heat: ${heat.label}`}>
+                          <span>{heat.emoji}</span>
+                          <span className="text-[11px] text-amber-300">{heat.label}</span>
                         </div>
                       </div>
 
-                      <div className="mb-2 flex items-center gap-2">
-                        <span className={`text-[11px] px-2 py-0.5 rounded-md font-bold uppercase ${
-                          currentTurn === 'male'
-                            ? 'bg-cyan-950 text-cyan-300 border border-cyan-500/30'
-                            : 'bg-pink-950 text-pink-300 border border-pink-500/30'
-                        }`}>
-                          {partnerAction}
+                      {/* Partner Action Tag */}
+                      <div className="mb-2">
+                        <span className={`text-[11px] px-2.5 py-0.5 rounded-full font-bold border ${partnerBadge.bg} ${partnerBadge.border} ${partnerBadge.text}`}>
+                          {partnerBadge.action}
                         </span>
                       </div>
 
-                      <h2 className="serif-font text-2xl sm:text-3xl font-bold text-white mb-4 leading-snug">
+                      {/* Card Title */}
+                      <h2 className="serif-font text-2xl font-bold text-white mb-2.5 leading-snug">
                         {currentCard.title}
                       </h2>
 
-                      <p className="text-gray-300 text-sm leading-relaxed max-h-36 overflow-y-auto pr-1">
+                      {/* Card Description */}
+                      <p className="text-gray-300 text-xs sm:text-sm leading-relaxed max-h-36 overflow-y-auto pr-1">
                         {currentCard.description}
                       </p>
                     </div>
 
                     {/* Timer Section */}
-                    <div className="mt-4 flex flex-col items-center justify-center">
+                    <div className="mt-2 flex flex-col items-center justify-center">
                       {!timerActive ? (
                         <div className="text-center">
-                          <p className="text-gray-400 text-xs uppercase mb-1">Recommended time</p>
-                          <p className="text-3xl font-bold gradient-pink bg-clip-text text-transparent mb-3">
+                          <p className="text-gray-400 text-[11px] uppercase tracking-wider mb-1">Recommended Duration</p>
+                          <p className="text-3xl font-bold mb-2 tracking-tight" style={{ color: theme.primary }}>
                             {formatTime(currentCard.timer)}
                           </p>
                           <button
                             onClick={onStartTimer}
-                            className="gradient-pink text-white px-6 py-2.5 rounded-full font-bold text-sm hover:shadow-lg hover:shadow-pink-500/50 transition-all cursor-pointer"
+                            className="text-white px-6 py-2 rounded-full font-bold text-xs uppercase tracking-wider hover:scale-105 transition-all cursor-pointer shadow-md"
+                            style={{
+                              background: `linear-gradient(135deg, ${theme.primary} 0%, ${theme.primaryDark} 100%)`,
+                              boxShadow: `0 6px 20px ${theme.glow}`
+                            }}
                           >
-                            Start Timer
+                            ⏱️ Start Intimacy Timer
                           </button>
                         </div>
                       ) : (
                         <div className="text-center">
-                          <svg className="progress-ring w-28 h-28 mx-auto" width="120" height="120">
+                          <svg className="progress-ring w-24 h-24 mx-auto" width="100" height="100">
                             <circle
                               className="progress-ring-circle"
-                              stroke="currentColor"
                               strokeWidth="4"
-                              fill="transparent"
-                              r="45"
-                              cx="60"
-                              cy="60"
-                              style={{ strokeDasharray: circumference, strokeDashoffset }}
+                              r="40"
+                              cx="50"
+                              cy="50"
+                              style={{ strokeDasharray: 2 * Math.PI * 40, strokeDashoffset: (2 * Math.PI * 40) - (timeRemaining / (currentCard.timer || 180)) * (2 * Math.PI * 40) }}
                             />
                             <text
-                              x="60"
-                              y="60"
+                              x="50"
+                              y="50"
                               textAnchor="middle"
                               dy="0.3em"
-                              className="text-xl font-bold"
-                              fill="#ec4899"
+                              className="text-lg font-bold"
+                              fill={theme.primary}
                             >
                               {formatTime(timeRemaining)}
                             </text>
@@ -940,87 +1201,122 @@
                 </div>
               </div>
 
-              {/* Action Buttons */}
+              {/* Action Buttons (Inspired by Reference UI - Neon Ring Style) */}
               <div className="flex flex-col items-center gap-2">
                 <div className="flex gap-6 justify-center items-center">
+                  {/* Skip Button */}
                   <button
                     onClick={isCardFlipped ? onSkip : onFlipCard}
-                    className="action-button skip"
-                    title={isCardFlipped ? "Skip Task" : "Reveal Card First"}
+                    className="neon-ring-btn"
+                    title={isCardFlipped ? "Skip / Reroll Task" : "Reveal Card First"}
                   >
-                    ↻
+                    🎲
                   </button>
+
+                  {/* Complete Button */}
                   <button
                     onClick={isCardFlipped ? onComplete : onFlipCard}
-                    className="action-button love"
-                    title={isCardFlipped ? "Complete Task" : "Reveal Card First"}
+                    className="neon-ring-btn primary"
+                    title={isCardFlipped ? "Task Complete! (Switch Turns)" : "Reveal Card First"}
                   >
-                    ♥
+                    🔥
+                  </button>
+
+                  {/* Switch Turn Button */}
+                  <button
+                    onClick={onSwitchTurn}
+                    className="neon-ring-btn"
+                    title="Switch active partner turn"
+                  >
+                    ⇄
                   </button>
                 </div>
-                
-                <p className="text-xs text-gray-400">
-                  {!isCardFlipped 
-                    ? "👆 Tap card to flip & reveal task" 
-                    : "Tap ♥ when completed (turns will switch)"}
+
+                <p className="text-xs text-gray-400 font-medium">
+                  {!isCardFlipped
+                    ? "👆 Tap the card to reveal task"
+                    : "Tap 🔥 when completed to switch turns"}
                 </p>
               </div>
 
-              {/* Stats */}
-              <div className="text-center text-gray-400 text-xs">
-                <p>{totalCompleted} tasks completed in total</p>
+              {/* Total Completed Stats */}
+              <div className="text-center text-gray-400 text-xs font-semibold">
+                <span>🏆 Total Journey: </span>
+                <strong style={{ color: theme.badgeText }}>{totalCompleted} tasks completed</strong>
               </div>
             </div>
           );
         }
 
-        function SectionCompleteScreen({ sectionNum, totalCompleted, nextSection, sectionNames }) {
+        function SectionCompleteScreen({ sectionNum, totalCompleted, nextSection, sectionMeta, theme }) {
           return (
             <div className="w-full max-w-md mx-auto slide-up">
-              <div className="onboarding-content p-10 text-center">
-                <div className="section-complete-illustration">🎉</div>
-                <h2 className="serif-font text-4xl font-bold mb-2 bg-gradient-to-r from-pink-300 to-rose-400 bg-clip-text text-transparent">
-                  Excellent!
+              <div
+                className="onboarding-content p-8 text-center border"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(20, 8, 16, 0.94) 0%, rgba(10, 4, 10, 0.98) 100%)',
+                  borderColor: theme.border
+                }}
+              >
+                <div className="text-6xl mb-3 floating-element">🎉</div>
+                <h2 className="serif-font text-4xl font-bold mb-1 text-white">
+                  Sensational!
                 </h2>
-                <p className="text-gray-300 mb-6">
-                  Section {sectionNum} ({sectionNames[sectionNum]}) complete
+                <p className="text-gray-300 text-sm mb-5">
+                  Section {sectionNum} ({sectionMeta[sectionNum]?.name}) Complete
                 </p>
-                <div className="bg-black/30 rounded-lg p-6 mb-8 border border-pink-500/20">
-                  <p className="text-3xl font-bold text-pink-300 mb-2">{totalCompleted}</p>
-                  <p className="text-gray-400 text-sm">tasks completed so far</p>
+
+                <div className="bg-black/50 rounded-2xl p-5 mb-6 border border-white/10">
+                  <p className="text-4xl font-bold mb-1" style={{ color: theme.primary }}>{totalCompleted}</p>
+                  <p className="text-gray-400 text-xs uppercase tracking-wider">Intimate Milestones Reached</p>
                 </div>
+
                 <button
                   onClick={nextSection}
-                  className="w-full gradient-pink text-white py-4 rounded-full font-bold hover:shadow-lg hover:shadow-pink-500/50 transition-all cursor-pointer"
+                  className="w-full py-4 rounded-full font-bold text-base tracking-wider uppercase text-white shadow-lg hover:scale-105 transition-all cursor-pointer"
+                  style={{
+                    background: `linear-gradient(135deg, ${theme.primary} 0%, ${theme.primaryDark} 100%)`,
+                    boxShadow: `0 10px 30px ${theme.glow}`
+                  }}
                 >
-                  {sectionNum < 5 ? `Continue to Section ${sectionNum + 1}` : 'View Summary'}
+                  {sectionNum < 5 ? `Ascend to Section ${sectionNum + 1} ➜` : 'View Grand Summary 🏆'}
                 </button>
               </div>
             </div>
           );
         }
 
-        function GameCompleteScreen({ totalCompleted, resetGame }) {
+        function GameCompleteScreen({ totalCompleted, resetGame, theme }) {
           return (
             <div className="w-full max-w-md mx-auto slide-up">
-              <div className="onboarding-content p-10 text-center">
-                <div className="section-complete-illustration">✨</div>
-                <h2 className="serif-font text-4xl font-bold mb-4 bg-gradient-to-r from-pink-300 via-pink-400 to-rose-400 bg-clip-text text-transparent">
+              <div
+                className="onboarding-content p-8 text-center border"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(20, 8, 16, 0.94) 0%, rgba(10, 4, 10, 0.98) 100%)',
+                  borderColor: theme.border
+                }}
+              >
+                <div className="text-6xl mb-3 floating-element">🏆</div>
+                <h2 className="serif-font text-4xl font-bold mb-2 text-white">
                   Journey Complete
                 </h2>
-                <div className="bg-black/30 rounded-lg p-6 mb-6 border border-pink-500/20">
-                  <p className="text-4xl font-bold text-pink-300 mb-2">🏆</p>
-                  <p className="text-2xl font-bold text-white mb-1">{totalCompleted}</p>
-                  <p className="text-gray-400 text-xs mb-3">Tasks Completed</p>
+                <div className="bg-black/50 rounded-2xl p-5 mb-6 border border-white/10">
+                  <p className="text-3xl font-bold text-white mb-1">{totalCompleted}</p>
+                  <p className="text-gray-400 text-xs mb-3 uppercase tracking-wider">Passionate Tasks Completed</p>
                   <p className="text-gray-300 text-xs leading-relaxed">
-                    You've explored all 5 sections of intimate connection. You've created trust, communication, and genuine intimacy together.
+                    You've journeyed through all 5 sections of romance, touch, tease, and passion. You've deepened your intimacy and ignited a lasting spark!
                   </p>
                 </div>
+
                 <button
                   onClick={resetGame}
-                  className="w-full gradient-pink text-white py-3.5 rounded-full font-bold hover:shadow-lg hover:shadow-pink-500/50 transition-all cursor-pointer"
+                  className="w-full py-4 rounded-full font-bold text-base tracking-wider uppercase text-white shadow-lg hover:scale-105 transition-all cursor-pointer"
+                  style={{
+                    background: `linear-gradient(135deg, ${theme.primary} 0%, ${theme.primaryDark} 100%)`,
+                    boxShadow: `0 10px 30px ${theme.glow}`
+                  }}
                 >
-                  Play Again
+                  Play Again 🔄
                 </button>
               </div>
             </div>

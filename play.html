@@ -781,7 +781,6 @@
                 ].map(card => {
                   const cardTitleNorm = (card.title || '').toLowerCase().trim();
                   const origNum = connectMap.get(cardTitleNorm);
-                  // Construct Search String: "Chapter " + original_number + " - " + name
                   const searchStr = origNum != null ? `Chapter ${origNum} - ${card.title}` : null;
 
                   return {
@@ -812,34 +811,33 @@
             loadCards();
           }, []);
 
-          // Parse PDF Index: Scan pages 3–13 using PDF.js, find matching text/annotation link dest, resolve destination page index
+          // Parse PDF Index: Resolved page with normalized text fallback matching
           useEffect(() => {
             let isMounted = true;
             const resolvePage = async () => {
-              if (!pdfDoc || !currentCard || !currentCard.searchString) {
+              if (!pdfDoc || !currentCard || !currentCard.title) {
                 setResolvedPdfPage(null);
                 return;
               }
 
               setIsPdfLoading(true);
               try {
-                const targetStr = currentCard.searchString.toLowerCase().trim();
+                const clean = (str) => (str || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                const cleanTitle = clean(currentCard.title);
+                const origNum = currentCard.original_number ? String(currentCard.original_number) : '';
                 let pageFound = null;
 
-                // Scan pages 3 to 13
-                const startPage = 3;
-                const endPage = Math.min(13, pdfDoc.numPages);
+                // Phase 1: Try Table of Contents annotation links (Pages 1 to 15)
+                const tocStart = 1;
+                const tocEnd = Math.min(15, pdfDoc.numPages);
 
-                for (let pageNum = startPage; pageNum <= endPage; pageNum++) {
+                for (let pageNum = tocStart; pageNum <= tocEnd; pageNum++) {
                   const page = await pdfDoc.getPage(pageNum);
-                  
-                  // Check link annotations on page
-                  const annotations = await page.getAnnotations();
                   const textContent = await page.getTextContent();
-                  const pageText = textContent.items.map(item => item.str).join(' ').toLowerCase();
+                  const pageText = clean(textContent.items.map(item => item.str).join(' '));
 
-                  if (pageText.includes(targetStr)) {
-                    // Search annotations for link destinations
+                  if (cleanTitle && pageText.includes(cleanTitle)) {
+                    const annotations = await page.getAnnotations();
                     for (const anno of annotations) {
                       if (anno.subtype === 'Link' && anno.dest) {
                         let dest = anno.dest;
@@ -848,17 +846,32 @@
                         }
                         if (Array.isArray(dest) && dest.length > 0) {
                           const destPageIndex = await pdfDoc.getPageIndex(dest[0]);
-                          pageFound = destPageIndex + 1; // Convert 0-indexed page to 1-indexed PDF page
-                          break;
+                          const targetPage = destPageIndex + 1;
+                          if (targetPage > tocEnd) {
+                            pageFound = targetPage;
+                            break;
+                          }
                         }
                       }
                     }
+                  }
+                  if (pageFound) break;
+                }
 
-                    // Fallback to the index page if no annotation dest resolved
-                    if (!pageFound) {
-                      pageFound = pageNum;
+                // Phase 2: Direct full-document content search if TOC links fail
+                if (!pageFound && cleanTitle) {
+                  const bodyStart = Math.min(14, pdfDoc.numPages);
+                  for (let pageNum = bodyStart; pageNum <= pdfDoc.numPages; pageNum++) {
+                    const page = await pdfDoc.getPage(pageNum);
+                    const textContent = await page.getTextContent();
+                    const pageText = clean(textContent.items.map(item => item.str).join(' '));
+
+                    if (pageText.includes(cleanTitle)) {
+                      if (!origNum || pageText.includes(origNum) || pageText.includes(cleanTitle)) {
+                        pageFound = pageNum;
+                        break;
+                      }
                     }
-                    break;
                   }
                 }
 
@@ -1568,6 +1581,12 @@
           theme
         }) {
           const [showPdfView, setShowPdfView] = useState(false);
+
+          // Reset PDF viewer state whenever active card changes
+          useEffect(() => {
+            setShowPdfView(false);
+          }, [currentCard?.id]);
+
           const circumference = 2 * Math.PI * 40;
           
           const heatLevels = {
@@ -1741,7 +1760,7 @@
                             {resolvedPdfPage && (
                               <button
                                 onClick={() => setShowPdfView(!showPdfView)}
-                                className="px-2.5 py-0.5 rounded-full bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-[10px] font-bold transition-all"
+                                className="px-2.5 py-0.5 rounded-full bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-[10px] font-bold transition-all cursor-pointer"
                               >
                                 {showPdfView ? 'Hide Book PDF' : 'Read PDF Chapter 📄'}
                               </button>
@@ -1751,6 +1770,7 @@
                           {showPdfView && resolvedPdfPage && (
                             <div className="mt-2 rounded-xl overflow-hidden border border-white/15 bg-black/60 slide-up">
                               <iframe
+                                key={`${currentCard?.id}-${resolvedPdfPage}`}
                                 src={`book.pdf#page=${resolvedPdfPage}`}
                                 className="w-full h-48 border-0"
                                 title="Book PDF Viewer"

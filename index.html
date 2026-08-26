@@ -712,19 +712,35 @@
             document.body.style.background = theme.bgGradient;
           }, [currentTheme]);
 
-          // Load cards and check for saved game on mount
+          // Load cards + identify.json and check for saved game on mount
           useEffect(() => {
             const loadCards = async () => {
               try {
-                const response = await fetch('cards.json');
-                const data = await response.json();
+                const [cardsRes, identifyRes] = await Promise.all([
+                  fetch('cards.json'),
+                  fetch('identify.json')
+                ]);
+                const cardsData = await cardsRes.json();
+                const identifyData = await identifyRes.json();
+
+                // Build a lookup map: id -> identify ('male' | 'female' | 'both')
+                const identifyMap = new Map();
+                Object.values(identifyData).flat().forEach(item => {
+                  identifyMap.set(item.id, item.identify || 'both');
+                });
+
+                // Merge identify field into every card
                 const allCardsArray = [
-                  ...data.section_1_love_romantic,
-                  ...data.section_2_hug_kisses,
-                  ...data.section_3_strip_playful,
-                  ...data.section_4_fantasy_extended_play,
-                  ...data.section_5_intense_aftercare
-                ];
+                  ...cardsData.section_1_love_romantic,
+                  ...cardsData.section_2_hug_kisses,
+                  ...cardsData.section_3_strip_playful,
+                  ...cardsData.section_4_fantasy_extended_play,
+                  ...cardsData.section_5_intense_aftercare
+                ].map(card => ({
+                  ...card,
+                  identify: identifyMap.get(card.id) || 'both'
+                }));
+
                 setAllCards(allCardsArray);
 
                 // Check localStorage for saved session
@@ -744,6 +760,7 @@
             };
             loadCards();
           }, []);
+
 
           // Auto-save game state on progress updates
           useEffect(() => {
@@ -777,15 +794,29 @@
             return () => clearTimeout(timerRef.current);
           }, [timerActive, timeRemaining]);
 
-          const initializeSection = (sectionNum) => {
+
+          // Returns cards compatible with a given turn ('male' | 'female')
+          // 'both' cards are always compatible
+          const getCardsForTurn = (cards, turn) => {
+            return cards.filter(card => {
+              const id = card.identify || 'both';
+              return id === 'both' || id === turn;
+            });
+          };
+
+          const initializeSection = (sectionNum, startingTurn) => {
+            const turn = startingTurn || currentTurn;
             const sectionCards = allCards.filter(c => c.section === sectionNum);
+            // Shuffle all section cards, then pick a compatible first card
             const shuffled = [...sectionCards].sort(() => Math.random() - 0.5);
+            const compatibleFirst = getCardsForTurn(shuffled, turn);
+            const firstCard = compatibleFirst[0] || shuffled[0] || null;
             setAvailableCards(shuffled);
-            setCurrentCard(shuffled[0] || null);
+            setCurrentCard(firstCard);
             setCompletedTasksInSection(0);
             setCurrentSection(sectionNum);
             setIsCardFlipped(false);
-            setCardAnimation(null); // Critical bug fix: always reset swipe animation
+            setCardAnimation(null);
             setTimerActive(false);
             setTimeRemaining(0);
           };
@@ -801,7 +832,7 @@
           const startGame = (startingPartner, paceCount, chosenSection = 1) => {
             setTasksPerSection(paceCount || 10);
             setCurrentTurn(startingPartner || 'male');
-            initializeSection(chosenSection || 1);
+            initializeSection(chosenSection || 1, startingPartner || 'male');
             setIsCardFlipped(false);
             setCardAnimation(null);
             setGameState('playing');
@@ -812,8 +843,9 @@
           const resumeSavedGame = () => {
             if (!savedGameData || allCards.length === 0) return;
             const sec = savedGameData.currentSection || 1;
+            const turn = savedGameData.currentTurn || 'male';
             setTasksPerSection(savedGameData.tasksPerSection || 10);
-            setCurrentTurn(savedGameData.currentTurn || 'male');
+            setCurrentTurn(turn);
             setCurrentTheme(savedGameData.currentTheme || 'crimson');
             setTotalCompleted(savedGameData.totalCompleted || 0);
             setJourneyHistory(savedGameData.journeyHistory || []);
@@ -822,8 +854,9 @@
 
             const sectionCards = allCards.filter(c => c.section === sec);
             const shuffled = [...sectionCards].sort(() => Math.random() - 0.5);
+            const compatibleFirst = getCardsForTurn(shuffled, turn);
             setAvailableCards(shuffled);
-            setCurrentCard(shuffled[0] || null);
+            setCurrentCard(compatibleFirst[0] || shuffled[0] || null);
             setIsCardFlipped(false);
             setCardAnimation(null);
             setTimerActive(false);
@@ -838,22 +871,42 @@
           };
 
           const handleSwitchTurn = () => {
-            setCurrentTurn(prev => prev === 'male' ? 'female' : 'male');
+            const newTurn = currentTurn === 'male' ? 'female' : 'male';
+            setCurrentTurn(newTurn);
             playSensualSound('flip', soundEnabled);
+
+            // If the current card is not compatible with the new turn, swap it
+            if (currentCard && currentCard.identify !== 'both' && currentCard.identify !== newTurn) {
+              // Find the next compatible card from the pool (excluding current)
+              const rest = availableCards.filter(c => c.id !== currentCard.id);
+              const compatible = getCardsForTurn(rest, newTurn);
+              if (compatible.length > 0) {
+                // Swap current with a compatible card, put old card back
+                const newCard = compatible[0];
+                const newPool = [currentCard, ...rest.filter(c => c.id !== newCard.id)];
+                setCurrentCard(newCard);
+                setAvailableCards(newPool);
+                setIsCardFlipped(false);
+              }
+            }
           };
 
           const handleSkip = () => {
             setCardAnimation('skip');
+            const newTurn = currentTurn === 'male' ? 'female' : 'male';
             setTimeout(() => {
-              const remaining = availableCards.slice(1);
-              const reshuffled = [...remaining, currentCard].sort(() => Math.random() - 0.5);
+              const rest = availableCards.slice(1);
+              // Put skipped card back, reshuffle pool
+              const reshuffled = [...rest, currentCard].sort(() => Math.random() - 0.5);
+              // Pick next card compatible with the NEXT turn
+              const compatible = getCardsForTurn(reshuffled, newTurn);
+              const nextCard = compatible[0] || reshuffled[0] || null;
               setAvailableCards(reshuffled);
-              setCurrentCard(reshuffled[0] || null);
+              setCurrentCard(nextCard);
               setCardAnimation(null);
               setTimerActive(false);
               setIsCardFlipped(false);
-              // Alternate turn to partner
-              setCurrentTurn(prev => prev === 'male' ? 'female' : 'male');
+              setCurrentTurn(newTurn);
             }, 400);
           };
 
@@ -879,29 +932,40 @@
               setJourneyHistory(prev => [...prev, historyEntry]);
             }
 
+            const newTurn = currentTurn === 'male' ? 'female' : 'male';
+
             setTimeout(() => {
               setTimerActive(false);
               const newCompletedInSection = completedTasksInSection + 1;
               setCompletedTasksInSection(newCompletedInSection);
               setTotalCompleted(prev => prev + 1);
               setIsCardFlipped(false);
-              setCardAnimation(null); // Critical bug fix: reset animation
+              setCardAnimation(null);
 
-              // Alternate turn to partner
-              setCurrentTurn(prev => prev === 'male' ? 'female' : 'male');
+              setCurrentTurn(newTurn);
 
               const remaining = availableCards.slice(1);
               if (remaining.length === 0 || newCompletedInSection >= tasksPerSection) {
                 setGameState('sectionComplete');
               } else {
-                setCurrentCard(remaining[0] || null);
-                setAvailableCards(remaining);
+                // Pick next card compatible with the NEW turn
+                const compatible = getCardsForTurn(remaining, newTurn);
+                const nextCard = compatible[0] || remaining[0] || null;
+                // If we had to pick a non-compatible card, move compatible ones to front
+                if (nextCard && compatible.length > 0 && remaining[0]?.id !== nextCard.id) {
+                  const reordered = [nextCard, ...remaining.filter(c => c.id !== nextCard.id)];
+                  setCurrentCard(nextCard);
+                  setAvailableCards(reordered);
+                } else {
+                  setCurrentCard(nextCard);
+                  setAvailableCards(remaining);
+                }
               }
             }, 400);
           };
 
           const nextSection = () => {
-            setCardAnimation(null); // Critical bug fix: clear residual swipe animation
+            setCardAnimation(null);
             if (currentSection < 5) {
               initializeSection(currentSection + 1);
               setGameState('playing');
@@ -922,6 +986,7 @@
             try { localStorage.removeItem('shades_game_save'); } catch (e) {}
             setSavedGameData(null);
           };
+
 
           const formatTime = (seconds) => {
             const mins = Math.floor(seconds / 60);
@@ -1541,7 +1606,7 @@
                   >
                     {/* Top Row: Category + Spicy Heat Meter */}
                     <div>
-                      <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center justify-between mb-2">
                         <span
                           className="text-xs font-bold px-2.5 py-0.5 rounded-md uppercase tracking-wider"
                           style={{ background: theme.badgeBg, color: theme.badgeText }}
@@ -1555,11 +1620,22 @@
                         </div>
                       </div>
 
-                      {/* Partner Action Tag */}
-                      <div className="mb-2">
+                      {/* Gender Identify + Partner Action Tag Row */}
+                      <div className="flex items-center justify-between mb-2">
                         <span className={`text-[11px] px-2.5 py-0.5 rounded-full font-bold border ${partnerBadge.bg} ${partnerBadge.border} ${partnerBadge.text}`}>
                           {partnerBadge.action}
                         </span>
+
+                        {/* Identify badge – show only for male/female specific cards */}
+                        {currentCard.identify && currentCard.identify !== 'both' && (
+                          <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold border ${
+                            currentCard.identify === 'male'
+                              ? 'bg-indigo-950/80 text-cyan-300 border-cyan-500/40'
+                              : 'bg-pink-950/80 text-pink-300 border-pink-500/40'
+                          }`}>
+                            {currentCard.identify === 'male' ? '♂️ His Task' : '♀️ Her Task'}
+                          </span>
+                        )}
                       </div>
 
                       {/* Card Title */}
